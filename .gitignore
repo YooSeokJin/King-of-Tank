@@ -9,6 +9,14 @@
 *.userosscache
 *.log
 
+# 빌드 폴더
+x64/
+Debug/
+Release/
+
+# obj파일
+!objs/**/*.obj
+
 # 빌드 결과물
 *.exe
 *.dll
@@ -28,6 +36,8 @@
 *.jar
 *.war
 *.ear
+
+
 
 # 임시 파일
 *.tmp
