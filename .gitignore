@@ -1,32 +1,71 @@
-# Prerequisites
-*.d
+# Visual Studio 관련
+.vs/
+*.VC.db
+*.VC.db-wal
+*.VC.db-shm
+*.opendb
+*.suo
+*.user
+*.userosscache
+*.log
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
+# 빌드 결과물
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.idb
 *.pch
-
-# Compiled Dynamic libraries
+*.manifest
+*.exp
+*.o
+*.a
+*.out
 *.so
 *.dylib
-*.dll
+*.class
+*.jar
+*.war
+*.ear
 
-# Fortran module files
-*.mod
-*.smod
+# 임시 파일
+*.tmp
+*.cache
+*.log
+*.tlog
+*.lastbuildstate
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# 시스템 파일
+.DS_Store
+Thumbs.db
+*.stackdump
 
-# Executables
-*.exe
-*.out
-*.app
+# CMake 파일
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+build/
+
+# 기타 자동 생성 파일
+*.vsdx
+*.ipch
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.trg
+*.rsuser
+*.rsp
+*.vcxproj.*
+
+# 실행 환경 구성 파일
+*.pyc
+*.pyo
+*.class
+__pycache__/
+*.swp
+*.swo
+.idea/
+*.iml

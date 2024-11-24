@@ -1,0 +1,9 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "c:\\users\\you84\\desktop\\kingoftank\\renderer.ixx",
+        "ProvidedModule": "Renderer",
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
