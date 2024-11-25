@@ -11,7 +11,7 @@ class Mesh {
 public:
 	Mesh();
 	~Mesh();
-
+	void change_Index();
 	void add_movement();
 
 	void apply_movement();

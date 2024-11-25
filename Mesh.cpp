@@ -16,6 +16,19 @@ Mesh::~Mesh()
     delete Color;
 }
 
+void Mesh::change_Index()
+{
+    if (!indices.empty()) {
+        auto min = std::min_element(indices.begin(), indices.end());
+        unsigned int MinValue = *min;
+        if (*min != 0) {
+            for (auto& i : indices) {
+                i -= MinValue;
+            }
+        }
+    }
+}
+
 void Mesh::add_movement()
 {
     if (!move) move = new Movement();

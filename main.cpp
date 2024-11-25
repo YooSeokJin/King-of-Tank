@@ -8,6 +8,18 @@
 #include "global.h"
 #include "newScene.h"
 
+// Component - Movement, Collision
+// Mesh - Mesh
+// Object - Object
+// Transform - ModelMatrix, Viewing, Projection
+// Controller - PlayerController, AIController
+// Rendering - Camera, Shader, ShaderManager, Grid
+// Scene - Scene
+// Module - Renderer.ixx, ObjectLoader.ixx, CollisionChecker.ixx
+// shaders - FS, VS 세이더 파일
+// objs - .obj 파일
+// KOF_Scene - Tank, KofScene, KofPlayerController, KofAIController 등
+
 void InitProgram();
 GLvoid RenderScene();
 GLvoid Reshape(int w, int h);

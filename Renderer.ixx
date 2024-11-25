@@ -60,6 +60,7 @@ namespace Renderer {
         }
 
         void Setup_Mesh(const std::shared_ptr<Mesh>& mesh) {
+            mesh->change_Index();
             glGenVertexArrays(1, &mesh->getVAO());
             glGenBuffers(1, &mesh->getVBO());
             glGenBuffers(1, &mesh->getEBO());

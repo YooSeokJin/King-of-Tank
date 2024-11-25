@@ -1,8 +1,6 @@
 #include "ModelMatrix.h"
 
 #include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/quaternion.hpp"
-
 ModelMatrix::ModelMatrix()
 	: myLocation(0.0f, 0.0f, 0.0f), myScale(1.0f, 1.0f, 1.0f), myRotation(0.0f, 0.0f, 0.0f)
 {
