@@ -171,10 +171,8 @@ glm::mat4 ModelMatrix::getTransformMatrix()
 {
     glm::mat4 transform = glm::mat4(1.0f);
     if (parent) {
-        printf("pa\n");
         transform = parent->getTransformMatrix();
     }
-
     transform = glm::translate(transform, myLocation);
 
     if (pivot) {
@@ -193,6 +191,8 @@ glm::mat4 ModelMatrix::getTransformMatrix()
         transform = glm::rotate(transform, glm::radians(myRotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     }
 
+   
+
     transform = glm::scale(transform, myScale);
    
     return transform;
@@ -206,4 +206,11 @@ void ModelMatrix::setParent(ModelMatrix* p)
 void ModelMatrix::deleteParent()
 {
     parent = nullptr;
+}
+
+glm::vec3 ModelMatrix::get_Forward_vector()
+{
+    glm::mat4 tr = getTransformMatrix();
+    glm::vec3 forward(tr[0][0], tr[0][1], tr[0][2]);
+    return glm::normalize(forward);
 }

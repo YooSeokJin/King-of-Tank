@@ -34,7 +34,7 @@ public:
 
 	void DrawGrid(const glm::mat4& view, const glm::mat4& proj);
 	void addGrid();
-	virtual void update(float frame_time);
+	virtual void update(float frameTime);
 
 	const std::vector<std::shared_ptr<Mesh>>& getMeshes() const;
 	void addMesh(const std::shared_ptr<Mesh>& mesh);

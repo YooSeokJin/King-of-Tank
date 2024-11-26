@@ -26,6 +26,7 @@ public:
     void set_rt_direction_Z(float delta);
     
     const glm::vec3& get_delta_position();
+    const glm::vec3& get_delta_position(float dx, float dz);
     const glm::vec3& get_delta_rotation();
 private:
     // ¿Ãµø

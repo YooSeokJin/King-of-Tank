@@ -27,15 +27,14 @@ void Object::addGrid()
 	if (!grid) grid = new Grid();
 }
 
-void Object::update(float frame_time)
+void Object::update(float frameTime)
 {
-	move.update(frame_time);
+	move.update(frameTime);
 	World_Transform.translate(move.get_delta_position());
 	World_Transform.rotate(move.get_delta_rotation());
-	//glm::vec3 pos = World_Transform.getLocation();
-	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
+
 	for (auto& mesh : meshes) {
-		mesh->update(frame_time);
+		mesh->update(frameTime);
 	}
 }
 
@@ -101,14 +100,9 @@ void Object::reset_Collision_State(char type)
 }
 
 
-
-
-
-
 // STATIC
 Static_Object::Static_Object()
 {
-	Init();
 }
 
 void Static_Object::update(float frameTime)

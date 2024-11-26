@@ -13,8 +13,6 @@ newScene::newScene()
 	add_Cube(true);
 	static_objs[0]->setScale(10.f, 0.1f, 10.f);
 	static_objs[0]->addPosition(0.f, -0.1f, 0.f);
-
-	camera.followObject(crane);
 	Init();
 }
 

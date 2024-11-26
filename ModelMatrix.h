@@ -68,6 +68,8 @@ public:
 	void setParent(ModelMatrix* p);
 	void deleteParent();
 
+	glm::vec3 get_Forward_vector();
+
 	glm::vec3* pivot;
 private:
 	ModelMatrix* parent = nullptr;

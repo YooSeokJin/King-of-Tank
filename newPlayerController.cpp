@@ -3,8 +3,10 @@
 
 newPlayerController::newPlayerController()
 {
+	camera_offset = glm::vec3(-15.f, 5.f, 0.f);
 	w = s = false;
 	a = d = false;
+
 }
 
 void newPlayerController::event(unsigned char key, int x, int y)
@@ -36,11 +38,12 @@ void newPlayerController::K_U(unsigned char key, int x, int y)
 {
 	auto crane = std::dynamic_pointer_cast<Crane>(target);
 	if (key == 'w' && w) {
-		crane->move_B();
+		crane->move_F();
 		w = !w;
 	}
 	else if (key == 's' && s) {
-		crane->move_F();
+
+		crane->move_B();
 		s = !s;
 	}
 	else if (key == 'a' && a) {

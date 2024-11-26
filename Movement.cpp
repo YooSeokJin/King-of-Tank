@@ -90,6 +90,13 @@ const glm::vec3& Movement::get_delta_position()
     return delta_position;
 }
 
+const glm::vec3& Movement::get_delta_position(float dx, float dz)
+{
+    delta_position.x *= dx;
+    delta_position.z *= dz;
+    return delta_position;
+}
+
 const glm::vec3& Movement::get_delta_rotation()
 {
     return delta_rotation;

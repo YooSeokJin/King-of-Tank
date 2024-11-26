@@ -1,12 +1,17 @@
 #include "Crane.h"
+#include <math.h>
 #include "global.h"
 #include "Grid.h"
+
 import ObjectLoader;
 
 Crane::Crane()
 {
 	addGrid();
 	meshes = ObjectLoader::Load_Meshes("objs/tank.obj", "Model");
+	for (auto& mesh : meshes) {
+		mesh->Local_Transform.rotateY(180.f);
+	}
 	// 0 - Base
 	// 1 - Right Track
 	// 2 - Turret
@@ -19,22 +24,32 @@ Crane::Crane()
 	meshes[3]->Color = new glm::vec4(colorPalette[11]);
 	meshes[4]->Color = new glm::vec4(colorPalette[38]);
 	meshes[5]->Color = new glm::vec4(BlackColor);
+
+	Backward = Forward = false;
 }
 
 void Crane::update(float frameTime)
 {	
+	glm::vec3 FVector{ 0.f, 0.f, 0.f };
+	if (Forward) {
+		FVector += World_Transform.get_Forward_vector();
+	}
+	if (Backward) {
+		FVector -= World_Transform.get_Forward_vector();
+	}
+	printf("%f, %f, %f\n", FVector.x, FVector.y, FVector.z);
+	move.set_direction(FVector.x, FVector.y, FVector.z);
 	Object::update(frameTime);
 }
 
 void Crane::move_F()
-{
-	printf("F\n");
-	move.add_direction(1.f, 0.f, 0.f);
+{	
+	Forward = !Forward;
 }
 
 void Crane::move_B()
 {
-	move.add_direction(-1.f, 0.f, 0.f);
+	Backward = !Backward;
 }
 
 void Crane::rt_Y()

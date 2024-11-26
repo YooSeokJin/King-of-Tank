@@ -56,7 +56,7 @@ void Camera::Add_Movement(float moveSpeed, float rtSpeed)
 
     model = std::make_unique<ModelMatrix>();
     if (auto sharedTarget = target.lock()) {
-        model->setLocation(sharedTarget->getPosition() + *offset);
+        model->setLocation(sharedTarget->getPosition() - *offset);
     }
 }
 
