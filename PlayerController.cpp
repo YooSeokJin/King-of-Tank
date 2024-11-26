@@ -10,7 +10,7 @@ PlayerController::PlayerController(std::shared_ptr<Object> target_)
 {
 	target = target_;
 	camera = nullptr;
-	camera_offset = glm::vec3(-10.f, 5.f, 0.f);
+	camera_offset = glm::vec3(10.f, 5.f, 0.f);
 }
 
 PlayerController::~PlayerController()
@@ -19,6 +19,14 @@ PlayerController::~PlayerController()
 }
 
 void PlayerController::event(unsigned char key, int x, int y)
+{
+}
+
+void PlayerController::K_D(unsigned char key, int x, int y)
+{
+}
+
+void PlayerController::K_U(unsigned char key, int x, int y)
 {
 }
 

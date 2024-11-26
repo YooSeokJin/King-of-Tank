@@ -5,7 +5,7 @@
 
 import Renderer;
 import ObjectLoader;
-
+import CollisionChecker;
 Scene::Scene()
 {
 	bgColor = WhiteColor;
@@ -13,7 +13,7 @@ Scene::Scene()
 
 	Renderer::Init(*this);
 	Renderer::Depth(depth);
-	//Renderer::Cull(cull);
+	Renderer::Cull(cull);
 	Renderer::Fill(fill);
 }
 
@@ -38,16 +38,58 @@ void Scene::update(float frameTime)
 	auto proj = camera.getPerspectiveMatrix();
 	auto view = camera.getViewMatrix();
 	for (auto& obj : objs) {
+		for (auto& st : static_objs) {
+			CollisionChecker::isCollid_Static(obj, st);
+		}
+		
 		obj->update(frameTime);
 	}
 	camera.update(frameTime);
 }
 
+void Scene::Init()
+{
+	pc->set_target(objs[0]);
+	pc->set_camera(&camera);
+	camera.Add_Movement();
+
+	for (auto& obj : objs) {
+
+		for (auto& mesh : obj->getMeshes()) {
+			mesh->apply_movement();
+			mesh->add_collision();
+			mesh->add_movement();
+		}
+		Renderer::Setup_Object(obj);
+		obj->Init();
+	}
+	for (auto& obj : static_objs) {
+		for (auto& mesh : obj->getMeshes()) {
+			mesh->apply_movement();
+			mesh->add_collision();
+			
+		}
+		Renderer::Setup_Static_Object(obj);
+		obj->Init();
+	}
+}
 void Scene::specialEvent(int key, int x, int y)
 {
 	if (key == 1) Renderer::Depth(depth);
 	else if (key == 2) Renderer::Fill(fill);
 	else if (key == 3) Renderer::Cull(cull);
+}
+
+void Scene::KeyUp(unsigned char key, int x, int y)
+{
+	if (!pc) return;
+	pc->K_U(key, x, y);
+}
+
+void Scene::KeyDown(unsigned char key, int x, int y)
+{
+	if (!pc) return;
+	pc->K_D(key, x, y);
 }
 
 const std::vector<std::shared_ptr<Object>>& Scene::getObjects() const

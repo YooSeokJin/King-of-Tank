@@ -171,12 +171,13 @@ glm::mat4 ModelMatrix::getTransformMatrix()
 {
     glm::mat4 transform = glm::mat4(1.0f);
     if (parent) {
+        printf("pa\n");
         transform = parent->getTransformMatrix();
     }
+
     transform = glm::translate(transform, myLocation);
 
     if (pivot) {
-        glm::vec3 to = *pivot - myLocation;
         transform = glm::translate(transform, *pivot);
 
         transform = glm::rotate(transform, glm::radians(myRotation.x), glm::vec3(1.0f, 0.0f, 0.0f));

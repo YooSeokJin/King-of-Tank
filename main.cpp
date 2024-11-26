@@ -29,6 +29,8 @@ GLvoid MouseInput(int button, int state, int x, int y);
 GLvoid MouseMotion(int x, int y);
 GLvoid KeyInput(unsigned char key, int x, int y);
 GLvoid SpecialKeyInput(int key, int x, int y);
+GLvoid KeyDown(unsigned char key, int x, int y);
+GLvoid KeyUp(unsigned char key, int x, int y);
 
 void ExitProgram();
 
@@ -61,11 +63,12 @@ void main(int argc, char** argv)
 	glutDisplayFunc(RenderScene);
 	glutReshapeFunc(Reshape);
 	glutIdleFunc(Idle);
-	glutKeyboardFunc(KeyInput);
+	glutKeyboardFunc(KeyDown);
+	glutKeyboardUpFunc(KeyUp);
 	glutMouseFunc(MouseInput);
 	glutMotionFunc(MouseMotion);
 	glutSpecialFunc(SpecialKeyInput);
-	
+	//glutKeyboardFunc(KeyInput);
 	glutMainLoop();
 }
 
@@ -74,7 +77,7 @@ void InitProgram()
 	scene = new newScene();
 }
 
-void RenderScene()
+GLvoid RenderScene()
 {
 	if (!scene) return;
 	scene->draw();
@@ -84,19 +87,19 @@ GLvoid Reshape(int w, int h)
 {
 	glViewport(0, 0, w, h);
 }
-void RenderSceneTimer(int value)
+GLvoid RenderSceneTimer(int value)
 {
 	if (!scene) return;
-	scene->update(frameTime);
+	scene->timer(frameTime);
 	glutPostRedisplay();
 	glutTimerFunc(16, RenderSceneTimer, 1);
 }
-void Idle()
+GLvoid Idle()
 {
 	if (!scene) return;
 	glutPostRedisplay();
 }
-void MouseInput(int button, int state, int x, int y)
+GLvoid MouseInput(int button, int state, int x, int y)
 {
 	if (!scene) return;
 	if (button == GLUT_LEFT_BUTTON) {
@@ -111,7 +114,7 @@ void MouseInput(int button, int state, int x, int y)
 	}	
 	glutPostRedisplay();
 }
-void MouseMotion(int x, int y)
+GLvoid MouseMotion(int x, int y)
 {
 	if (!scene) return;
 	if (isClicked) {
@@ -120,28 +123,39 @@ void MouseMotion(int x, int y)
 
 	}
 }
-void KeyInput(unsigned char key, int x, int y)
+GLvoid KeyInput(unsigned char key, int x, int y)
 {
 	if (!scene) return;
 	switch (key) {
 	case 27:
 		ExitProgram();
 		break;
-	default:
-		scene->event(key, x, y);
-		break;
 	}
 	
 	glutPostRedisplay();
 }
-void SpecialKeyInput(int key, int x, int y) 
+GLvoid SpecialKeyInput(int key, int x, int y)
 {
 	if (!scene) return;
+	
 	scene->specialEvent(key, x, y);
 	glutPostRedisplay();
 }
 
-void ExitProgram()
+GLvoid KeyDown(unsigned char key, int x, int y)
+{
+	if (key == 27) ExitProgram();
+	if (!scene) return;
+	scene->KeyDown(key, x, y);
+}
+
+GLvoid KeyUp(unsigned char key, int x, int y)
+{
+	if (!scene) return;
+	scene->KeyUp(key, x, y);
+}
+
+GLvoid ExitProgram()
 {
 	delete scene;
 	scene = nullptr;

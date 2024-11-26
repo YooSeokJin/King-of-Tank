@@ -183,7 +183,7 @@ void Mesh::show_position() const
     printf("%f, %f, %f\n", a.x, a.y, a.z);
 }
 
-std::vector<glm::vec2> Mesh::get_aabb()
+void Mesh::add_collision()
 {
     glm::mat4 model = Local_Transform.getTransformMatrix();
 
@@ -208,11 +208,42 @@ std::vector<glm::vec2> Mesh::get_aabb()
         [](const glm::vec3& v1, const glm::vec3& v2) {
             return v1.z < v2.z;
         });
-    std::vector<glm::vec2> pos;
+    std::vector<float> pos;
+    pos.push_back(minmaxX.first->x);
+    pos.push_back(minmaxX.second->x);
+    pos.push_back(minmaxY.first->y);
+    pos.push_back(minmaxY.second->y);
+    pos.push_back(minmaxZ.first->z);
+    pos.push_back(minmaxZ.second->z);
+    aabb.set_aabb(pos);
+}
 
-    pos.emplace_back(minmaxX.first->x, minmaxX.second->x);
-    pos.emplace_back(minmaxY.first->y, minmaxY.second->y);
-    pos.emplace_back(minmaxZ.first->z, minmaxZ.second->z);
+std::vector<float> Mesh::get_aabb()
+{
+    std::vector<float> aabb_world = aabb.get_aabb();
 
-    return pos;
+    glm::vec4 minPoint(aabb_world[0], aabb_world[2], aabb_world[4], 1.0f);
+    glm::vec4 maxPoint(aabb_world[1], aabb_world[3], aabb_world[5], 1.0f);
+
+    glm::mat4 model = Local_Transform.getTransformMatrix();
+
+    glm::vec4 transformedMin = model * minPoint;
+    glm::vec4 transformedMax = model * maxPoint;
+
+    glm::vec3 newMin(
+        std::min(transformedMin.x, transformedMax.x),
+        std::min(transformedMin.y, transformedMax.y),
+        std::min(transformedMin.z, transformedMax.z)
+    );
+    glm::vec3 newMax(
+        std::max(transformedMin.x, transformedMax.x),
+        std::max(transformedMin.y, transformedMax.y),
+        std::max(transformedMin.z, transformedMax.z)
+    );
+
+    return {
+        newMin.x, newMax.x,
+        newMin.y, newMax.y,
+        newMin.z, newMax.z
+    };
 }

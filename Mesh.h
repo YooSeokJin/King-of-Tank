@@ -2,6 +2,7 @@
 #define MESH_H
 #include <string>
 #include <vector>
+#include "Collision.h"
 #include "ModelMatrix.h"
 #include "glm/glm.hpp"
 
@@ -48,8 +49,11 @@ public:
 	void show_all_vertex();
 	void show_position() const;
 
-	std::vector<glm::vec2> get_aabb();
+	void add_collision();
+	std::vector<float> get_aabb();
+
 private:
+	Collision aabb;
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texCoords;

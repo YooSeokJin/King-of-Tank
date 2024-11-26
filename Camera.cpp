@@ -17,11 +17,6 @@ void Camera::update(float frameTime)
     move->update(frameTime);
     model->setPivot(-offset->x, 0, 0);
     model->rotate(move->get_delta_rotation());
-    if (auto sharedTarget = target.lock()) {
-        glm::vec3 pos_ = sharedTarget->getPosition() + *offset;
-        glm::vec4 pos = model->getTransformMatrix() * glm::vec4(pos_, 1);
-        Location = glm::vec3(pos);
-    }
    
 }
 
@@ -34,7 +29,7 @@ glm::mat4 Camera::getViewMatrix() const {
 
 	if (auto sharedTarget = target.lock()) {
         
-        glm::vec3 cameraPos = Location;
+        glm::vec3 cameraPos = sharedTarget->getPosition() + *offset;
 		glm::vec3 targetPos = sharedTarget->getPosition();
 		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 

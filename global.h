@@ -4,6 +4,8 @@
 #include <random>
 #include "glm/glm.hpp"
 
+extern bool showCollision;
+
 struct Color {
 	float r, g, b, a;
 	Color() {

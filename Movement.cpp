@@ -21,6 +21,18 @@ void Movement::set_rt_velocity(float vx, float vy, float vz)
     rotation_velocity = v;
 }
 
+void Movement::add_direction(float dx, float dy, float dz)
+{
+    glm::vec3 d(dx, dy, dz);
+    direction += d;
+}
+
+void Movement::add_rt_direction(float dx, float dy, float dz)
+{
+    glm::vec3 rd(dx, dy, dz);
+    rotation_direction += rd;
+}
+
 void Movement::set_direction(float dx, float dy, float dz)
 {
     glm::vec3 d(dx, dy, dz);
@@ -32,6 +44,21 @@ void Movement::set_direction(float dx, float dy, float dz)
     }
 }
 
+void Movement::set_direction_X(float delta)
+{
+    direction.x = delta;
+}
+
+void Movement::set_direction_Y(float delta)
+{
+    direction.y = delta;
+}
+
+void Movement::set_direction_Z(float delta)
+{
+    direction.z = delta;
+}
+
 void Movement::set_rt_direction(float dx, float dy, float dz)
 {
     glm::vec3 d(dx, dy, dz);
@@ -41,6 +68,21 @@ void Movement::set_rt_direction(float dx, float dy, float dz)
     else {
         rotation_direction = glm::vec3(0.0f);
     }
+}
+
+void Movement::set_rt_direction_X(float delta)
+{
+    rotation_direction.x = delta;
+}
+
+void Movement::set_rt_direction_Y(float delta)
+{
+    rotation_direction.y = delta;
+}
+
+void Movement::set_rt_direction_Z(float delta)
+{
+    rotation_direction.z = delta;
 }
 
 const glm::vec3& Movement::get_delta_position()

@@ -1,12 +1,11 @@
 #pragma once
-#include <utility>
+#include <vector>
 
-class Collsion {
+class Collision {
 public:
-	Collsion();
-
+	Collision();
+	void set_aabb(const std::vector<float>& aabb);
+	const std::vector<float>& get_aabb();
 protected:
-	std::pair<float, float> minmax_X;
-	std::pair<float, float> minmax_Y;
-	std::pair<float, float> minmax_Z;
+	std::vector<float> aabb;
 };

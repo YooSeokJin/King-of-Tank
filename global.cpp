@@ -1,5 +1,7 @@
 ﻿#include "global.h"
 
+bool showCollision = false;
+
 int WinSizeX = 1024;
 int WinSizeY = 1024;
 

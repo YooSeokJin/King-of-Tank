@@ -12,19 +12,21 @@ public:
 	Scene();
 	virtual ~Scene();
 
+	void Init();
+
 	virtual void timer(float delta) = 0;
 	virtual void event(unsigned char key, int x, int y) = 0;
-
 	virtual void draw();
-	virtual void update(float frameTime);
 	virtual void specialEvent(int key, int x, int y);
-	
+	virtual void KeyUp(unsigned char key, int x, int y);
+	virtual void KeyDown(unsigned char key, int x, int y);
 
 	const glm::vec4& getBG() const { return bgColor; }
 	const std::vector<std::shared_ptr<Object>>& getObjects() const;
 	const std::vector<std::shared_ptr<Static_Object>>& getStaticObjects() const;
 
 protected:
+	virtual void update(float frameTime);
 	void add_Object(const std::string& fileName, const std::string& shaderName);
 	void add_Static_Object(const std::string& fileName, const std::string& shaderName);
 	

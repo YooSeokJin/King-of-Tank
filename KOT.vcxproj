@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionChecker.ixx" />
     <ClCompile Include="Crane.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="Grid.cpp" />

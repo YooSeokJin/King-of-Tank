@@ -48,7 +48,6 @@ void Object::addMesh(const std::shared_ptr<Mesh>& mesh)
 {
 	meshes.push_back(mesh);
 	mesh->apply_movement();
-	mesh->set_Parent(&World_Transform);
 }
 
 void Object::adjustDelta(float x, float y, float z)
@@ -56,20 +55,73 @@ void Object::adjustDelta(float x, float y, float z)
 	move.set_direction(x, y, z);
 }
 
+void Object::adjustDelta_X(float delta)
+{
+	move.set_direction_X(delta);
+}
+
+void Object::adjustDelta_Y(float delta)
+{
+	move.set_direction_Y(delta);
+}
+
+void Object::adjustDelta_Z(float delta)
+{
+	move.set_direction_Z(delta);
+}
+
 void Object::adjustRotate(float x, float y, float z)
 {
 	move.set_rt_direction(x, y, z);
 }
 
+void Object::adjustRotate_X(float delta)
+{
+	move.set_rt_direction_X(delta);
+}
 
+void Object::adjustRotate_Y(float delta)
+{
+	move.set_rt_direction_Y(delta);
+}
+
+void Object::adjustRotate_Z(float delta)
+{
+	move.set_rt_direction_Z(delta);
+}
+
+void Object::set_Collision_State(char type)
+{
+	collision_state.insert(type);
+}
+
+void Object::reset_Collision_State(char type)
+{
+	collision_state.erase(type);
+}
+
+
+
+
+
+
+// STATIC
 Static_Object::Static_Object()
 {
+	Init();
 }
 
 void Static_Object::update(float frameTime)
 {
 	for (auto& mesh : meshes) {
 		mesh->update(frameTime);
+	}
+}
+
+void Static_Object::Init()
+{
+	for (auto& mesh : meshes) {
+		mesh->set_Parent(&World_Transform);
 	}
 }
 
@@ -81,7 +133,6 @@ const std::vector<std::shared_ptr<Mesh>>& Static_Object::getMeshes() const
 void Static_Object::addMesh(const std::shared_ptr<Mesh>& mesh)
 {
 	meshes.push_back(mesh);
-	mesh->set_Parent(&World_Transform);
 }
 
 void Static_Object::setScale(float x, float y, float z)
@@ -113,3 +164,4 @@ void Static_Object::addRotation(float x, float y, float z)
 {
 	World_Transform.rotate(glm::vec3(x, y, z));
 }
+
