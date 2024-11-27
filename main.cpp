@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 
 #include "global.h"
-#include "newScene.h"
+#include "KOF_Scene.h"
 
 // Component - Movement, Collision
 // Mesh - Mesh
@@ -37,7 +37,7 @@ void ExitProgram();
 const float frameTime = float(0.016);
 bool isClicked = false;
 int animNum = 0;
-newScene* scene = nullptr;
+KOF_Scene* scene = nullptr;
 
 void main(int argc, char** argv)
 {
@@ -74,12 +74,13 @@ void main(int argc, char** argv)
 
 void InitProgram()
 {
-	scene = new newScene();
+	scene = new KOF_Scene();
 }
 
 GLvoid RenderScene()
 {
 	if (!scene) return;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	scene->draw();
 	glutSwapBuffers();
 }

@@ -74,10 +74,26 @@ namespace ObjectLoader {
                     currentMesh->add_indices(v[0] - 1);
                     currentMesh->add_indices(v[1] - 1);
                     currentMesh->add_indices(v[2] - 1);
+
+                    currentMesh->add_normal_indices(vn[0] - 1);
+                    currentMesh->add_normal_indices(vn[1] - 1);
+                    currentMesh->add_normal_indices(vn[2] - 1);
+
+                    currentMesh->add_texcoords_indices(uv[0] - 1);
+                    currentMesh->add_texcoords_indices(uv[1] - 1);
+                    currentMesh->add_texcoords_indices(uv[2] - 1);
                     if (numScanned == 12) {
                         currentMesh->add_indices(v[0] - 1);
                         currentMesh->add_indices(v[2] - 1);
                         currentMesh->add_indices(v[3] - 1);
+
+                        currentMesh->add_normal_indices(vn[0] - 1);
+                        currentMesh->add_normal_indices(vn[2] - 1);
+                        currentMesh->add_normal_indices(vn[3] - 1);
+
+                        currentMesh->add_texcoords_indices(uv[0] - 1);
+                        currentMesh->add_texcoords_indices(uv[2] - 1);
+                        currentMesh->add_texcoords_indices(uv[3] - 1);
                     }
 
                 }
@@ -106,75 +122,5 @@ namespace ObjectLoader {
             obj->addMesh(mesh);
         }
         return obj;
-    }
-
-    export std::shared_ptr<Mesh> Add_Mesh(const std::string& fileName, const std::string& shaderName) {
-        FILE* file;
-        fopen_s(&file, fileName.c_str(), "r");
-        if (!file) {
-            perror("Error opening file");
-            exit(EXIT_FAILURE);
-        }
-
-        std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
-        mesh->set_ShaderName(shaderName);
-
-        char line[1024];
-        while (fgets(line, sizeof(line), file)) {
-            read_newline(line);
-
-            // Vertex (v)
-            if (line[0] == 'v' && line[1] == ' ') {
-                float x, y, z;
-                if (sscanf_s(line + 2, "%f %f %f", &x, &y, &z) == 3) {
-                    mesh->add_position(glm::vec3(x, y, z));
-                }
-            }
-
-            // Normal (vn)
-            else if (line[0] == 'v' && line[1] == 'n') {
-                float nx, ny, nz;
-                if (sscanf_s(line + 2, "%f %f %f", &nx, &ny, &nz) == 3) {
-                    mesh->add_normal(glm::vec3(nx, ny, nz));
-                }
-            }
-
-            // Texture Coordinate (vt)
-            else if (line[0] == 'v' && line[1] == 't') {
-                float u, v;
-                if (sscanf_s(line + 2, "%f %f", &u, &v) == 2) {
-                    mesh->add_texCoord(glm::vec2(u, v));
-                }
-            }
-
-            // Face (f)
-            else if (line[0] == 'f' && line[1] == ' ') {
-                unsigned int v[4]{}, vn[4]{}, uv[4]{};
-
-                int numScanned = sscanf_s(line + 2, "%u/%u/%u %u/%u/%u %u/%u/%u %u/%u/%u",
-                    &v[0], &uv[0], &vn[0],
-                    &v[1], &uv[1], &vn[1],
-                    &v[2], &uv[2], &vn[2],
-                    &v[3], &uv[3], &vn[3]);
-
-                if (numScanned >= 9) {
-                    mesh->add_indices(v[0] - 1);
-                    mesh->add_indices(v[1] - 1);
-                    mesh->add_indices(v[2] - 1);
-
-                    if (numScanned == 12) {
-                        mesh->add_indices(v[0] - 1);
-                        mesh->add_indices(v[2] - 1);
-                        mesh->add_indices(v[3] - 1);
-                    }
-                }
-            }
-        }
-        fclose(file);
-        if (mesh->get_positions().empty()) {
-            return nullptr;
-        }
-
-        return mesh;
     }
 }

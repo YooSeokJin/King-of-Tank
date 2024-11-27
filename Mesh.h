@@ -19,10 +19,13 @@ public:
 	void add_position(const glm::vec3& position);
 	void add_normal(const glm::vec3& normal);
 	void add_texCoord(const glm::vec2& texcoord);
-	
+
 	void add_indices(unsigned int index);
+	void add_normal_indices(unsigned int index);
+	void add_texcoords_indices(unsigned int index);
+
 	virtual void update(float frameTime);
-	std::vector<float> assembleVertexData() const;
+	std::vector<float> assembleVertexData();
 
 	std::string& get_ShaderName() { return shaderName; }
 	void set_ShaderName(const std::string& name) { shaderName = name; }
@@ -35,7 +38,8 @@ public:
 	const std::vector<glm::vec3>& get_positions() const { return positions; }
 	const std::vector<glm::vec3>& get_normals()const { return normals; }
 	const std::vector<glm::vec2>& get_texCoords() const { return texCoords; }
-	const std::vector<unsigned int>& get_indices() const { return indices; }
+	const std::vector<unsigned int>& get_indices() const { return assemble_indices; }
+
 	glm::mat4 get_modelTransform() { return Local_Transform.getTransformMatrix(); }
 	unsigned int& getVAO() { return VAO; }
 	unsigned int& getVBO() { return VBO; }
@@ -52,12 +56,19 @@ public:
 	void add_collision();
 	std::vector<float> get_aabb();
 
+	void Init();
 private:
 	Collision aabb;
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texCoords;
+
 	std::vector<unsigned int> indices;
+	std::vector<unsigned int> normal_indices;
+	std::vector<unsigned int> texcoords_indices;
+
+	std::vector<unsigned int> assemble_indices;
+
 	std::string shaderName;
 	unsigned int VAO, VBO, EBO;
 };

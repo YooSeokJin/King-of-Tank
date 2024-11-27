@@ -6,7 +6,7 @@
 
 Mesh::Mesh() : VAO(0), VBO(0), EBO(0)
 {
-	shaderName = { };
+    shaderName = { };
     Color = nullptr;
 }
 
@@ -23,6 +23,24 @@ void Mesh::change_Index()
         unsigned int MinValue = *min;
         if (*min != 0) {
             for (auto& i : indices) {
+                i -= MinValue;
+            }
+        }
+    }
+    if (!normal_indices.empty()) {
+        auto min = std::min_element(normal_indices.begin(), normal_indices.end());
+        unsigned int MinValue = *min;
+        if (*min != 0) {
+            for (auto& i : normal_indices) {
+                i -= MinValue;
+            }
+        }
+    }
+    if (!texcoords_indices.empty()) {
+        auto min = std::min_element(texcoords_indices.begin(), texcoords_indices.end());
+        unsigned int MinValue = *min;
+        if (*min != 0) {
+            for (auto& i : texcoords_indices) {
                 i -= MinValue;
             }
         }
@@ -46,22 +64,32 @@ void Mesh::apply_movement()
 
 void Mesh::add_position(const glm::vec3& position)
 {
-	positions.emplace_back(position);
+    positions.emplace_back(position);
 }
 
 void Mesh::add_normal(const glm::vec3& normal)
 {
-	normals.emplace_back(normal);
+    normals.emplace_back(normal);
 }
 
 void Mesh::add_texCoord(const glm::vec2& texcoord)
 {
-	texCoords.emplace_back(texcoord);
+    texCoords.emplace_back(texcoord);
 }
 
 void Mesh::add_indices(unsigned int index)
 {
-	indices.push_back(index);
+    indices.push_back(index);
+}
+
+void Mesh::add_normal_indices(unsigned int index)
+{
+    normal_indices.push_back(index);
+}
+
+void Mesh::add_texcoords_indices(unsigned int index)
+{
+    texcoords_indices.push_back(index);
 }
 
 void Mesh::update(float frameTime)
@@ -74,53 +102,39 @@ void Mesh::update(float frameTime)
 }
 
 
-std::vector<float> Mesh::assembleVertexData() const
+std::vector<float> Mesh::assembleVertexData()
 {
+    change_Index();
     std::vector<float> vertexData;
-    int colorIndex = 0;
-    for (size_t i = 0; i < positions.size(); ++i) {
+    for (size_t i = 0; i < indices.size(); ++i) {
         // Position
-        vertexData.push_back(positions[i].x);
-        vertexData.push_back(positions[i].y);
-        vertexData.push_back(positions[i].z);
-
-        // Color
-        if (!Color) {
-            glm::vec4 Color_ = colorPalette[colorIndex % 40];
-            vertexData.push_back(Color_.r);
-            vertexData.push_back(Color_.g);
-            vertexData.push_back(Color_.b);
-            vertexData.push_back(Color_.a);
-            ++colorIndex;
+        size_t idx_index = indices[i];
+        vertexData.push_back(positions[idx_index].x);
+        vertexData.push_back(positions[idx_index].y);
+        vertexData.push_back(positions[idx_index].z);
+        // Normal
+        if (normals.empty()) {
+            vertexData.push_back(0.f);
+            vertexData.push_back(0.f);
+            vertexData.push_back(0.f);
         }
         else {
-            vertexData.push_back(Color->r);
-            vertexData.push_back(Color->g);
-            vertexData.push_back(Color->b);
-            vertexData.push_back(Color->a);
+            size_t normal_idx = normal_indices[i];
+            vertexData.push_back(normals[normal_idx].x);
+            vertexData.push_back(normals[normal_idx].y);
+            vertexData.push_back(normals[normal_idx].z);
         }
-
-        //// Normal
-        //if (i < normals.size()) {
-        //    vertexData.push_back(normals[i].x);
-        //    vertexData.push_back(normals[i].y);
-        //    vertexData.push_back(normals[i].z);
-        //}
-        //else {
-        //    vertexData.push_back(0.0f);
-        //    vertexData.push_back(0.0f);
-        //    vertexData.push_back(0.0f);
-        //}
-
-        //// TexCoord
-        //if (i < texCoords.size()) {
-        //    vertexData.push_back(texCoords[i].x);
-        //    vertexData.push_back(texCoords[i].y);
-        //}
-        //else {
-        //    vertexData.push_back(0.0f);
-        //    vertexData.push_back(0.0f);
-        //}
+        // TexCoords
+        if (texCoords.empty()) {
+            vertexData.push_back(0.f);
+            vertexData.push_back(0.f);
+        }
+        else {
+            size_t texcoords_idx = texcoords_indices[i];
+            vertexData.push_back(texCoords[texcoords_idx].x);
+            vertexData.push_back(texCoords[texcoords_idx].y);
+        }
+        assemble_indices.push_back(static_cast<unsigned int>(i));
     }
     return vertexData;
 }
@@ -155,19 +169,19 @@ void Mesh::show_all_vertex() {
         newPos.emplace_back(transformed.x, transformed.y, transformed.z);
     }
 
-    auto minmaxX = std::minmax_element(newPos.begin(), newPos.end(), 
+    auto minmaxX = std::minmax_element(newPos.begin(), newPos.end(),
         [](const glm::vec3& v1, const glm::vec3& v2) {
-        return v1.x < v2.x;
+            return v1.x < v2.x;
         });
 
-    auto minmaxY = std::minmax_element(newPos.begin(), newPos.end(), 
+    auto minmaxY = std::minmax_element(newPos.begin(), newPos.end(),
         [](const glm::vec3& v1, const glm::vec3& v2) {
-        return v1.y < v2.y;
+            return v1.y < v2.y;
         });
 
-    auto minmaxZ = std::minmax_element(newPos.begin(), newPos.end(), 
+    auto minmaxZ = std::minmax_element(newPos.begin(), newPos.end(),
         [](const glm::vec3& v1, const glm::vec3& v2) {
-        return v1.z < v2.z;
+            return v1.z < v2.z;
         });
 
     printf("minX: %f, maxX: %f\n", minmaxX.first->x, minmaxX.second->x);
@@ -246,4 +260,14 @@ std::vector<float> Mesh::get_aabb()
         newMin.y, newMax.y,
         newMin.z, newMax.z
     };
+}
+
+void Mesh::Init()
+{
+    positions.clear();
+    normals.clear();
+    texCoords.clear();
+    indices.clear();
+    normals.clear();
+    texCoords.clear();
 }

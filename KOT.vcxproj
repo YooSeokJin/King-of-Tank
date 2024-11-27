@@ -132,7 +132,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionChecker.ixx" />
-    <ClCompile Include="Crane.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="KOF_PlayerController.cpp" />
@@ -140,8 +139,6 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelMatrix.cpp" />
     <ClCompile Include="Movement.cpp" />
-    <ClCompile Include="newPlayerController.cpp" />
-    <ClCompile Include="newScene.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectLoader.ixx" />
     <ClCompile Include="PlayerController.cpp" />
@@ -151,21 +148,18 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Tank.cpp" />
-    <ClCompile Include="TankScene.cpp" />
+    <ClCompile Include="KOF_Scene.cpp" />
     <ClCompile Include="Viewing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="Crane.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="KOF_PlayerController.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModelMatrix.h" />
     <ClInclude Include="Movement.h" />
-    <ClInclude Include="newPlayerController.h" />
-    <ClInclude Include="newScene.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Projection.h" />
@@ -173,15 +167,15 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Tank.h" />
-    <ClInclude Include="TankScene.h" />
+    <ClInclude Include="KOF_Scene.h" />
     <ClInclude Include="Viewing.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="KOT\shaders\grid.FS" />
-    <None Include="KOT\shaders\grid.VS" />
-    <None Include="KOT\shaders\model.FS" />
-    <None Include="KOT\shaders\model.VS" />
     <None Include="README.md" />
+    <None Include="shaders\grid.FS" />
+    <None Include="shaders\grid.VS" />
+    <None Include="shaders\model.FS" />
+    <None Include="shaders\model.VS" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

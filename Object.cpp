@@ -116,7 +116,9 @@ void Static_Object::Init()
 {
 	for (auto& mesh : meshes) {
 		mesh->set_Parent(&World_Transform);
+		mesh->Init();
 	}
+
 }
 
 const std::vector<std::shared_ptr<Mesh>>& Static_Object::getMeshes() const
