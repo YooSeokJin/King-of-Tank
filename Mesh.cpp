@@ -264,10 +264,10 @@ std::vector<float> Mesh::get_aabb()
 
 void Mesh::Init()
 {
-    positions.clear();
+    /*positions.clear();
     normals.clear();
     texCoords.clear();
     indices.clear();
     normals.clear();
-    texCoords.clear();
+    texCoords.clear();*/
 }

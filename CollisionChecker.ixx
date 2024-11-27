@@ -1,7 +1,5 @@
 module;
-#include <vector>
 #include "Object.h"	
-#include "Mesh.h"	
 
 export module CollisionChecker;
 namespace CollisionChecker {

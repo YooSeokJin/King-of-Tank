@@ -1,12 +1,7 @@
 module;
 #include "gl/glew.h"
-#include <memory>
 #include "Scene.h"
-#include "glm/glm.hpp"
 #include "ShaderManager.h"
-#include "global.h"
-#include "Mesh.h"
-#include "Grid.h"
 
 export module Renderer;
 namespace Renderer {
