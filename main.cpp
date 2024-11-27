@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 
 #include "global.h"
-#include "KOF_Scene.h"
+#include "KOT_Scene.h"
 
 // Component - Movement, Collision
 // Mesh - Mesh
@@ -18,7 +18,7 @@
 // Module - Renderer.ixx, ObjectLoader.ixx, CollisionChecker.ixx
 // shaders - FS, VS 세이더 파일
 // objs - .obj 파일
-// KOF_Scene - Tank, KofScene, KofPlayerController, KofAIController 등
+// KOF_Scene - Tank, KoTScene, KoTPlayerController, KoTAIController 등
 
 void InitProgram();
 GLvoid RenderScene();
@@ -37,7 +37,7 @@ void ExitProgram();
 const float frameTime = float(0.016);
 bool isClicked = false;
 int animNum = 0;
-KOF_Scene* scene = nullptr;
+KOT_Scene* scene = nullptr;
 
 void main(int argc, char** argv)
 {
@@ -74,7 +74,7 @@ void main(int argc, char** argv)
 
 void InitProgram()
 {
-	scene = new KOF_Scene();
+	scene = new KOT_Scene();
 }
 
 GLvoid RenderScene()

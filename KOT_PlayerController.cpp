@@ -1,7 +1,7 @@
-#include "KOF_PlayerController.h"
+#include "KOT_PlayerController.h"
 #include "Tank.h"
 
-KOF_PlayerController::KOF_PlayerController()
+KOT_PlayerController::KOT_PlayerController()
 {
 	camera_offset = glm::vec3(-15.f, 10.f, 0.f);
 	w = s = false;
@@ -9,11 +9,11 @@ KOF_PlayerController::KOF_PlayerController()
 
 }
 
-void KOF_PlayerController::event(unsigned char key, int x, int y)
+void KOT_PlayerController::event(unsigned char key, int x, int y)
 {
 }
 
-void KOF_PlayerController::K_D(unsigned char key, int x, int y)
+void KOT_PlayerController::K_D(unsigned char key, int x, int y)
 {
 	auto crane = std::dynamic_pointer_cast<Tank>(target);
 	if (key == 'w' && !w) {
@@ -34,7 +34,7 @@ void KOF_PlayerController::K_D(unsigned char key, int x, int y)
 	}
 }
 
-void KOF_PlayerController::K_U(unsigned char key, int x, int y)
+void KOT_PlayerController::K_U(unsigned char key, int x, int y)
 {
 	auto crane = std::dynamic_pointer_cast<Tank>(target);
 	if (key == 'w' && w) {

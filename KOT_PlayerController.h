@@ -1,10 +1,10 @@
 #pragma once
 #include "PlayerController.h"
 
-class KOF_PlayerController : public PlayerController
+class KOT_PlayerController : public PlayerController
 {
 public:
-	KOF_PlayerController();
+	KOT_PlayerController();
 	void event(unsigned char key, int x, int y) override;
 	void K_D(unsigned char key, int x, int y) override;
 	void K_U(unsigned char key, int x, int y) override;
