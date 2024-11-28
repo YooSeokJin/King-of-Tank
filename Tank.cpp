@@ -61,5 +61,16 @@ void Tank::rt_Y_R()
 	move.add_rt_direction(0.f, -1.f, 0.f);
 }
 
+void Tank::rotate_turret(float yaw_)
+{
+	// 2 - Turret
+	// 3 - Gun
+	// 4 - Gun Holder
+	for (int i = 2; i < 5; ++i) {
+		meshes[i]->Local_Transform.setRotationY(yaw);
+	}
+	
+}
+
 
 

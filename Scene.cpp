@@ -10,11 +10,12 @@ Scene::Scene()
 {
 	bgColor = WhiteColor;
 	cull = depth = fill = false;
-
+	showMouse = false;
 	Renderer::Init(*this);
 	Renderer::Depth(depth);
 	Renderer::Cull(cull);
 	Renderer::Fill(fill);
+	lastX, lastY = 0;
 }
 
 Scene::~Scene()
@@ -51,10 +52,8 @@ void Scene::Init()
 {
 	pc->set_target(objs[0]);
 	pc->set_camera(&camera);
-	camera.Add_Movement();
 
 	for (auto& obj : objs) {
-
 		for (auto& mesh : obj->getMeshes()) {
 			mesh->apply_movement();
 			mesh->add_collision();
@@ -63,11 +62,11 @@ void Scene::Init()
 		Renderer::Setup_Object(obj);
 		obj->Init();
 	}
+
 	for (auto& obj : static_objs) {
 		for (auto& mesh : obj->getMeshes()) {
 			mesh->apply_movement();
 			mesh->add_collision();
-			
 		}
 		Renderer::Setup_Static_Object(obj);
 		obj->Init();
@@ -83,13 +82,23 @@ void Scene::specialEvent(int key, int x, int y)
 void Scene::KeyUp(unsigned char key, int x, int y)
 {
 	if (!pc) return;
-	pc->K_U(key, x, y);
+	pc->keyUp(key, x, y);
 }
 
 void Scene::KeyDown(unsigned char key, int x, int y)
 {
 	if (!pc) return;
-	pc->K_D(key, x, y);
+	pc->keyDown(key, x, y);
+}
+
+void Scene::mouseMotion(int x, int y)
+{
+}
+
+void Scene::mouseWheel(int button, int dir, int x, int y)
+{
+	if (!pc) return;
+	pc->mouseWheel(button, dir, x, y);
 }
 
 const std::vector<std::shared_ptr<Object>>& Scene::getObjects() const

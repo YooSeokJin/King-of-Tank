@@ -27,17 +27,19 @@ GLvoid RenderSceneTimer(int value);
 GLvoid Idle();
 GLvoid MouseInput(int button, int state, int x, int y);
 GLvoid MouseMotion(int x, int y);
+GLvoid MouseWheel(int button, int dir, int x, int y);
+
 GLvoid KeyInput(unsigned char key, int x, int y);
 GLvoid SpecialKeyInput(int key, int x, int y);
 GLvoid KeyDown(unsigned char key, int x, int y);
 GLvoid KeyUp(unsigned char key, int x, int y);
 
+
 void ExitProgram();
 
 const float frameTime = float(0.016);
-bool isClicked = false;
-int animNum = 0;
 KOT_Scene* scene = nullptr;
+bool warpPointerEvent = false;
 
 void main(int argc, char** argv)
 {
@@ -66,9 +68,9 @@ void main(int argc, char** argv)
 	glutKeyboardFunc(KeyDown);
 	glutKeyboardUpFunc(KeyUp);
 	glutMouseFunc(MouseInput);
-	glutMotionFunc(MouseMotion);
+	glutPassiveMotionFunc(MouseMotion);
+	glutMouseWheelFunc(MouseWheel);
 	glutSpecialFunc(SpecialKeyInput);
-	//glutKeyboardFunc(KeyInput);
 	glutMainLoop();
 }
 
@@ -118,11 +120,16 @@ GLvoid MouseInput(int button, int state, int x, int y)
 GLvoid MouseMotion(int x, int y)
 {
 	if (!scene) return;
-	if (isClicked) {
-		glm::vec3 center(0.0f, 0.0f, 0.0f);
-		changeOpenGL(x, y, 0, center);
 
-	}
+	scene->mouseMotion(x, y);
+
+	glutWarpPointer(centerX, centerY);
+	glutPostRedisplay();
+}
+GLvoid MouseWheel(int button, int dir, int x, int y)
+{
+	if (!scene) return;
+	scene->mouseWheel(button, dir, x, y);
 }
 GLvoid KeyInput(unsigned char key, int x, int y)
 {

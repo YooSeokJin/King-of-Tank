@@ -10,9 +10,10 @@ public:
 	~PlayerController();
 
 	virtual void event(unsigned char key, int x, int y);
-	virtual void K_D(unsigned char key, int x, int y);
-	virtual void K_U(unsigned char key, int x, int y);
-
+	virtual void keyDown(unsigned char key, int x, int y);
+	virtual void keyUp(unsigned char key, int x, int y);
+	virtual void mouseMotion(int x, int y);
+	virtual void mouseWheel(int button, int dir, int x, int y);
 	void set_target(std::shared_ptr<Object> target_);
 	void set_camera(Camera* camera);
 	glm::vec3 get_camera_offset() const { return camera_offset; }

@@ -63,12 +63,12 @@ public:
 	void setPivot(float x, float y, float z);
 	void setPivot(const glm::vec3& pivot);
 
-	glm::mat4 getTransformMatrix();
+	glm::mat4 getTransformMatrix() const;
 
 	void setParent(ModelMatrix* p);
 	void deleteParent();
 
-	glm::vec3 get_Forward_vector();
+	glm::vec3 get_Forward_vector() const;
 
 	glm::vec3* pivot;
 private:

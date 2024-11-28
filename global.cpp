@@ -4,7 +4,8 @@ bool showCollision = false;
 
 int WinSizeX = 1024;
 int WinSizeY = 1024;
-
+int centerX = WinSizeX / 2;
+int centerY = WinSizeY / 2;
 std::random_device rd{ };
 std::mt19937 mt(rd());
 std::uniform_real_distribution<float> ufd{ };
@@ -67,6 +68,19 @@ void changeOpenGL(const glm::vec3& windowPoints, glm::vec3& myPoints)
 {
 	myPoints.x = windowPoints.x / WinSizeX * 2.0f - 1.0f;
 	myPoints.y = 1.0f - windowPoints.y / WinSizeY * 2.0f;
+}
+
+glm::vec3 screenToWorld(float ndcX, float ndcY, const glm::mat4& view, const glm::mat4& proj)
+{
+    glm::vec4 clipCoords(ndcX, ndcY, -1.0f, 1.0f);
+
+    glm::vec4 screen = glm::inverse(proj) * clipCoords;
+    screen.z = -1.f;
+    screen.w = 0.f;
+
+    glm::vec4 world = glm::inverse(view) * screen;
+    
+    return world;
 }
 
 float Change_X(int x)

@@ -34,3 +34,8 @@ void Projection::setOrthographic(float left, float right, float bottom, float to
     this->nearPlane = nearPlane;
     this->farPlane = farPlane;
 }
+
+void Projection::setFov(float newFov)
+{
+    fov = newFov;
+}

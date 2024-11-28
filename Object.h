@@ -13,6 +13,7 @@ public:
 	void Init();
 	const std::vector<std::shared_ptr<Mesh>>& getMeshes() const;
 	glm::vec3 getPosition() const { return World_Transform.getLocation(); }
+	glm::mat4 getModel() const { return World_Transform.getTransformMatrix(); }
 	void addMesh(const std::shared_ptr<Mesh>& mesh);
 	void setScale(float x, float y, float z);
 	void setPosition(float x, float y, float z);

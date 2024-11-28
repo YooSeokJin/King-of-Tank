@@ -101,3 +101,9 @@ const glm::vec3& Movement::get_delta_rotation()
 {
     return delta_rotation;
 }
+
+void Movement::stop()
+{
+    rotation_direction = glm::vec3(0.f);
+    direction = glm::vec3(0.f);
+}

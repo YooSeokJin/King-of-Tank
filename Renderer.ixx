@@ -1,5 +1,6 @@
 module;
 #include "gl/glew.h"
+#include "gl/freeglut.h"
 #include "Scene.h"
 #include "ShaderManager.h"
 
@@ -93,6 +94,9 @@ namespace Renderer {
         if (!sm) {
             sm = new ShaderManager();
             initialized = true;
+            if (!scene.showMouse) {
+                glutSetCursor(GLUT_CURSOR_NONE);
+            }
         }
     }
     export void Rnderer_Scene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {

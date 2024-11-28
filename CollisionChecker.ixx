@@ -16,7 +16,6 @@ namespace CollisionChecker {
 		void check_point(std::shared_ptr<Object> obj, float target, float wall, char type)
 		{
 			if (std::abs(target - wall) <= epsilon) {
-				printf("%c\n", type);
 				obj->set_Collision_State(type);
 			}
 			obj->reset_Collision_State(type);

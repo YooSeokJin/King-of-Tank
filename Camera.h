@@ -1,11 +1,7 @@
 #pragma once
-#include "glm/glm.hpp"
+#include "Object.h"
 #include "Viewing.h"
 #include "Projection.h"
-#include "ModelMatrix.h"
-#include "Object.h"
-#include "Movement.h"
-#include "memory"
 
 class Camera {
 public:
@@ -19,30 +15,24 @@ public:
     glm::mat4 getPerspectiveMatrix() const;
 
     void setPerspective(float fov, float aspect, float nearPlane, float farPlane);
-    void Add_Movement(float moveSpeed=5.f, float rtSpeed=30.f);
-    void moveX(float dir);
-    void moveZ(float dir);
-    void Rotate_Y(float delta);
-    void Camera_World_Rotate(float x, float y, float z);
-    void Camera_World_Rotate_R(float x, float y, float z);
 
-    void resetAll();
-    bool allStop = false;
+    void rotate(int deltaX, int deltaY);
+    void adjustFov(float deltaFov);
+    float getYaw() { return yaw; }
 private:
-    glm::vec3 Location;
-   
-    bool isRotate = false;
-    bool isRotate_R = false;
+    glm::vec3 position;
+    glm::vec3 up;
+    glm::vec3 front;
 
     Viewing view;        
     Projection proj;      
 
-    std::unique_ptr<ModelMatrix> model;
-    std::unique_ptr<Movement> move;
-    std::weak_ptr<Object> target;
+    const Object* target;
     const glm::vec3* offset;
 
-    std::weak_ptr<Object> view_target;
-
-    bool isLocal = false;
+    float yaw;
+    float pitch;
+    float roll;
+    float sensitivity;
+    float smoothingSpeed = 6.0f;
 };

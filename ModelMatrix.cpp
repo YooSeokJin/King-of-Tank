@@ -167,7 +167,7 @@ void ModelMatrix::setPivot(const glm::vec3& pivot_)
     pivot = new glm::vec3(pivot_);
 }
 
-glm::mat4 ModelMatrix::getTransformMatrix()
+glm::mat4 ModelMatrix::getTransformMatrix() const
 {
     glm::mat4 transform = glm::mat4(1.0f);
     if (parent) {
@@ -208,7 +208,7 @@ void ModelMatrix::deleteParent()
     parent = nullptr;
 }
 
-glm::vec3 ModelMatrix::get_Forward_vector()
+glm::vec3 ModelMatrix::get_Forward_vector() const
 {
     glm::mat4 tr = getTransformMatrix();
     glm::vec3 forward(tr[0][0], tr[0][1], tr[0][2]);

@@ -3,56 +3,75 @@
 
 KOT_PlayerController::KOT_PlayerController()
 {
-	camera_offset = glm::vec3(-15.f, 10.f, 0.f);
+	camera_offset = glm::vec3(-25.f, 0.f, 0.f);
 	w = s = false;
 	a = d = false;
-
 }
 
 void KOT_PlayerController::event(unsigned char key, int x, int y)
 {
 }
 
-void KOT_PlayerController::K_D(unsigned char key, int x, int y)
+void KOT_PlayerController::keyDown(unsigned char key, int x, int y)
 {
-	auto crane = std::dynamic_pointer_cast<Tank>(target);
+	
 	if (key == 'w' && !w) {
-		crane->move_F();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->move_F();
 		w = !w;
 	}
 	else if (key == 's' && !s) {
-		crane->move_B();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->move_B();
 		s = !s;
 	}
 	else if (key == 'a' && !a) {
-		crane->rt_Y();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->rt_Y();
 		a = !a;
 	}
 	else if (key == 'd' && !d) {
-		crane->rt_Y_R();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->rt_Y_R();
 		d = !d;
 	}
 }
 
-void KOT_PlayerController::K_U(unsigned char key, int x, int y)
+void KOT_PlayerController::keyUp(unsigned char key, int x, int y)
 {
-	auto crane = std::dynamic_pointer_cast<Tank>(target);
 	if (key == 'w' && w) {
-		crane->move_F();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->move_F();
 		w = !w;
 	}
 	else if (key == 's' && s) {
-
-		crane->move_B();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->move_B();
 		s = !s;
 	}
 	else if (key == 'a' && a) {
-		crane->rt_Y_R();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->rt_Y_R();
 		a = !a;
 	}
 	else if (key == 'd' && d) {
-		crane->rt_Y();
+		auto tank = std::dynamic_pointer_cast<Tank>(target);
+		tank->rt_Y();
 		d = !d;
 	}
-
 }
+
+void KOT_PlayerController::mouseMotion(int x, int y)
+{
+	camera->rotate(x, y);
+	float yaw = camera->getYaw();
+	auto tank = std::dynamic_pointer_cast<Tank>(target);
+	tank->rotate_turret(yaw);
+}
+
+void KOT_PlayerController::mouseWheel(int button, int dir, int x, int y)
+{
+	camera->adjustFov(-dir * 0.5f);
+}
+
+

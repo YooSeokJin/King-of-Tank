@@ -28,6 +28,8 @@ public:
     const glm::vec3& get_delta_position();
     const glm::vec3& get_delta_position(float dx, float dz);
     const glm::vec3& get_delta_rotation();
+
+    void stop();
 private:
     // ¿Ãµø
     glm::vec3 direction;

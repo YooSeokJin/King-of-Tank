@@ -22,11 +22,19 @@ void PlayerController::event(unsigned char key, int x, int y)
 {
 }
 
-void PlayerController::K_D(unsigned char key, int x, int y)
+void PlayerController::keyDown(unsigned char key, int x, int y)
 {
 }
 
-void PlayerController::K_U(unsigned char key, int x, int y)
+void PlayerController::keyUp(unsigned char key, int x, int y)
+{
+}
+
+void PlayerController::mouseMotion(int x, int y)
+{
+}
+
+void PlayerController::mouseWheel(int button, int dir, int x, int y)
 {
 }
 
