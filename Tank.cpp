@@ -12,6 +12,7 @@ Tank::Tank()
 	for (auto& mesh : meshes) {
 		mesh->Local_Transform.rotateY(180.f);
 	}
+	to_yaw = to_pitch = 0.f;
 	// 0 - Base
 	// 1 - Right Track
 	// 2 - Turret
@@ -30,15 +31,11 @@ Tank::Tank()
 
 void Tank::update(float frameTime)
 {
-	glm::vec3 FVector(0.f);
-	if (Forward) FVector += World_Transform.get_Forward_vector();
-	if (Backward) FVector -= World_Transform.get_Forward_vector();
-	move.set_direction(FVector.x, FVector.y, FVector.z);
-
+	movement();
+	turret_rotation();
 	Object::update(frameTime);
-	for (int i = 2; i < 5; ++i) {
-		meshes[i]->Local_Transform.rotate(-move.get_delta_rotation());
-	}
+
+
 }
 
 void Tank::move_F()
@@ -54,22 +51,56 @@ void Tank::move_B()
 void Tank::rt_Y()
 {
 	move.add_rt_direction(0.f, 1.f, 0.f);
+	for (int i = 2; i < 5; ++i) {
+		meshes[i]->move->add_rt_direction(0.f, -1.f, 0.f);
+	}
 }
 
 void Tank::rt_Y_R()
 {
 	move.add_rt_direction(0.f, -1.f, 0.f);
+	for (int i = 2; i < 5; ++i) {
+		meshes[i]->move->add_rt_direction(0.f, 1.f, 0.f);
+	}
 }
 
-void Tank::rotate_turret(float yaw_)
+void Tank::set_Angle(const glm::vec3& dir)
 {
-	// 2 - Turret
-	// 3 - Gun
-	// 4 - Gun Holder
-	for (int i = 2; i < 5; ++i) {
-		meshes[i]->Local_Transform.setRotationY(yaw);
+
+}
+
+void Tank::set_Camera(const Camera* camera_)
+{
+	camera = camera_;
+}
+
+void Tank::movement()
+{
+	glm::vec3 FVector(0.f);
+	if (Forward) FVector += World_Transform.get_Forward_vector();
+	if (Backward) FVector -= World_Transform.get_Forward_vector();
+	move.set_direction(FVector.x, FVector.y, FVector.z);
+}
+
+void Tank::turret_rotation()
+{
+	glm::vec3 dir = camera->getForwardVector();
+	to_yaw = glm::degrees(atan2(dir.z, dir.x));
+	//to_pitch = glm::degrees(asin(dir.y)); 주포 위 아래 회전
+	float t_yaw = meshes[2]->Local_Transform.getYaw();
+	yaw_diff = to_yaw - t_yaw;
+	if (yaw_diff > 180.0f) yaw_diff -= 360.0f;
+	if (yaw_diff < -180.0f) yaw_diff += 360.0f;
+	if (-1.0f <= yaw_diff && yaw_diff <= 1.0f) {
+		for (int i = 2; i < 5; ++i) {
+			meshes[i]->Local_Transform.rotateY(-yaw_diff);
+		}
 	}
-	
+	else {
+		for (int i = 2; i < 5; ++i) {
+			meshes[i]->Local_Transform.rotateY(-yaw_diff * turret_speed);
+		}
+	}
 }
 
 

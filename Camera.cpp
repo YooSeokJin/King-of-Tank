@@ -23,7 +23,7 @@ void Camera::update(float frameTime)
     glm::vec3 targetPos = target->getPosition();
     float radius = glm::length(offset->x);
 
-    glm::vec3 newPos;
+    glm::vec3 newPos(0.f);
     newPos.x = targetPos.x + radius * cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     newPos.y = targetPos.y + radius * sin(glm::radians(pitch));
     newPos.z = targetPos.z + radius * sin(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -61,8 +61,7 @@ void Camera::rotate(int deltaX, int deltaY)
     yaw += deltaX * sensitivity;
     pitch += deltaY * sensitivity;
 
-    pitch = glm::clamp(pitch, -89.0f, 89.0f);
-
+    pitch = glm::clamp(pitch, 10.0f, 89.0f);
     if (yaw >= 360.0f) yaw -= 360.0f;
     if (yaw < 0.0f) yaw += 360.0f;
 }

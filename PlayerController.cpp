@@ -48,4 +48,5 @@ void PlayerController::set_camera(Camera* camera_)
 	if (!camera) camera = camera_;
 	if (!target) return;
 	camera->followObject(target, camera_offset);
+
 }

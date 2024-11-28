@@ -40,7 +40,7 @@ public:
 	const std::vector<glm::vec2>& get_texCoords() const { return texCoords; }
 	const std::vector<unsigned int>& get_indices() const { return assemble_indices; }
 
-	glm::mat4 get_modelTransform() { return Local_Transform.getTransformMatrix(); }
+	glm::mat4 get_modelTransform() const { return Local_Transform.getTransformMatrix(); }
 	unsigned int& getVAO() { return VAO; }
 	unsigned int& getVBO() { return VBO; }
 	unsigned int& getEBO() { return EBO; }
@@ -54,7 +54,7 @@ public:
 	void show_position() const;
 
 	void add_collision();
-	std::vector<float> get_aabb();
+	std::vector<float> get_aabb() const;
 
 	void Init();
 private:

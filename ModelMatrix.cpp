@@ -104,6 +104,15 @@ void ModelMatrix::rotateZ(float deltaAngleZ) {
     if (myRotation.z < 0.0f) myRotation.z += 360.0f;
 }
 
+float ModelMatrix::getYaw()
+{
+    glm::vec3 f = get_Forward_vector();
+    if (glm::length(f) < 0.f) {
+        return 0.0f;
+    }
+    return glm::degrees(atan2(f.z, f.x));
+}
+
 void ModelMatrix::rotateX(float deltaAngleX) {
     myRotation.x += deltaAngleX;
 

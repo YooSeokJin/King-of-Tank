@@ -18,7 +18,8 @@ public:
 
     void rotate(int deltaX, int deltaY);
     void adjustFov(float deltaFov);
-    float getYaw() { return yaw; }
+    float getYaw() const { return yaw; }
+    glm::vec3 getForwardVector() const { return front; }
 private:
     glm::vec3 position;
     glm::vec3 up;

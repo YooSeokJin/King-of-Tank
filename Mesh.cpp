@@ -232,7 +232,7 @@ void Mesh::add_collision()
     aabb.set_aabb(pos);
 }
 
-std::vector<float> Mesh::get_aabb()
+std::vector<float> Mesh::get_aabb() const
 {
     std::vector<float> aabb_world = aabb.get_aabb();
 

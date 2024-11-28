@@ -64,14 +64,18 @@ void KOT_PlayerController::keyUp(unsigned char key, int x, int y)
 void KOT_PlayerController::mouseMotion(int x, int y)
 {
 	camera->rotate(x, y);
-	float yaw = camera->getYaw();
-	auto tank = std::dynamic_pointer_cast<Tank>(target);
-	tank->rotate_turret(yaw);
+	glm::vec3 fV = camera->getForwardVector();
 }
 
 void KOT_PlayerController::mouseWheel(int button, int dir, int x, int y)
 {
 	camera->adjustFov(-dir * 0.5f);
+}
+
+void KOT_PlayerController::set_Tank_Camera()
+{
+	auto tank = std::dynamic_pointer_cast<Tank>(target);
+	tank->set_Camera(camera);
 }
 
 

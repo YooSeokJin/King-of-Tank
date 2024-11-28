@@ -44,13 +44,8 @@ KOT_Scene::KOT_Scene()
 
 	Init();
 	
-	for (auto& mesh : static_objs[4]->getMeshes()) {
-		std::vector<float> aabb = mesh->get_aabb();
-		for (auto& v : aabb) {
-			printf("%f\n", v);
-		}
-	}
-	
+	auto tpc = std::dynamic_pointer_cast<KOT_PlayerController>(pc);
+	tpc->set_Tank_Camera();
 }
 
 void KOT_Scene::timer(float delta)
@@ -65,8 +60,8 @@ void KOT_Scene::event(unsigned char key, int x, int y)
 
 void KOT_Scene::mouseMotion(int x, int y)
 {
-	float deltaX = float(x) - centerX;
-	float deltaY = float(y) - centerY;
+	int deltaX = x - centerX;
+	int deltaY = y - centerY;
 	if (deltaX != 0 || deltaY != 0)
 		pc->mouseMotion(deltaX, deltaY);
 }

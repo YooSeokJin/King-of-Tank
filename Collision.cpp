@@ -8,7 +8,7 @@ void Collision::set_aabb(const std::vector<float>& aabb_)
     aabb = aabb_;
 }
 
-const std::vector<float>& Collision::get_aabb()
+std::vector<float> Collision::get_aabb() const
 {
     return aabb;
 }

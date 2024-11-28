@@ -14,7 +14,7 @@ public:
     void setOrthographic(float left, float right, float bottom, float top, float nearPlane, float farPlane);
 
     void setFov(float newFov);
-    float getFov() { return fov; }
+    float getFov() const { return fov; }
 private:
     float fov, aspect, nearPlane, farPlane;
     float orthoLeft, orthoRight, orthoBottom, orthoTop;
