@@ -4,6 +4,12 @@ module;
 #include "Scene.h"
 #include "ShaderManager.h"
 
+enum ShaderName {
+    MODEL,
+    GRID,
+    LIGHTSOURCE,
+};
+
 export module Renderer;
 namespace Renderer {
     namespace {
@@ -35,11 +41,12 @@ namespace Renderer {
 
             // À¯´ÏÆû ¼³Á¤
             if (mesh->Color) {
-                shader.setUniformVec4("u_Color", *mesh->Color);
+                shader.setUniformVec4("u_ObjectColor", *mesh->Color);
             }
             else {
-                shader.setUniformVec4("u_Color", colorPalette[8]);
+                shader.setUniformVec4("u_ObjectColor", colorPalette[8]);
             }
+            shader.setUniformVec4("u_LightColor", colorPalette[25]); // ±¤¿ø»öÀ» ¹Ù²ãº¸ÀÚ!
             shader.setUniformMatrix4fv("u_Model", mesh->get_modelTransform());
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);

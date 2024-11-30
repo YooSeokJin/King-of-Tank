@@ -124,6 +124,16 @@ void Scene::add_Static_Object(const std::string& fileName, const std::string& sh
 	static_objs.push_back(object);
 }
 
+void Scene::add_LightCube(bool Static)
+{
+	if (Static) {
+		add_Static_Object("./objs/cube.obj", "LightSource");
+	}
+	else {
+		add_Object("./objs/cube.obj", "LightSource");
+	}
+}
+
 void Scene::add_Cube(bool Static)
 {
 	if (Static) {

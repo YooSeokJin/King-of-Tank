@@ -5,6 +5,7 @@ ShaderManager::ShaderManager()
 {
 	// 셰이더 로드
 	loadShader("Model", "./shaders/model.VS", "./shaders/model.FS");
+	loadShader("LightSource", "./shaders/lightSource.VS", "./shaders/lightSource.FS");
 }
 ShaderManager::~ShaderManager()
 {

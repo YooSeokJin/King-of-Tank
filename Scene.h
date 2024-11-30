@@ -33,6 +33,7 @@ protected:
 	void add_Object(const std::string& fileName, const std::string& shaderName);
 	void add_Static_Object(const std::string& fileName, const std::string& shaderName);
 	
+	void add_LightCube(bool Static);
 	void add_Cube(bool Static);
 	void add_Sphere(bool Static);
 	void add_Cylinder(bool Static);
