@@ -15,7 +15,7 @@ public:
 
 	void chanegIndex();
 	void addMovement();
-	void drawAabb();
+	void drawAabb(const glm::mat4& view, const glm::mat4& proj, Shader& cShader);
 	void applyMovement();
 	void addPosition(const glm::vec3& position);
 	void addNormal(const glm::vec3& normal);
@@ -24,7 +24,7 @@ public:
 	void addIndex(unsigned int index);
 	void addNormalIndex(unsigned int index);
 	void addTexCoordIndex(unsigned int index);
-
+	
 	
 	std::vector<float> assembleVertexData();
 

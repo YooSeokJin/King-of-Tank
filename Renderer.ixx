@@ -9,6 +9,7 @@ namespace Renderer {
     namespace {
         ShaderManager* M_shaderManager_ = nullptr;
         bool M_isInitialized_ = false;
+        Shader* M_collisionShader_ = nullptr;
         bool M_isDrawAabb = false;
         void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj);
         void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh);
@@ -64,8 +65,7 @@ namespace Renderer {
             if (VAO != 0) glDeleteVertexArrays(1, &VAO);
         }
 
-        void M_clearColor(const glm::vec4& bg)
-        {
+        void M_clearColor(const glm::vec4& bg) {
             glClearColor(bg.r, bg.g, bg.b, bg.a);
         }
 
@@ -101,12 +101,14 @@ namespace Renderer {
             if (!scene.isShowMouse_) {
                 glutSetCursor(GLUT_CURSOR_NONE);
             }
+            M_collisionShader_ = &M_shaderManager_->getShader("Collision");
         }
     }
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
         M_clearColor(scene.getBackgroundColor());
         glm::mat4 proj = proj_;
         glm::mat4 view = view_;
+
         for (const auto& object : scene.getStaticObjects()) {
             for (const auto& mesh : object->getMeshes()) {
                 M_draw(mesh, view, proj);
@@ -116,6 +118,9 @@ namespace Renderer {
             object->drawGrid(view, proj);
             for (const auto& mesh : object->getMeshes()) {
                 M_draw(mesh, view, proj);
+                if (M_isDrawAabb) {
+                    mesh->drawAabb(view, proj, *M_collisionShader_);
+                }
             }
         }
     }

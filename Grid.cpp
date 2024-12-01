@@ -60,10 +60,8 @@ Grid::~Grid()
 void Grid::draw(const glm::mat4& viewing, const glm::mat4& proj, const glm::mat4& model)
 {
 	glLineWidth(2.0f);
-	glm::vec3 translation = glm::vec3(model[3][0], model[3][1], model[3][2]);
-	glm::mat4 newModel = glm::translate(glm::mat4(1.0f), translation);
 	gridShader_->useShader();
-	gridShader_->setUniformMatrix4fv("u_Model", newModel);
+	gridShader_->setUniformMatrix4fv("u_Model", model);
 	gridShader_->setUniformMatrix4fv("u_Viewing", viewing);
 	gridShader_->setUniformMatrix4fv("u_Projection", proj);
 

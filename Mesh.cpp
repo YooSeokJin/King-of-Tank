@@ -52,9 +52,9 @@ void Mesh::addMovement()
     if (!movement_) movement_ = new Movement();
 }
 
-void Mesh::drawAabb()
+void Mesh::drawAabb(const glm::mat4& view, const glm::mat4& proj, Shader& cShader)
 {
-
+    aabb_.drawAabb(view, proj, localTransform_.getTransformMatrix(), cShader);
 }
 
 void Mesh::applyMovement()
