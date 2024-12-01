@@ -3,8 +3,8 @@
 
 
 Projection::Projection(float fov, float aspect, float nearPlane, float farPlane)
-    : fov(fov), aspect(aspect), nearPlane(nearPlane), farPlane(farPlane),
-    orthoLeft(-1.0f), orthoRight(1.0f), orthoBottom(-1.0f), orthoTop(1.0f) 
+    : fov_(fov), aspect_(aspect), nearPlane_(nearPlane), farPlane_(farPlane),
+    orthoLeft_(-1.0f), orthoRight_(1.0f), orthoBottom_(-1.0f), orthoTop_(1.0f) 
 {
 
 }
@@ -12,30 +12,30 @@ Projection::Projection(float fov, float aspect, float nearPlane, float farPlane)
 Projection::~Projection() {}
 
 glm::mat4 Projection::getPerspectiveMatrix() const {
-    return glm::perspective(glm::radians(fov), aspect, nearPlane, farPlane);
+    return glm::perspective(glm::radians(fov_), aspect_, nearPlane_, farPlane_);
 }
 
 glm::mat4 Projection::getOrthographicMatrix() const {
-    return glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, nearPlane, farPlane);
+    return glm::ortho(orthoLeft_, orthoRight_, orthoBottom_, orthoTop_, nearPlane_, farPlane_);
 }
 
 void Projection::setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
-    this->fov = fov;
-    this->aspect = aspect;
-    this->nearPlane = nearPlane;
-    this->farPlane = farPlane;
+    this->fov_ = fov;
+    this->aspect_ = aspect;
+    this->nearPlane_ = nearPlane;
+    this->farPlane_ = farPlane;
 }
 
 void Projection::setOrthographic(float left, float right, float bottom, float top, float nearPlane, float farPlane) {
-    orthoLeft = left;
-    orthoRight = right;
-    orthoBottom = bottom;
-    orthoTop = top;
-    this->nearPlane = nearPlane;
-    this->farPlane = farPlane;
+    orthoLeft_ = left;
+    orthoRight_ = right;
+    orthoBottom_ = bottom;
+    orthoTop_ = top;
+    this->nearPlane_ = nearPlane;
+    this->farPlane_ = farPlane;
 }
 
 void Projection::setFov(float newFov)
 {
-    fov = newFov;
+    fov_ = newFov;
 }

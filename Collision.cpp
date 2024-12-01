@@ -3,12 +3,12 @@
 Collision::Collision()
 {
 }
-void Collision::set_aabb(const std::vector<float>& aabb_)
+void Collision::setAabb(const std::vector<float>& aabb)
 {
-    aabb = aabb_;
+    aabb_ = aabb;
 }
 
-std::vector<float> Collision::get_aabb() const
+std::vector<float> Collision::getAabb() const
 {
-    return aabb;
+    return aabb_;
 }

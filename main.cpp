@@ -1,6 +1,4 @@
 ﻿#include <iostream>
-#include <memory>
-
 #include "gl/glew.h"
 #include "gl/freeglut.h"
 #include "glm/glm.hpp"
@@ -20,33 +18,36 @@
 // objs - .obj 파일
 // KOF_Scene - Tank, KoTScene, KoTPlayerController, KoTAIController 등
 
-void InitProgram();
-GLvoid RenderScene();
-GLvoid Reshape(int w, int h);
-GLvoid RenderSceneTimer(int value);
-GLvoid Idle();
-GLvoid MouseInput(int button, int state, int x, int y);
-GLvoid MouseMotion(int x, int y);
-GLvoid MouseWheel(int button, int dir, int x, int y);
+// 모듈: M_functionName, M_memberName_
+// 클래스: functionName, memberName_
 
-GLvoid KeyInput(unsigned char key, int x, int y);
-GLvoid SpecialKeyInput(int key, int x, int y);
-GLvoid KeyDown(unsigned char key, int x, int y);
-GLvoid KeyUp(unsigned char key, int x, int y);
+void initProgram();
+GLvoid renderScene();
+GLvoid reshape(int w, int h);
+GLvoid renderSceneTimer(int value);
+GLvoid idle();
+GLvoid mouseInput(int button, int state, int x, int y);
+GLvoid mouseMotion(int x, int y);
+GLvoid mouseWheel(int button, int dir, int x, int y);
+
+GLvoid keyInput(unsigned char key, int x, int y);
+GLvoid specialKeyInput(int key, int x, int y);
+GLvoid keyDown(unsigned char key, int x, int y);
+GLvoid keyUp(unsigned char key, int x, int y);
 
 
-void ExitProgram();
+void exitProgram();
 
-const float frameTime = float(0.016);
-KOT_Scene* scene = nullptr;
-bool warpPointerEvent = false;
+const float frameTime_ = float(0.016);
+KOT_Scene* scene_ = nullptr;
+bool warpPointerEvent_ = false;
 
 void main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(600, 200);
-	glutInitWindowSize(WinSizeX, WinSizeY);
+	glutInitWindowSize(width_, height_);
 	glutCreateWindow("Computer Graphics");
 
 	glewInit();
@@ -59,52 +60,52 @@ void main(int argc, char** argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 	std::cout << "[ESC]: Exit" << std::endl;
-	InitProgram();
+	initProgram();
 
-	glutTimerFunc(16, RenderSceneTimer, 1);
-	glutDisplayFunc(RenderScene);
-	glutReshapeFunc(Reshape);
-	glutIdleFunc(Idle);
-	glutKeyboardFunc(KeyDown);
-	glutKeyboardUpFunc(KeyUp);
-	glutMouseFunc(MouseInput);
-	glutPassiveMotionFunc(MouseMotion);
-	glutMouseWheelFunc(MouseWheel);
-	glutSpecialFunc(SpecialKeyInput);
+	glutTimerFunc(16, renderSceneTimer, 1);
+	glutDisplayFunc(renderScene);
+	glutReshapeFunc(reshape);
+	glutIdleFunc(idle);
+	glutKeyboardFunc(keyDown);
+	glutKeyboardUpFunc(keyUp);
+	glutMouseFunc(mouseInput);
+	glutPassiveMotionFunc(mouseMotion);
+	glutMouseWheelFunc(mouseWheel);
+	glutSpecialFunc(specialKeyInput);
 	glutMainLoop();
 }
 
-void InitProgram()
+void initProgram()
 {
-	scene = new KOT_Scene();
+	scene_ = new KOT_Scene();
 }
 
-GLvoid RenderScene()
+GLvoid renderScene()
 {
-	if (!scene) return;
+	if (!scene_) return;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene->draw();
+	scene_->draw();
 	glutSwapBuffers();
 }
-GLvoid Reshape(int w, int h)
+GLvoid reshape(int w, int h)
 {
 	glViewport(0, 0, w, h);
 }
-GLvoid RenderSceneTimer(int value)
+GLvoid renderSceneTimer(int value)
 {
-	if (!scene) return;
-	scene->timer(frameTime);
+	if (!scene_) return;
+	scene_->timer(frameTime_);
 	glutPostRedisplay();
-	glutTimerFunc(16, RenderSceneTimer, 1);
+	glutTimerFunc(16, renderSceneTimer, 1);
 }
-GLvoid Idle()
+GLvoid idle()
 {
-	if (!scene) return;
+	if (!scene_) return;
 	glutPostRedisplay();
 }
-GLvoid MouseInput(int button, int state, int x, int y)
+GLvoid mouseInput(int button, int state, int x, int y)
 {
-	if (!scene) return;
+	if (!scene_) return;
 	if (button == GLUT_LEFT_BUTTON) {
 		glm::vec3 center(0.0f, 0.0f, 0.0f);
 		changeOpenGL(x, y, 0, center);
@@ -117,55 +118,55 @@ GLvoid MouseInput(int button, int state, int x, int y)
 	}	
 	glutPostRedisplay();
 }
-GLvoid MouseMotion(int x, int y)
+GLvoid mouseMotion(int x, int y)
 {
-	if (!scene) return;
+	if (!scene_) return;
 
-	scene->mouseMotion(x, y);
+	scene_->mouseMotion(x, y);
 
-	glutWarpPointer(centerX, centerY);
+	glutWarpPointer(windowCenterX_, windowCenterY_);
 	glutPostRedisplay();
 }
-GLvoid MouseWheel(int button, int dir, int x, int y)
+GLvoid mouseWheel(int button, int dir, int x, int y)
 {
-	if (!scene) return;
-	scene->mouseWheel(button, dir, x, y);
+	if (!scene_) return;
+	scene_->mouseWheel(button, dir, x, y);
 }
-GLvoid KeyInput(unsigned char key, int x, int y)
+GLvoid keyInput(unsigned char key, int x, int y)
 {
-	if (!scene) return;
+	if (!scene_) return;
 	switch (key) {
 	case 27:
-		ExitProgram();
+		exitProgram();
 		break;
 	}
 	
 	glutPostRedisplay();
 }
-GLvoid SpecialKeyInput(int key, int x, int y)
+GLvoid specialKeyInput(int key, int x, int y)
 {
-	if (!scene) return;
+	if (!scene_) return;
 	
-	scene->specialEvent(key, x, y);
+	scene_->specialEvent(key, x, y);
 	glutPostRedisplay();
 }
 
-GLvoid KeyDown(unsigned char key, int x, int y)
+GLvoid keyDown(unsigned char key, int x, int y)
 {
-	if (key == 27) ExitProgram();
-	if (!scene) return;
-	scene->KeyDown(key, x, y);
+	if (key == 27) exitProgram();
+	if (!scene_) return;
+	scene_->keyDown(key, x, y);
 }
 
-GLvoid KeyUp(unsigned char key, int x, int y)
+GLvoid keyUp(unsigned char key, int x, int y)
 {
-	if (!scene) return;
-	scene->KeyUp(key, x, y);
+	if (!scene_) return;
+	scene_->keyUp(key, x, y);
 }
 
-GLvoid ExitProgram()
+GLvoid exitProgram()
 {
-	delete scene;
-	scene = nullptr;
+	delete scene_;
+	scene_ = nullptr;
 	glutLeaveMainLoop();
 }

@@ -9,20 +9,20 @@ ShaderManager::ShaderManager()
 }
 ShaderManager::~ShaderManager()
 {
-	shaders.clear();
+	shaders_.clear();
 }
 void ShaderManager::loadShader(const std::string& name, const char* vertexPath, const char* fragmentPath)
 {
-	if (shaders.find(name) != shaders.end()) {
+	if (shaders_.find(name) != shaders_.end()) {
 		return;
 	}
-	shaders[name] = std::make_shared<Shader>(vertexPath, fragmentPath);
+	shaders_[name] = std::make_shared<Shader>(vertexPath, fragmentPath);
 }
 
 void ShaderManager::useShader(const std::string& name) const
 {
-	auto it = shaders.find(name);
-	if (it == shaders.end()) {
+	auto it = shaders_.find(name);
+	if (it == shaders_.end()) {
 		std::cerr << "Shader \'" << name << "\' not found.Please load the shader first." << std::endl;
 		throw std::runtime_error("Shader not found");
 	}
@@ -31,8 +31,8 @@ void ShaderManager::useShader(const std::string& name) const
 
 Shader& ShaderManager::getShader(const std::string& name) const
 {
-	auto it = shaders.find(name);
-	if (it == shaders.end()) {
+	auto it = shaders_.find(name);
+	if (it == shaders_.end()) {
 		std::cerr << "Shader \'" << name << "\' not found.Please load the shader first." << std::endl;
 		throw std::runtime_error("Shader not found");
 	}
@@ -42,8 +42,8 @@ Shader& ShaderManager::getShader(const std::string& name) const
 
 GLuint ShaderManager::getShaderProgram(const std::string& name) const
 {
-	auto it = shaders.find(name);
-	if (it == shaders.end()) {
+	auto it = shaders_.find(name);
+	if (it == shaders_.end()) {
 		std::cerr << "Shader " << name << " not found" << std::endl;
 		return -1;
 	}

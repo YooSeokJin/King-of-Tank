@@ -1,6 +1,4 @@
-﻿#ifndef SHADERMANAGER_H
-#define SHADERMANAGER_H
-
+﻿#pragma once
 #include <memory>
 #include "Shader.h"
 
@@ -14,7 +12,5 @@ public:
 	Shader& getShader(const std::string& name) const;
 private:
 	GLuint getShaderProgram(const std::string& name) const;
-	std::unordered_map<std::string, std::shared_ptr<Shader>> shaders;
+	std::unordered_map<std::string, std::shared_ptr<Shader>> shaders_;
 };
-
-#endif // !SHADERMANAGER_H

@@ -4,8 +4,8 @@
 class Collision {
 public:
 	Collision();
-	void set_aabb(const std::vector<float>& aabb);
-	std::vector<float> get_aabb() const;
+	void setAabb(const std::vector<float>& aabb);
+	std::vector<float> getAabb() const;
 protected:
-	std::vector<float> aabb;
+	std::vector<float> aabb_;
 };

@@ -1,109 +1,109 @@
 #include "Movement.h"
 
 Movement::Movement()
-    : velocity(5.f), direction(0.f), delta_position(0.f),
-    rotation_velocity(30.f), rotation_direction(0.f), delta_rotation(0.f)
+    : velocity_(5.f), direction_(0.f), deltaPosition_(0.f),
+    rotationVelocity_(30.f), rotationDirection_(0.f), deltaRotation_(0.f)
 {
 }
-void Movement::update(float frame_time)
+void Movement::update(float frameTime)
 {
-    delta_position = direction * velocity * frame_time;
-    delta_rotation = rotation_direction * rotation_velocity * frame_time;
+    deltaPosition_ = direction_ * velocity_ * frameTime;
+    deltaRotation_ = rotationDirection_ * rotationVelocity_ * frameTime;
 }
-void Movement::set_velocity(float vx, float vy, float vz)
+void Movement::setVelocity(float vx, float vy, float vz)
 {
     glm::vec3 v(vx, vy, vz);
-    velocity = glm::vec3(v);
+    velocity_ = glm::vec3(v);
 }
-void Movement::set_rt_velocity(float vx, float vy, float vz)
+void Movement::setRtVelocity(float vx, float vy, float vz)
 {
     glm::vec3 v(vx, vy, vz);
-    rotation_velocity = v;
+    rotationVelocity_ = v;
 }
 
-void Movement::add_direction(float dx, float dy, float dz)
+void Movement::addDirection(float dx, float dy, float dz)
 {
     glm::vec3 d(dx, dy, dz);
-    direction += d;
+    direction_ += d;
 }
 
-void Movement::add_rt_direction(float dx, float dy, float dz)
+void Movement::addRtDirection(float dx, float dy, float dz)
 {
     glm::vec3 rd(dx, dy, dz);
-    rotation_direction += rd;
+    rotationDirection_ += rd;
 }
 
-void Movement::set_direction(float dx, float dy, float dz)
+void Movement::setDirection(float dx, float dy, float dz)
 {
     glm::vec3 d(dx, dy, dz);
     if (glm::length(d) > 0.0f) {
-        direction = glm::normalize(d);
+        direction_ = glm::normalize(d);
     }
     else {
-        direction = glm::vec3(0.0f);
+        direction_ = glm::vec3(0.0f);
     }
 }
 
-void Movement::set_direction_X(float delta)
+void Movement::setDirectionX(float delta)
 {
-    direction.x = delta;
+    direction_.x = delta;
 }
 
-void Movement::set_direction_Y(float delta)
+void Movement::setDirectionY(float delta)
 {
-    direction.y = delta;
+    direction_.y = delta;
 }
 
-void Movement::set_direction_Z(float delta)
+void Movement::setDirectionZ(float delta)
 {
-    direction.z = delta;
+    direction_.z = delta;
 }
 
-void Movement::set_rt_direction(float dx, float dy, float dz)
+void Movement::setRtDirection(float dx, float dy, float dz)
 {
     glm::vec3 d(dx, dy, dz);
     if (glm::length(d) > 0.0f) {
-        rotation_direction = glm::normalize(d);
+        rotationDirection_ = glm::normalize(d);
     }
     else {
-        rotation_direction = glm::vec3(0.0f);
+        rotationDirection_ = glm::vec3(0.0f);
     }
 }
 
-void Movement::set_rt_direction_X(float delta)
+void Movement::setRtDirectionX(float delta)
 {
-    rotation_direction.x = delta;
+    rotationDirection_.x = delta;
 }
 
-void Movement::set_rt_direction_Y(float delta)
+void Movement::setRtDirectionY(float delta)
 {
-    rotation_direction.y = delta;
+    rotationDirection_.y = delta;
 }
 
-void Movement::set_rt_direction_Z(float delta)
+void Movement::setRtDirectionZ(float delta)
 {
-    rotation_direction.z = delta;
+    rotationDirection_.z = delta;
 }
 
-const glm::vec3& Movement::get_delta_position()
+const glm::vec3& Movement::getDeltaPosition()
 {
-    return delta_position;
+    return deltaPosition_;
 }
 
-const glm::vec3& Movement::get_delta_position(float dx, float dz)
+const glm::vec3& Movement::getDeltaPosition(float dx, float dz)
 {
-    delta_position.x *= dx;
-    delta_position.z *= dz;
-    return delta_position;
+    deltaPosition_.x *= dx;
+    deltaPosition_.z *= dz;
+    return deltaPosition_;
 }
 
-const glm::vec3& Movement::get_delta_rotation()
+const glm::vec3& Movement::getDeltaRotation()
 {
-    return delta_rotation;
+    return deltaRotation_;
 }
 
 void Movement::stop()
 {
-    rotation_direction = glm::vec3(0.f);
-    direction = glm::vec3(0.f);
+    rotationDirection_ = glm::vec3(0.f);
+    direction_ = glm::vec3(0.f);
 }

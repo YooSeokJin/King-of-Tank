@@ -2,20 +2,20 @@
 
 PlayerController::PlayerController()
 {
-	camera = nullptr;
-	camera_offset = glm::vec3(-15.f, 5.f, 0.f);
+	camera_ = nullptr;
+	cameraOffset_ = glm::vec3(-15.f, 5.f, 0.f);
 }
 
-PlayerController::PlayerController(std::shared_ptr<Object> target_)
+PlayerController::PlayerController(std::shared_ptr<Object> target)
 {
-	target = target_;
-	camera = nullptr;
-	camera_offset = glm::vec3(10.f, 5.f, 0.f);
+	target_ = target;
+	camera_ = nullptr;
+	cameraOffset_ = glm::vec3(10.f, 5.f, 0.f);
 }
 
 PlayerController::~PlayerController()
 {
-	camera = nullptr;
+	camera_ = nullptr;
 }
 
 void PlayerController::event(unsigned char key, int x, int y)
@@ -38,15 +38,15 @@ void PlayerController::mouseWheel(int button, int dir, int x, int y)
 {
 }
 
-void PlayerController::set_target(std::shared_ptr<Object> target_)
+void PlayerController::setTarget(std::shared_ptr<Object> target)
 {
-	if (!target) target = target_;
+	if (!target_) target_ = target;
 }
 
-void PlayerController::set_camera(Camera* camera_)
+void PlayerController::setCamera(Camera* camera)
 {
-	if (!camera) camera = camera_;
-	if (!target) return;
-	camera->followObject(target, camera_offset);
+	if (!camera_) camera_ = camera;
+	if (!target_) return;
+	camera_->followObject(target_, cameraOffset_);
 
 }

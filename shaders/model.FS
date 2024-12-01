@@ -4,7 +4,7 @@ in vec3 Normal; // VS¿¡¼­ Normal°ª
 
 out vec4 FragColor;
 
-uniform vec4 u_ObjectColor;
+uniform vec4 u_MeshColor;
 uniform vec4 u_LightColor;
 void main()
 {
@@ -13,7 +13,7 @@ void main()
 	vec4 lightColor = u_LightColor;
 	vec4 ambient = ambientIntensity * lightColor;
 
-	vec4 result = ambient * u_ObjectColor;
+	vec4 result = ambient * u_MeshColor;
 	FragColor = result;
 	// FragColor = u_ObjectColor;
 }

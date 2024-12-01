@@ -1,5 +1,4 @@
-#ifndef MESH_H
-#define MESH_H
+#pragma once
 #include <string>
 #include <vector>
 #include "Collision.h"
@@ -12,65 +11,65 @@ class Mesh {
 public:
 	Mesh();
 	~Mesh();
-	void change_Index();
-	void add_movement();
-
-	void apply_movement();
-	void add_position(const glm::vec3& position);
-	void add_normal(const glm::vec3& normal);
-	void add_texCoord(const glm::vec2& texcoord);
-
-	void add_indices(unsigned int index);
-	void add_normal_indices(unsigned int index);
-	void add_texcoords_indices(unsigned int index);
-
 	virtual void update(float frameTime);
+
+	void chanegIndex();
+	void addMovement();
+	void drawAabb();
+	void applyMovement();
+	void addPosition(const glm::vec3& position);
+	void addNormal(const glm::vec3& normal);
+	void addTexCoord(const glm::vec2& texcoord);
+
+	void addIndex(unsigned int index);
+	void addNormalIndex(unsigned int index);
+	void addTexCoordIndex(unsigned int index);
+
+	
 	std::vector<float> assembleVertexData();
 
-	std::string& get_ShaderName() { return shaderName; }
-	void set_ShaderName(const std::string& name) { shaderName = name; }
+	std::string& getShaderName() { return shaderName_; }
+	void setShaderName(const std::string& name) { shaderName_ = name; }
 
-	void set_Parent(ModelMatrix* p);
-	void delete_Parent();
-	void set_Pivot(float x, float y, float z);
-	void set_Pivot(const glm::vec3& pivot);
+	void setParent(ModelMatrix* parent);
+	void deleteParent();
+	void setPivot(float x, float y, float z);
+	void setPivot(const glm::vec3& pivot);
 
-	const std::vector<glm::vec3>& get_positions() const { return positions; }
-	const std::vector<glm::vec3>& get_normals()const { return normals; }
-	const std::vector<glm::vec2>& get_texCoords() const { return texCoords; }
-	const std::vector<unsigned int>& get_indices() const { return assemble_indices; }
+	const std::vector<glm::vec3>& getPositions() const { return positions_; }
+	const std::vector<glm::vec3>& getNormals()const { return normals_; }
+	const std::vector<glm::vec2>& getTexCoords() const { return texCoords_; }
+	const std::vector<unsigned int>& getIndices() const { return assembleIndices_; }
 
-	glm::mat4 get_modelTransform() const { return Local_Transform.getTransformMatrix(); }
-	unsigned int& getVAO() { return VAO; }
-	unsigned int& getVBO() { return VBO; }
-	unsigned int& getEBO() { return EBO; }
+	glm::mat4 getModelTransform() const { return localTransform_.getTransformMatrix(); }
+	unsigned int& getVAO() { return VAO_; }
+	unsigned int& getVBO() { return VBO_; }
+	unsigned int& getEBO() { return EBO_; }
 
-	glm::vec4* Color;
+	glm::vec4* meshColor_;
 
-	Movement* move = nullptr;
-	ModelMatrix Local_Transform;
+	Movement* movement_ = nullptr;
+	ModelMatrix localTransform_;
 
-	void show_all_vertex();
-	void show_position() const;
+	void showAllVertices();
+	void showPositions() const;
 
-	void add_collision();
-	std::vector<float> get_aabb() const;
+	void addCollision();
+	std::vector<float> getAabb() const;
 
-	void Init();
+	void init();
 private:
-	Collision aabb;
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> texCoords;
+	Collision aabb_;
+	std::vector<glm::vec3> positions_;
+	std::vector<glm::vec3> normals_;
+	std::vector<glm::vec2> texCoords_;
 
-	std::vector<unsigned int> indices;
-	std::vector<unsigned int> normal_indices;
-	std::vector<unsigned int> texcoords_indices;
+	std::vector<unsigned int> indices_;
+	std::vector<unsigned int> normalIndices_;
+	std::vector<unsigned int> texcoordsIndices_;
 
-	std::vector<unsigned int> assemble_indices;
+	std::vector<unsigned int> assembleIndices_;
 
-	std::string shaderName;
-	unsigned int VAO, VBO, EBO;
+	std::string shaderName_;
+	unsigned int VAO_, VBO_, EBO_;
 };
-#endif
-

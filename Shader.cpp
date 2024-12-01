@@ -4,18 +4,18 @@
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
-	programID = CompileShader(vertexPath, fragmentPath);
+	programID_ = compileShader(vertexPath, fragmentPath);
 }
 
 Shader::~Shader()
 {
-	if (programID != 0)
-		glDeleteProgram(programID);
+	if (programID_ != 0)
+		glDeleteProgram(programID_);
 }
 
 void Shader::useShader() const
 {
-	glUseProgram(programID);
+	glUseProgram(programID_);
 }
 
 void Shader::setUniformMatrix4fv(const std::string& name, const glm::mat4& mat) const
@@ -60,7 +60,7 @@ void Shader::setUniformInt(const std::string& name, int value) const
 }
 
 
-void Shader::AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+void Shader::addShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 {
 	// 쉐이더 오브젝트 생성
 	GLuint shaderObj = glCreateShader(ShaderType);
@@ -97,20 +97,20 @@ void Shader::AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Sha
 }
 GLint Shader::getUniformLocation(const std::string& name) const
 {
-	if (uniformCache.find(name) != uniformCache.end()) {
-		return uniformCache[name];
+	if (uniformCache_.find(name) != uniformCache_.end()) {
+		return uniformCache_[name];
 	}
-	GLint location = glGetUniformLocation(programID, name.c_str());
+	GLint location = glGetUniformLocation(programID_, name.c_str());
 	if (location == -1) {
 		std::cerr << "Warning: uniform '" << name << "' doesn't exist in shader program.\n";
 	}
 
 	// 위치를 캐시에 저장
-	uniformCache[name] = location;
+	uniformCache_[name] = location;
 
 	return location;
 }
-bool Shader::ReadFile(const char* filename, std::string* target)
+bool Shader::readFile(const char* filename, std::string* target)
 {
 	std::ifstream file(filename);
 	if (!file) {
@@ -124,7 +124,7 @@ bool Shader::ReadFile(const char* filename, std::string* target)
 	}
 	return true;
 }
-GLuint Shader::CompileShader(const char* fileNameVS, const char* fileNameFS)
+GLuint Shader::compileShader(const char* fileNameVS, const char* fileNameFS)
 {
 	// 빈 쉐이더 프로그램 생성.
 	GLuint shaderProgram = glCreateProgram();
@@ -134,20 +134,20 @@ GLuint Shader::CompileShader(const char* fileNameVS, const char* fileNameFS)
 	}
 	// vs가 로딩되었는지 체크
 	std::string vs, fs;
-	if (!ReadFile(fileNameVS, &vs)) {
+	if (!readFile(fileNameVS, &vs)) {
 		std::cerr << "Error compiling vertex shader\n";
 	}
 	// fs가 로딩되었는지 체크
-	if (!ReadFile(fileNameFS, &fs)) {
+	if (!readFile(fileNameFS, &fs)) {
 		std::cerr << "Error compiling fragment shader\n";
 		return -1;
 	};
 
 	// ShaderProgram 에 vs.c_str() 버텍스 쉐이더를 컴파일한 결과를 attach함
-	AddShader(shaderProgram, vs.c_str(), GL_VERTEX_SHADER);
+	addShader(shaderProgram, vs.c_str(), GL_VERTEX_SHADER);
 
 	// ShaderProgram 에 fs.c_str() 프레그먼트 쉐이더를 컴파일한 결과를 attach함
-	AddShader(shaderProgram, fs.c_str(), GL_FRAGMENT_SHADER);
+	addShader(shaderProgram, fs.c_str(), GL_FRAGMENT_SHADER);
 
 	GLint success = 0;
 	GLchar ErrorLog[1024] = { 0 };

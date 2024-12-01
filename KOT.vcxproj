@@ -171,6 +171,8 @@
     <ClInclude Include="Viewing.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="collision.FS" />
+    <None Include="collision.VS" />
     <None Include="README.md" />
     <None Include="shaders\grid.FS" />
     <None Include="shaders\grid.VS" />

@@ -12,9 +12,9 @@ public:
 	void mouseMotion(int x, int y) override;
 	void mouseWheel(int button, int dir, int x, int y) override;
 
-	void set_Tank_Camera();
+	void setTankCamera();
 private:
-	bool w, s;
-	bool a, d;
+	bool isW_, isS_;
+	bool isA_, isD_;
 };
 

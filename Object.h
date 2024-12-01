@@ -12,8 +12,8 @@ public:
 	virtual void update(float frameTime);
 	void Init();
 	const std::vector<std::shared_ptr<Mesh>>& getMeshes() const;
-	glm::vec3 getPosition() const { return World_Transform.getLocation(); }
-	glm::mat4 getModel() const { return World_Transform.getTransformMatrix(); }
+	glm::vec3 getPosition() const { return worldTransform_.getLocation(); }
+	glm::mat4 getModel() const { return worldTransform_.getTransformMatrix(); }
 	void addMesh(const std::shared_ptr<Mesh>& mesh);
 	void setScale(float x, float y, float z);
 	void setPosition(float x, float y, float z);
@@ -22,8 +22,8 @@ public:
 	void addPosition(float x, float y, float z);
 	void addRotation(float x, float y, float z);
 protected:
-	std::vector<std::shared_ptr<Mesh>> meshes;
-	ModelMatrix World_Transform;
+	std::vector<std::shared_ptr<Mesh>> meshes_;
+	ModelMatrix worldTransform_;
 };
 
 
@@ -33,7 +33,7 @@ public:
 	~Object();
 	
 
-	void DrawGrid(const glm::mat4& view, const glm::mat4& proj);
+	void drawGrid(const glm::mat4& view, const glm::mat4& proj);
 	void addGrid();
 	virtual void update(float frameTime);
 
@@ -41,22 +41,22 @@ public:
 	void addMesh(const std::shared_ptr<Mesh>& mesh);
 
 	void adjustDelta(float x, float y, float z);
-	void adjustDelta_X(float delta);
-	void adjustDelta_Y(float delta);
-	void adjustDelta_Z(float delta);
+	void adjustDeltaX(float delta);
+	void adjustDeltaY(float delta);
+	void adjustDeltaZ(float delta);
 
 	void adjustRotate(float x, float y, float z);
-	void adjustRotate_X(float delta);
-	void adjustRotate_Y(float delta);
-	void adjustRotate_Z(float delta);
+	void adjustRotateX(float delta);
+	void adjustRotateY(float delta);
+	void adjustRotateZ(float delta);
 
-	void set_Collision_State(char type);
-	void reset_Collision_State(char type);
+	void setObjectState(char type);
+	void deleteObjectState(char type);
 protected:
 	
 protected:
-	Grid* grid;
+	Grid* grid_;
 
-	Movement move;
-	std::unordered_set<char> collision_state;
+	Movement movement_;
+	std::unordered_set<char> collisionStates_;
 };

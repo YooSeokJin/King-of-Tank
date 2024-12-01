@@ -1,6 +1,4 @@
-#ifndef MODELMATRIX_H
-#define MODELMATRIX_H
-
+#pragma once
 #include "glm/glm.hpp"
 
 class ModelMatrix {
@@ -19,10 +17,10 @@ public:
 	void setLocationY(float newY);
 	void setLocationZ(float newZ);
 
-	void translate(const glm::vec3& deltaPosition);
-	void translateX(float deltaX);
-	void translateY(float deltaY);
-	void translateZ(float deltaZ);
+	void moveLocation(const glm::vec3& deltaPosition);
+	void moveLocationX(float deltaX);
+	void moveLocationY(float deltaY);
+	void moveLocationZ(float deltaZ);
 
 
 	// È¸Àü Set, Get
@@ -59,7 +57,7 @@ public:
 	void scaleZ(float deltaZ);
 
 	void resetAll();
-	void reset_Lo_Ra();
+	void resetLocationRotation();
 	void setPivot(float x, float y, float z);
 	void setPivot(const glm::vec3& pivot);
 
@@ -68,13 +66,12 @@ public:
 	void setParent(ModelMatrix* p);
 	void deleteParent();
 
-	glm::vec3 get_Forward_vector() const;
+	glm::vec3 getForwardVector() const;
 
-	glm::vec3* pivot;
+	glm::vec3* pivotPoint_;
 private:
-	ModelMatrix* parent = nullptr;
-	glm::vec3 myLocation;
-	glm::vec3 myRotation;
-	glm::vec3 myScale; // x, y, z
+	ModelMatrix* parent_ = nullptr;
+	glm::vec3 location_;
+	glm::vec3 rotation_;
+	glm::vec3 scale_;
 };
-#endif // !TRANSFORM_H

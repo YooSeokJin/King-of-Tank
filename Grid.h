@@ -1,11 +1,7 @@
-#ifndef GRID_H
-#define GRID_H
-
+#pragma once
 #include <vector>
 #include "glm/mat4x4.hpp"
 #include "Shader.h"
-class Camera;
-class Shader;
 
 class Grid {
 public:
@@ -14,11 +10,10 @@ public:
 	
 	void draw(const glm::mat4& viewing, const glm::mat4& proj, const glm::mat4& model);
 private:
-	std::vector<float> grids;
-	std::vector<unsigned int> indices;
-	Shader* gridShader;
-	unsigned int gridVBO;
-	unsigned int gridVAO;
-	unsigned int gridEBO;
+	std::vector<float> gridVertices_;
+	std::vector<unsigned int> gridIndices_;
+	Shader* gridShader_;
+	unsigned int gridVBO_;
+	unsigned int gridVAO_;
+	unsigned int gridEBO_;
 };
-#endif

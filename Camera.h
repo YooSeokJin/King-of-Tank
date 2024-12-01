@@ -5,7 +5,7 @@
 
 class Camera {
 public:
-    Camera(float fov = 45.0f, float aspect = float(WinSizeX) / float(WinSizeY),
+    Camera(float fov = 45.0f, float aspect = float(width_) / float(height_),
         float nearPlane = 0.1f, float farPlane = 100.0f);
     ~Camera();
     void update(float frameTime);
@@ -18,22 +18,22 @@ public:
 
     void rotate(int deltaX, int deltaY);
     void adjustFov(float deltaFov);
-    float getYaw() const { return yaw; }
-    glm::vec3 getForwardVector() const { return front; }
+    float getYaw() const { return yaw_; }
+    glm::vec3 getForwardVector() const { return front_; }
 private:
-    glm::vec3 position;
-    glm::vec3 up;
-    glm::vec3 front;
+    glm::vec3 position_;
+    glm::vec3 up_;
+    glm::vec3 front_;
 
-    Viewing view;        
-    Projection proj;      
+    Viewing viewModel_;        
+    Projection projModel_;      
 
-    const Object* target;
-    const glm::vec3* offset;
+    const Object* targetObject_;
+    const glm::vec3* cameraOffset_;
 
-    float yaw;
-    float pitch;
-    float roll;
-    float sensitivity;
-    float smoothingSpeed = 6.0f;
+    float yaw_;
+    float pitch_;
+    float roll_;
+    float sensitivity_;
+    float smoothingSpeed_;
 };

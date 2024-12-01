@@ -1,6 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
-
+#pragma once
 #include "glm/glm.hpp"
 #include "Mesh.h"
 #include "Camera.h"
@@ -18,41 +16,40 @@ public:
 	virtual void event(unsigned char key, int x, int y) = 0;
 	virtual void draw();
 	virtual void specialEvent(int key, int x, int y);
-	virtual void KeyUp(unsigned char key, int x, int y);
-	virtual void KeyDown(unsigned char key, int x, int y);
+	virtual void keyUp(unsigned char key, int x, int y);
+	virtual void keyDown(unsigned char key, int x, int y);
 	virtual void mouseMotion(int x, int y);
 	virtual void mouseWheel(int button, int dir, int x, int y);
 
-	const glm::vec4& getBG() const { return bgColor; }
+	const glm::vec4& getBackgroundColor() const { return backgroundColor_; }
 	const std::vector<std::shared_ptr<Object>>& getObjects() const;
 	const std::vector<std::shared_ptr<Static_Object>>& getStaticObjects() const;
 
-	bool showMouse;
+	bool isShowMouse_;
 protected:
 	virtual void update(float frameTime);
-	void add_Object(const std::string& fileName, const std::string& shaderName);
-	void add_Static_Object(const std::string& fileName, const std::string& shaderName);
+	void addObject(const std::string& fileName, const std::string& shaderName);
+	void addStaticObject(const std::string& fileName, const std::string& shaderName);
 	
-	void add_LightCube(bool Static);
-	void add_Cube(bool Static);
-	void add_Sphere(bool Static);
-	void add_Cylinder(bool Static);
-	void add_Pyramid(bool Static);
-	void add_Rpyramid(bool Static);
-	void add_Monkey(bool Static);
+	void addLightCube(bool Static);
+	void addCube(bool Static);
+	void addSphere(bool Static);
+	void addCylinder(bool Static);
+	void addPyramid(bool Static);
+	void addRectPyramid(bool Static);
+	void addMonkey(bool Static);
 
-	void setUp(std::shared_ptr<Object> obj);
-	void setUp(std::shared_ptr<Static_Object> obj);
+	void setupObject(std::shared_ptr<Object> obj);
+	void setupStaticObject(std::shared_ptr<Static_Object> obj);
 private:
 	
 protected:
-	bool cull, fill, depth;
-	int lastX, lastY;
-	std::vector<std::shared_ptr<Object>> objs;
-	std::vector<std::shared_ptr<Static_Object>> static_objs;
-	std::shared_ptr<PlayerController> pc;
-	glm::vec4 bgColor;
-	Camera camera;
+	bool isCull_, isFill_, isDepth_, isColl_;
+	int mouseLastX_, mouseLastY_;
+	std::vector<std::shared_ptr<Object>> objects_;
+	std::vector<std::shared_ptr<Static_Object>> staticObjects_;
+	std::shared_ptr<PlayerController> playeController_;
+	glm::vec4 backgroundColor_;
+	Camera camera_;
 };
-#endif
 

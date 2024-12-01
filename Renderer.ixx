@@ -4,60 +4,58 @@ module;
 #include "Scene.h"
 #include "ShaderManager.h"
 
-enum ShaderName {
-    MODEL,
-    GRID,
-    LIGHTSOURCE,
-};
-
 export module Renderer;
 namespace Renderer {
     namespace {
-        ShaderManager* sm = nullptr;
-        bool initialized = false;
-        void Draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj);
-        void Delete_Buffer(const std::shared_ptr<Mesh>& mesh);
-        void Clear_Color(const glm::vec4& bg);
-        void Setup_Mesh(const std::shared_ptr<Mesh>& mesh);
+        ShaderManager* M_shaderManager_ = nullptr;
+        bool M_isInitialized_ = false;
+        bool M_isDrawAabb = false;
+        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj);
+        void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh);
+        void M_clearColor(const glm::vec4& bg);
+        void M_setupMesh(const std::shared_ptr<Mesh>& mesh);
     }
-    export void Init(const Scene& scene);
-    export void Rnderer_Scene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_);
-    export void End(const Scene& scene);
+    export void M_initRenderer(const Scene& scene);
+    export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_);
+    export void M_end(const Scene& scene);
 
-    export void Setup_Object(const std::shared_ptr<Object>& obj);
-
-    export void Depth(bool& depth);
-    export void Fill(bool& fill);
-    export void Cull(bool& cull);
+    export void M_setupObject(const std::shared_ptr<Object>& obj);
+    export void M_setupStaticObject(const std::shared_ptr<Static_Object>& obj);
+    export void M_depthOnOff(bool& depth);
+    export void M_fillOnOff(bool& fill);
+    export void M_cullOnOff(bool& cull);
+    export void m_collsionOnOff(bool& coll);
 }
 namespace Renderer {
     namespace {
-        void Draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj) {
+        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj) {
             if (!mesh) return;
 
-            auto& shader = sm->getShader(mesh->get_ShaderName().c_str());
+            auto& shader = M_shaderManager_->getShader(mesh->getShaderName().c_str());
             glUseProgram(shader.getProgramID());
             glBindVertexArray(mesh->getVAO());
 
             // À¯´ÏÆû ¼³Á¤
-            if (mesh->Color) {
-                shader.setUniformVec4("u_ObjectColor", *mesh->Color);
+            if (mesh->getShaderName() == "Model") {
+                if (mesh->meshColor_) {
+                    shader.setUniformVec4("u_MeshColor", *mesh->meshColor_);
+                }
+                else {
+                    shader.setUniformVec4("u_MeshColor", colorPaletteV4_[8]);
+                }
             }
-            else {
-                shader.setUniformVec4("u_ObjectColor", colorPalette[8]);
-            }
-            shader.setUniformVec4("u_LightColor", colorPalette[25]); // ±¤¿ø»öÀ» ¹Ù²ãº¸ÀÚ!
-            shader.setUniformMatrix4fv("u_Model", mesh->get_modelTransform());
+            shader.setUniformVec4("u_LightColor", colorPaletteV4_[25]); // ±¤¿ø»öÀ» ¹Ù²ãº¸ÀÚ!
+            shader.setUniformMatrix4fv("u_Model", mesh->getModelTransform());
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);
-            size_t vertexCount = mesh->get_indices().size();
+            size_t vertexCount = mesh->getIndices().size();
 
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexCount));
 
             glBindVertexArray(0);
             glUseProgram(0);
         }
-        void Delete_Buffer(const std::shared_ptr<Mesh>& mesh) {
+        void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh) {
             GLuint VAO = mesh->getVAO();
             GLuint EBO = mesh->getEBO();
             GLuint VBO = mesh->getVBO();
@@ -66,13 +64,12 @@ namespace Renderer {
             if (VAO != 0) glDeleteVertexArrays(1, &VAO);
         }
 
-        void Clear_Color(const glm::vec4& bg)
+        void M_clearColor(const glm::vec4& bg)
         {
             glClearColor(bg.r, bg.g, bg.b, bg.a);
-
         }
 
-        void Setup_Mesh(const std::shared_ptr<Mesh>& mesh) {
+        void M_setupMesh(const std::shared_ptr<Mesh>& mesh) {
             glGenVertexArrays(1, &mesh->getVAO());
             glGenBuffers(1, &mesh->getVBO());
 
@@ -97,54 +94,53 @@ namespace Renderer {
             glBindVertexArray(0);
         }
     }
-    export void Init(const Scene& scene) {
-        if (!sm) {
-            sm = new ShaderManager();
-            initialized = true;
-            if (!scene.showMouse) {
+    export void M_initRenderer(const Scene& scene) {
+        if (!M_shaderManager_) {
+            M_shaderManager_ = new ShaderManager();
+            M_isInitialized_ = true;
+            if (!scene.isShowMouse_) {
                 glutSetCursor(GLUT_CURSOR_NONE);
             }
         }
     }
-    export void Rnderer_Scene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
-        Clear_Color(scene.getBG());
+    export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
+        M_clearColor(scene.getBackgroundColor());
         glm::mat4 proj = proj_;
         glm::mat4 view = view_;
         for (const auto& object : scene.getStaticObjects()) {
             for (const auto& mesh : object->getMeshes()) {
-                Draw(mesh, view, proj);
+                M_draw(mesh, view, proj);
             }
         }
         for (const auto& object : scene.getObjects()) {
+            object->drawGrid(view, proj);
             for (const auto& mesh : object->getMeshes()) {
-                Draw(mesh, view, proj);
-
-                object->DrawGrid(view, proj);
+                M_draw(mesh, view, proj);
             }
         }
     }
-    export void End(const Scene& scene) {
-        if (!initialized) return;
-        initialized = false;
+    export void M_end(const Scene& scene) {
+        if (!M_isInitialized_) return;
+        M_isInitialized_ = false;
         for (const auto& object : scene.getObjects()) {
             for (const auto& mesh : object->getMeshes()) {
-                Delete_Buffer(mesh);
+                M_deleteBuffer(mesh);
             }
         }
-        delete sm;
-        sm = nullptr;
+        delete M_shaderManager_;
+        M_shaderManager_ = nullptr;
     }
-    export void Setup_Object(const std::shared_ptr<Object>& obj) {
+    export void M_setupObject(const std::shared_ptr<Object>& obj) {
         for (auto& mesh : obj->getMeshes()) {
-            Setup_Mesh(mesh);
+            M_setupMesh(mesh);
         }
     }
-    export void Setup_Static_Object(const std::shared_ptr<Static_Object>& obj) {
+    export void M_setupStaticObject(const std::shared_ptr<Static_Object>& obj) {
         for (auto& mesh : obj->getMeshes()) {
-            Setup_Mesh(mesh);
+            M_setupMesh(mesh);
         }
     }
-    export void Depth(bool& depth) {
+    export void M_depthOnOff(bool& depth) {
         if (!depth) {
             glEnable(GL_DEPTH_TEST);
         }
@@ -153,7 +149,7 @@ namespace Renderer {
         }
         depth = !depth;
     }
-    export void Fill(bool& fill)
+    export void M_fillOnOff(bool& fill)
     {
         if (!fill) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -163,7 +159,7 @@ namespace Renderer {
         }
         fill = !fill;
     }
-    export void Cull(bool& cull)
+    export void M_cullOnOff(bool& cull)
     {
         if (!cull) {
             glEnable(GL_CULL_FACE);
@@ -173,5 +169,10 @@ namespace Renderer {
             glDisable(GL_CULL_FACE);
         }
         cull = !cull;
+    }
+    void m_collsionOnOff(bool& coll)
+    {
+        M_isDrawAabb = coll;
+        coll = !coll;
     }
 }

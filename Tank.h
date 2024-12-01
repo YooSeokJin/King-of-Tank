@@ -6,27 +6,28 @@ public:
 	Tank();
 	void update(float frameTime) override;
 
-	void move_F();
-	void move_B();
-	void rt_Y();
-	void rt_Y_R();
+	void moveForward();
+	void moveBackward();
+	void rotateY();
+	void rotateY_R();
 
-	void set_Angle(const glm::vec3& dir);
-	void set_Camera(const Camera* camera);
-	const Camera* camera = nullptr;
+	void setAngle(const glm::vec3& dir);
+	void setCamera(const Camera* camera);
+	const Camera* camera_ = nullptr;
 private:
-	void movement();
-	void turret_rotation();
+	void moveTank();
+	void rotateTurret();
+	void checkState();
 private:
-	bool Forward;
-	bool Backward;
+	bool isForward_;
+	bool isBackward_;
 
 	// 터렛 회전에 사용
-	float to_yaw;
-	float yaw_diff =0.f;
+	float yawTarget_;
+	float yawDiff_ =0.f;
 	// 포탑 회전에 사용
-	float to_pitch;
+	float targetPitch_;
 
-	float turret_speed = 0.01f;
+	float turretSpeed_;
 };
 

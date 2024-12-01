@@ -2,17 +2,17 @@
 
 bool showCollision = false;
 
-int WinSizeX = 1024;
-int WinSizeY = 1024;
-int centerX = WinSizeX / 2;
-int centerY = WinSizeY / 2;
-std::random_device rd{ };
-std::mt19937 mt(rd());
-std::uniform_real_distribution<float> ufd{ };
-std::uniform_int_distribution<int> uid{ };
+int width_ = 1024;
+int height_ = 1024;
+int windowCenterX_ = width_ / 2;
+int windowCenterY_ = height_ / 2;
+std::random_device randomEngine_{ };
+std::mt19937 mt_(randomEngine_());
+std::uniform_real_distribution<float> ufd_{ };
+std::uniform_int_distribution<int> uid_{ };
 
 // 컬러 팔레트 (RGBA)
-const glm::vec4 colorPalette[40] = {
+const glm::vec4 colorPaletteV4_[40] = {
     glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),    // 빨강 0
     glm::vec4(1.0f, 0.5f, 0.0f, 1.0f),    // 주황 1
     glm::vec4(1.0f, 1.0f, 0.0f, 1.0f),    // 노랑 2
@@ -54,20 +54,20 @@ const glm::vec4 colorPalette[40] = {
     glm::vec4(0.56f, 0.73f, 0.56f, 1.0f), // 라이트 그린 38
     glm::vec4(0.5f, 0.5f, 1.0f, 1.0f)     // 라이트 블루 39
 };
-const glm::vec4 BlackColor(0.0f, 0.0f, 0.0f, 1.0f);
-const glm::vec4 WhiteColor(1.0f, 1.0f, 1.0f, 1.0f);
+const glm::vec4 blackColorV4_(0.0f, 0.0f, 0.0f, 1.0f);
+const glm::vec4 whiteColorV4_(1.0f, 1.0f, 1.0f, 1.0f);
 
 void changeOpenGL(int x, int y, int z, glm::vec3& center)
 {
-    center.x = (static_cast<float>(x) / WinSizeX) * 2.0f - 1.0f;
-	center.y = 1.0f - ((static_cast<float>(y) / WinSizeY) * 2.0f);
+    center.x = (static_cast<float>(x) / width_) * 2.0f - 1.0f;
+	center.y = 1.0f - ((static_cast<float>(y) / height_) * 2.0f);
     center.z = static_cast<float>(z);
 }
 
 void changeOpenGL(const glm::vec3& windowPoints, glm::vec3& myPoints)
 {
-	myPoints.x = windowPoints.x / WinSizeX * 2.0f - 1.0f;
-	myPoints.y = 1.0f - windowPoints.y / WinSizeY * 2.0f;
+	myPoints.x = windowPoints.x / width_ * 2.0f - 1.0f;
+	myPoints.y = 1.0f - windowPoints.y / height_ * 2.0f;
 }
 
 glm::vec3 screenToWorld(float ndcX, float ndcY, const glm::mat4& view, const glm::mat4& proj)
@@ -86,11 +86,11 @@ glm::vec3 screenToWorld(float ndcX, float ndcY, const glm::mat4& view, const glm
 float Change_X(int x)
 {
 
-    return (static_cast<float>(x) / WinSizeX) * 2.0f - 1.0f;
+    return (static_cast<float>(x) / width_) * 2.0f - 1.0f;
 }
 
 float Change_Y(int y)
 {
-    return 1.0f - ((static_cast<float>(y) / WinSizeY) * 2.0f);
+    return 1.0f - ((static_cast<float>(y) / height_) * 2.0f);
 }
 

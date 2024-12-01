@@ -6,7 +6,7 @@
 class PlayerController {
 public:
 	PlayerController();
-	PlayerController(std::shared_ptr<Object> target_);
+	PlayerController(std::shared_ptr<Object> target);
 	~PlayerController();
 
 	virtual void event(unsigned char key, int x, int y);
@@ -14,11 +14,11 @@ public:
 	virtual void keyUp(unsigned char key, int x, int y);
 	virtual void mouseMotion(int x, int y);
 	virtual void mouseWheel(int button, int dir, int x, int y);
-	void set_target(std::shared_ptr<Object> target_);
-	void set_camera(Camera* camera);
-	glm::vec3 get_camera_offset() const { return camera_offset; }
+	void setTarget(std::shared_ptr<Object> target);
+	void setCamera(Camera* camera);
+	glm::vec3 getCameraOffset() const { return cameraOffset_; }
 protected:
-	std::shared_ptr<Object> target;
-	glm::vec3 camera_offset;
-	Camera* camera;
+	std::shared_ptr<Object> target_;
+	glm::vec3 cameraOffset_;
+	Camera* camera_;
 };

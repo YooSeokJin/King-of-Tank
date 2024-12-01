@@ -4,167 +4,172 @@
 #include "Movement.h"
 #include "algorithm"
 
-Mesh::Mesh() : VAO(0), VBO(0), EBO(0)
+Mesh::Mesh() : VAO_(0), VBO_(0), EBO_(0)
 {
-    shaderName = { };
-    Color = nullptr;
+    shaderName_ = { };
+    meshColor_ = nullptr;
 }
 
 Mesh::~Mesh()
 {
-    delete move;
-    delete Color;
+    delete movement_;
+    delete meshColor_;
 }
 
-void Mesh::change_Index()
+void Mesh::chanegIndex()
 {
-    if (!indices.empty()) {
-        auto min = std::min_element(indices.begin(), indices.end());
+    if (!indices_.empty()) {
+        auto min = std::min_element(indices_.begin(), indices_.end());
         unsigned int MinValue = *min;
         if (*min != 0) {
-            for (auto& i : indices) {
+            for (auto& i : indices_) {
                 i -= MinValue;
             }
         }
     }
-    if (!normal_indices.empty()) {
-        auto min = std::min_element(normal_indices.begin(), normal_indices.end());
+    if (!normalIndices_.empty()) {
+        auto min = std::min_element(normalIndices_.begin(), normalIndices_.end());
         unsigned int MinValue = *min;
         if (*min != 0) {
-            for (auto& i : normal_indices) {
+            for (auto& i : normalIndices_) {
                 i -= MinValue;
             }
         }
     }
-    if (!texcoords_indices.empty()) {
-        auto min = std::min_element(texcoords_indices.begin(), texcoords_indices.end());
+    if (!texcoordsIndices_.empty()) {
+        auto min = std::min_element(texcoordsIndices_.begin(), texcoordsIndices_.end());
         unsigned int MinValue = *min;
         if (*min != 0) {
-            for (auto& i : texcoords_indices) {
+            for (auto& i : texcoordsIndices_) {
                 i -= MinValue;
             }
         }
     }
 }
 
-void Mesh::add_movement()
+void Mesh::addMovement()
 {
-    if (!move) move = new Movement();
+    if (!movement_) movement_ = new Movement();
 }
 
-void Mesh::apply_movement()
+void Mesh::drawAabb()
 {
-    glm::mat4 tr = Local_Transform.getTransformMatrix();
-    for (auto& v : positions) {
+
+}
+
+void Mesh::applyMovement()
+{
+    glm::mat4 tr = localTransform_.getTransformMatrix();
+    for (auto& v : positions_) {
         glm::vec4 newPos = glm::vec4(v, 1);
         v = tr * newPos;
     }
-    Local_Transform.resetAll();
+    localTransform_.resetAll();
 }
 
-void Mesh::add_position(const glm::vec3& position)
+void Mesh::addPosition(const glm::vec3& position)
 {
-    positions.emplace_back(position);
+    positions_.emplace_back(position);
 }
 
-void Mesh::add_normal(const glm::vec3& normal)
+void Mesh::addNormal(const glm::vec3& normal)
 {
-    normals.emplace_back(normal);
+    normals_.emplace_back(normal);
 }
 
-void Mesh::add_texCoord(const glm::vec2& texcoord)
+void Mesh::addTexCoord(const glm::vec2& texcoord)
 {
-    texCoords.emplace_back(texcoord);
+    texCoords_.emplace_back(texcoord);
 }
 
-void Mesh::add_indices(unsigned int index)
+void Mesh::addIndex(unsigned int index)
 {
-    indices.push_back(index);
+    indices_.push_back(index);
 }
 
-void Mesh::add_normal_indices(unsigned int index)
+void Mesh::addNormalIndex(unsigned int index)
 {
-    normal_indices.push_back(index);
+    normalIndices_.push_back(index);
 }
 
-void Mesh::add_texcoords_indices(unsigned int index)
+void Mesh::addTexCoordIndex(unsigned int index)
 {
-    texcoords_indices.push_back(index);
+    texcoordsIndices_.push_back(index);
 }
 
 void Mesh::update(float frameTime)
 {
-    if (!move) return;
-    move->update(frameTime);
+    if (!movement_) return;
+    movement_->update(frameTime);
 
-    Local_Transform.translate(move->get_delta_position());
-    Local_Transform.rotate(move->get_delta_rotation());
+    localTransform_.moveLocation(movement_->getDeltaPosition());
+    localTransform_.rotate(movement_->getDeltaRotation());
 }
 
 
 std::vector<float> Mesh::assembleVertexData()
 {
-    change_Index();
+    chanegIndex();
     std::vector<float> vertexData;
-    for (size_t i = 0; i < indices.size(); ++i) {
+    for (size_t i = 0; i < indices_.size(); ++i) {
         // Position
-        size_t idx_index = indices[i];
-        vertexData.push_back(positions[idx_index].x);
-        vertexData.push_back(positions[idx_index].y);
-        vertexData.push_back(positions[idx_index].z);
+        size_t idx_index = indices_[i];
+        vertexData.push_back(positions_[idx_index].x);
+        vertexData.push_back(positions_[idx_index].y);
+        vertexData.push_back(positions_[idx_index].z);
         // Normal
-        if (normals.empty()) {
+        if (normals_.empty()) {
             vertexData.push_back(0.f);
             vertexData.push_back(0.f);
             vertexData.push_back(0.f);
         }
         else {
-            size_t normal_idx = normal_indices[i];
-            vertexData.push_back(normals[normal_idx].x);
-            vertexData.push_back(normals[normal_idx].y);
-            vertexData.push_back(normals[normal_idx].z);
+            size_t normal_idx = normalIndices_[i];
+            vertexData.push_back(normals_[normal_idx].x);
+            vertexData.push_back(normals_[normal_idx].y);
+            vertexData.push_back(normals_[normal_idx].z);
         }
         // TexCoords
-        if (texCoords.empty()) {
+        if (texCoords_.empty()) {
             vertexData.push_back(0.f);
             vertexData.push_back(0.f);
         }
         else {
-            size_t texcoords_idx = texcoords_indices[i];
-            vertexData.push_back(texCoords[texcoords_idx].x);
-            vertexData.push_back(texCoords[texcoords_idx].y);
+            size_t texcoords_idx = texcoordsIndices_[i];
+            vertexData.push_back(texCoords_[texcoords_idx].x);
+            vertexData.push_back(texCoords_[texcoords_idx].y);
         }
-        assemble_indices.push_back(static_cast<unsigned int>(i));
+        assembleIndices_.push_back(static_cast<unsigned int>(i));
     }
     return vertexData;
 }
 
-void Mesh::set_Parent(ModelMatrix* p)
+void Mesh::setParent(ModelMatrix* parent)
 {
-    Local_Transform.setParent(p);
+    localTransform_.setParent(parent);
 }
 
-void Mesh::delete_Parent()
+void Mesh::deleteParent()
 {
-    Local_Transform.deleteParent();
+    localTransform_.deleteParent();
 }
 
-void Mesh::set_Pivot(float x, float y, float z)
+void Mesh::setPivot(float x, float y, float z)
 {
-    Local_Transform.setPivot(x, y, z);
+    localTransform_.setPivot(x, y, z);
 }
 
-void Mesh::set_Pivot(const glm::vec3& pivot)
+void Mesh::setPivot(const glm::vec3& pivot)
 {
-    Local_Transform.setPivot(pivot);
+    localTransform_.setPivot(pivot);
 }
 
-void Mesh::show_all_vertex() {
-    glm::mat4 model = Local_Transform.getTransformMatrix();
+void Mesh::showAllVertices() {
+    glm::mat4 model = localTransform_.getTransformMatrix();
 
     std::vector<glm::vec3> newPos;
 
-    for (const auto& v : positions) {
+    for (const auto& v : positions_) {
         glm::vec4 transformed = model * glm::vec4(v, 1.0f);
         newPos.emplace_back(transformed.x, transformed.y, transformed.z);
     }
@@ -191,19 +196,19 @@ void Mesh::show_all_vertex() {
     printf("\n\n");
 }
 
-void Mesh::show_position() const
+void Mesh::showPositions() const
 {
-    auto a = Local_Transform.getLocation();
+    auto a = localTransform_.getLocation();
     printf("%f, %f, %f\n", a.x, a.y, a.z);
 }
 
-void Mesh::add_collision()
+void Mesh::addCollision()
 {
-    glm::mat4 model = Local_Transform.getTransformMatrix();
+    glm::mat4 model = localTransform_.getTransformMatrix();
 
     std::vector<glm::vec3> newPos;
 
-    for (const auto& v : positions) {
+    for (const auto& v : positions_) {
         glm::vec4 transformed = model * glm::vec4(v, 1.0f);
         newPos.emplace_back(transformed.x, transformed.y, transformed.z);
     }
@@ -229,17 +234,17 @@ void Mesh::add_collision()
     pos.push_back(minmaxY.second->y);
     pos.push_back(minmaxZ.first->z);
     pos.push_back(minmaxZ.second->z);
-    aabb.set_aabb(pos);
+    aabb_.setAabb(pos);
 }
 
-std::vector<float> Mesh::get_aabb() const
+std::vector<float> Mesh::getAabb() const
 {
-    std::vector<float> aabb_world = aabb.get_aabb();
+    std::vector<float> aabb_world = aabb_.getAabb();
 
     glm::vec4 minPoint(aabb_world[0], aabb_world[2], aabb_world[4], 1.0f);
     glm::vec4 maxPoint(aabb_world[1], aabb_world[3], aabb_world[5], 1.0f);
 
-    glm::mat4 model = Local_Transform.getTransformMatrix();
+    glm::mat4 model = localTransform_.getTransformMatrix();
 
     glm::vec4 transformedMin = model * minPoint;
     glm::vec4 transformedMax = model * maxPoint;
@@ -262,7 +267,7 @@ std::vector<float> Mesh::get_aabb() const
     };
 }
 
-void Mesh::Init()
+void Mesh::init()
 {
     /*positions.clear();
     normals.clear();

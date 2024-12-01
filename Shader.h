@@ -1,6 +1,4 @@
-﻿#ifndef SHADER_H
-#define SHADER_H
-
+﻿#pragma once
 #include <string>
 #include <unordered_map>
 #include <glm/glm.hpp>
@@ -8,13 +6,13 @@
 
 class Shader {
 public:
-	Shader() : programID(0) { }
+	Shader() : programID_(0) { }
 	Shader(const char* vertexPath, const char* fragmentPath);
 	~Shader();
 
 
 	void useShader() const;
-	GLuint getProgramID() const { return programID; }
+	GLuint getProgramID() const { return programID_; }
 
 	void setUniformMatrix4fv(const std::string& name, const glm::mat4& mat) const;
 	void setUniformVec4(const std::string& name, const glm::vec4& vec) const;
@@ -25,13 +23,11 @@ public:
 
 private:
 	GLint getUniformLocation(const std::string& name) const;
-	bool ReadFile(const char* filename, std::string* target);
-	void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType);
-	GLuint CompileShader(const char* fileNameVS, const char* fileNameFS);
+	bool readFile(const char* filename, std::string* target);
+	void addShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType);
+	GLuint compileShader(const char* fileNameVS, const char* fileNameFS);
 
 protected:
-	GLuint programID;
-	mutable std::unordered_map<std::string, GLint> uniformCache;
+	GLuint programID_;
+	mutable std::unordered_map<std::string, GLint> uniformCache_;
 };
-
-#endif // !SHADER_H

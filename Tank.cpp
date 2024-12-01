@@ -8,97 +8,107 @@ import ObjectLoader;
 Tank::Tank()
 {
 	addGrid();
-	meshes = ObjectLoader::Load_Meshes("objs/tank.obj", "Model");
-	for (auto& mesh : meshes) {
-		mesh->Local_Transform.rotateY(180.f);
+	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
+	for (auto& mesh : meshes_) {
+		mesh->localTransform_.rotateY(180.f);
 	}
-	to_yaw = to_pitch = 0.f;
+	yawTarget_ = targetPitch_ = 0.f;
+	turretSpeed_ = 0.01f;
 	// 0 - Base
 	// 1 - Right Track
 	// 2 - Turret
 	// 3 - Gun
 	// 4 - Gun Holder
 	// 5 - Right Track
-	meshes[0]->Color = new glm::vec4(colorPalette[27]);
-	meshes[1]->Color = new glm::vec4(BlackColor);
-	meshes[2]->Color = new glm::vec4(colorPalette[19]);
-	meshes[3]->Color = new glm::vec4(colorPalette[11]);
-	meshes[4]->Color = new glm::vec4(colorPalette[38]);
-	meshes[5]->Color = new glm::vec4(BlackColor);
+	meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[27]);
+	meshes_[1]->meshColor_ = new glm::vec4(blackColorV4_);
+	meshes_[2]->meshColor_ = new glm::vec4(colorPaletteV4_[19]);
+	meshes_[3]->meshColor_ = new glm::vec4(colorPaletteV4_[11]);
+	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[38]);
+	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
 
-	Backward = Forward = false;
+	isBackward_ = isForward_ = false;
 }
 
 void Tank::update(float frameTime)
 {
-	movement();
-	turret_rotation();
+	moveTank();
+	rotateTurret();
+	//checkState();
 	Object::update(frameTime);
-
-
 }
 
-void Tank::move_F()
+void Tank::moveForward()
 {
-	Forward = !Forward;
+	isForward_ = !isForward_;
 }
 
-void Tank::move_B()
+void Tank::moveBackward()
 {
-	Backward = !Backward;
+	isBackward_ = !isBackward_;
 }
 
-void Tank::rt_Y()
+void Tank::rotateY()
 {
-	move.add_rt_direction(0.f, 1.f, 0.f);
+	movement_.addRtDirection(0.f, 1.f, 0.f);
 	for (int i = 2; i < 5; ++i) {
-		meshes[i]->move->add_rt_direction(0.f, -1.f, 0.f);
+		meshes_[i]->movement_->addRtDirection(0.f, -1.f, 0.f);
 	}
 }
 
-void Tank::rt_Y_R()
+void Tank::rotateY_R()
 {
-	move.add_rt_direction(0.f, -1.f, 0.f);
+	movement_.addRtDirection(0.f, -1.f, 0.f);
 	for (int i = 2; i < 5; ++i) {
-		meshes[i]->move->add_rt_direction(0.f, 1.f, 0.f);
+		meshes_[i]->movement_->addRtDirection(0.f, 1.f, 0.f);
 	}
 }
 
-void Tank::set_Angle(const glm::vec3& dir)
+void Tank::setAngle(const glm::vec3& dir)
 {
 
 }
 
-void Tank::set_Camera(const Camera* camera_)
+void Tank::setCamera(const Camera* camera)
 {
-	camera = camera_;
+	camera_ = camera;
 }
 
-void Tank::movement()
+void Tank::moveTank()
 {
 	glm::vec3 FVector(0.f);
-	if (Forward) FVector += World_Transform.get_Forward_vector();
-	if (Backward) FVector -= World_Transform.get_Forward_vector();
-	move.set_direction(FVector.x, FVector.y, FVector.z);
+	if (isForward_) FVector += worldTransform_.getForwardVector();
+	if (isBackward_) FVector -= worldTransform_.getForwardVector();
+	movement_.setDirection(FVector.x, FVector.y, FVector.z);
 }
 
-void Tank::turret_rotation()
+void Tank::rotateTurret()
 {
-	glm::vec3 dir = camera->getForwardVector();
-	to_yaw = glm::degrees(atan2(dir.z, dir.x));
+	glm::vec3 dir = camera_->getForwardVector();
+	yawTarget_ = glm::degrees(atan2(dir.z, dir.x));
 	//to_pitch = glm::degrees(asin(dir.y)); 주포 위 아래 회전
-	float t_yaw = meshes[2]->Local_Transform.getYaw();
-	yaw_diff = to_yaw - t_yaw;
-	if (yaw_diff > 180.0f) yaw_diff -= 360.0f;
-	if (yaw_diff < -180.0f) yaw_diff += 360.0f;
-	if (-1.0f <= yaw_diff && yaw_diff <= 1.0f) {
+	float t_yaw = meshes_[2]->localTransform_.getYaw();
+	yawDiff_ = yawTarget_ - t_yaw;
+	if (yawDiff_ > 180.0f) yawDiff_ -= 360.0f;
+	if (yawDiff_ < -180.0f) yawDiff_ += 360.0f;
+	if (-1.0f <= yawDiff_ && yawDiff_ <= 1.0f) {
 		for (int i = 2; i < 5; ++i) {
-			meshes[i]->Local_Transform.rotateY(-yaw_diff);
+			meshes_[i]->localTransform_.rotateY(-yawDiff_);
 		}
 	}
 	else {
 		for (int i = 2; i < 5; ++i) {
-			meshes[i]->Local_Transform.rotateY(-yaw_diff * turret_speed);
+			meshes_[i]->localTransform_.rotateY(-yawDiff_ * turretSpeed_);
+		}
+	}
+}
+
+void Tank::checkState()
+{
+	for (const auto& c : collisionStates_) {
+		printf("%c\n", c);
+		if (c == 'F') {
+			movement_.setDirection(0.0, -1.f, 0.f);
 		}
 	}
 }

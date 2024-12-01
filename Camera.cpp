@@ -3,73 +3,74 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 Camera::Camera(float fov, float aspect, float nearPlane, float farPlane)
-    : proj(fov, aspect, nearPlane, farPlane), target(nullptr), offset(nullptr), position(0.f)
+    : projModel_(fov, aspect, nearPlane, farPlane), targetObject_(nullptr), cameraOffset_(nullptr), position_(0.f)
 {
-    pitch = roll = 0.f;
-    yaw = 180.f;
-    pitch = 20.f;
-    sensitivity = 0.05f;
-    up = glm::vec3(0.f, 1.f, 0.f);
-    front = glm::vec3(0.f);
+    pitch_ = roll_ = 0.f;
+    yaw_ = 180.f;
+    pitch_ = 20.f;
+    sensitivity_ = 0.05f;
+    up_ = glm::vec3(0.f, 1.f, 0.f);
+    front_ = glm::vec3(0.f);
+    smoothingSpeed_ = 6.f;
 }
 
 Camera::~Camera() {
-    offset = nullptr;
-    target = nullptr;
+    cameraOffset_ = nullptr;
+    targetObject_ = nullptr;
 }
 
 void Camera::update(float frameTime)
 {
-    glm::vec3 targetPos = target->getPosition();
-    float radius = glm::length(offset->x);
+    glm::vec3 targetPos = targetObject_->getPosition();
+    float radius = glm::length(cameraOffset_->x);
 
     glm::vec3 newPos(0.f);
-    newPos.x = targetPos.x + radius * cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    newPos.y = targetPos.y + radius * sin(glm::radians(pitch));
-    newPos.z = targetPos.z + radius * sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    newPos.x = targetPos.x + radius * cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
+    newPos.y = targetPos.y + radius * sin(glm::radians(pitch_));
+    newPos.z = targetPos.z + radius * sin(glm::radians(yaw_)) * cos(glm::radians(pitch_));
 
-    position = glm::mix(position, newPos, frameTime * smoothingSpeed);
+    position_ = glm::mix(position_, newPos, frameTime * smoothingSpeed_);
 
-    front = glm::normalize(targetPos - position);
+    front_ = glm::normalize(targetPos - position_);
 }
 
-void Camera::followObject(std::shared_ptr<Object> target_, const glm::vec3& offset_) {
-    target = target_.get();
-    offset = &offset_;
-    position = target->getPosition() + *offset;
+void Camera::followObject(std::shared_ptr<Object> target, const glm::vec3& offset) {
+    targetObject_ = target.get();
+    cameraOffset_ = &offset;
+    position_ = targetObject_->getPosition() + *cameraOffset_;
 }
 
 glm::mat4 Camera::getViewMatrix() const {
-    if (target) {
-        return view.getViewMatrix(position, target->getPosition(), up);
+    if (targetObject_) {
+        return viewModel_.getViewMatrix(position_, targetObject_->getPosition(), up_);
     }
     else {
-        return view.getViewMatrix(position, glm::vec3(0.f), up);
+        return viewModel_.getViewMatrix(position_, glm::vec3(0.f), up_);
     }
 }
 
 glm::mat4 Camera::getPerspectiveMatrix() const {
-    return proj.getPerspectiveMatrix();
+    return projModel_.getPerspectiveMatrix();
 }
 
 void Camera::setPerspective(float fov, float aspect, float nearPlane, float farPlane) {
-    proj.setPerspective(fov, aspect, nearPlane, farPlane);
+    projModel_.setPerspective(fov, aspect, nearPlane, farPlane);
 }
 
 void Camera::rotate(int deltaX, int deltaY)
 {
-    yaw += deltaX * sensitivity;
-    pitch += deltaY * sensitivity;
+    yaw_ += deltaX * sensitivity_;
+    pitch_ += deltaY * sensitivity_;
 
-    pitch = glm::clamp(pitch, 10.0f, 89.0f);
-    if (yaw >= 360.0f) yaw -= 360.0f;
-    if (yaw < 0.0f) yaw += 360.0f;
+    pitch_ = glm::clamp(pitch_, 10.0f, 89.0f);
+    if (yaw_ >= 360.0f) yaw_ -= 360.0f;
+    if (yaw_ < 0.0f) yaw_ += 360.0f;
 }
 void Camera::adjustFov(float deltaFov)
 {
-    proj.setFov(proj.getFov() + deltaFov);
+    projModel_.setFov(projModel_.getFov() + deltaFov);
 
-    if (proj.getFov() < 10.0f) proj.setFov(10.0f);
-    if (proj.getFov() > 90.0f) proj.setFov(90.0f);
+    if (projModel_.getFov() < 10.0f) projModel_.setFov(10.0f);
+    if (projModel_.getFov() > 90.0f) projModel_.setFov(90.0f);
 }
 
