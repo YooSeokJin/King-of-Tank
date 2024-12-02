@@ -44,9 +44,9 @@ KOT_Scene::KOT_Scene()
 
 	addLightCube(true); // ±¤¿ø »ý¼º
 	staticObjects_[5]->setScale(0.2f, 0.2f, 0.2f);
-	staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 1.0f, 
-								objects_[0]->getPosition().y + 5.0f,
-								objects_[0]->getPosition().z + 1.0f);
+	staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 0.f, 
+								objects_[0]->getPosition().y + 1.0f,
+								objects_[0]->getPosition().z + 0.f);
 
 	Init();
 	
