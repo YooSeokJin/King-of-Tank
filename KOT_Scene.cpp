@@ -13,7 +13,9 @@ KOT_Scene::KOT_Scene()
 	addCube(true); // ¹Ù´Ú
 	staticObjects_[0]->setScale(50.f, 0.1f, 50.f);
 	staticObjects_[0]->addPosition(0.f, -0.1f, 0.f);
-
+	for (auto& mesh : staticObjects_[0]->getMeshes()) {
+		mesh->meshColor_ = new glm::vec4(colorPaletteV4_[24]);
+	}
 	addCube(true);
 	staticObjects_[1]->setScale(0.1f, 5.f, 50.f);
 	staticObjects_[1]->addPosition(50.f, 5.f, 0.f);

@@ -3,7 +3,7 @@
 #include "global.h"
 class Projection {
 public:
-    Projection(float fov = 45.0f, float aspect = float(width_) / float(height_), float nearPlane = 0.1f, float farPlane = 100.0f);
+    Projection(float fov = 45.0f, float aspect = float(width_) / float(height_), float nearPlane = 0.1f, float farPlane = 100.f);
     ~Projection();
 
     glm::mat4 getPerspectiveMatrix() const;

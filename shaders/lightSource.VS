@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec3 a_Normal;
-
+layout(location = 3) in vec4 a_Color;
 uniform mat4 u_Model;
 uniform mat4 u_Viewing;
 uniform mat4 u_Projection;

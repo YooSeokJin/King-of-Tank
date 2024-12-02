@@ -24,7 +24,7 @@ private:
 
 	// 터렛 회전에 사용
 	float yawTarget_;
-	float yawDiff_ =0.f;
+	float yawDiff_;
 	// 포탑 회전에 사용
 	float targetPitch_;
 

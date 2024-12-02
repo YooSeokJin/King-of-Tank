@@ -15,6 +15,7 @@ Tank::Tank()
 
 	yawTarget_ = targetPitch_ = 0.f;
 	turretSpeed_ = 0.01f;
+	yawDiff_ = 0.0f;
 	// 0 - Base
 	// 1 - Right Track
 	// 2 - Turret

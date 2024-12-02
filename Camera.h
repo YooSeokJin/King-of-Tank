@@ -6,7 +6,7 @@
 class Camera {
 public:
     Camera(float fov = 45.0f, float aspect = float(width_) / float(height_),
-        float nearPlane = 0.1f, float farPlane = 100.0f);
+        float nearPlane = 1.f, float farPlane = 500.f);
     ~Camera();
     void update(float frameTime);
     void followObject(std::shared_ptr<Object> target, const glm::vec3& offset = glm::vec3(0.0f, 3.0f, 5.0f));

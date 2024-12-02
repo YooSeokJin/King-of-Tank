@@ -36,15 +36,6 @@ namespace Renderer {
             glUseProgram(shader.getProgramID());
             glBindVertexArray(mesh->getVAO());
 
-            // À¯´ÏÆû ¼³Á¤
-            if (mesh->getShaderName() == "Model") {
-                if (mesh->meshColor_) {
-                    shader.setUniformVec4("u_MeshColor", *mesh->meshColor_);
-                }
-                else {
-                    shader.setUniformVec4("u_MeshColor", colorPaletteV4_[8]);
-                }
-            }
             shader.setUniformMatrix4fv("u_Model", mesh->getModelTransform());
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);
@@ -84,7 +75,7 @@ namespace Renderer {
             glBindBuffer(GL_ARRAY_BUFFER, mesh->getVBO());
             glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
 
-            const size_t stride = 8 * sizeof(float); // position, normal, texcoords 3 + 3 + 2
+            const size_t stride = 12 * sizeof(float); // position, normal, texcoords, Color 3 + 3 + 2 + 4
 
             // Position
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
@@ -95,6 +86,9 @@ namespace Renderer {
             // Texture Coordinate
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
             glEnableVertexAttribArray(2);
+            // Color
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, stride, (void*)(8 * sizeof(float)));
+            glEnableVertexAttribArray(3);
 
             glBindVertexArray(0);
         }

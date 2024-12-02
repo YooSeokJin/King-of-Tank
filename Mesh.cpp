@@ -139,6 +139,20 @@ std::vector<float> Mesh::assembleVertexData()
             vertexData.push_back(texCoords_[texcoords_idx].x);
             vertexData.push_back(texCoords_[texcoords_idx].y);
         }
+        // Color
+        if (meshColor_) {
+            printf("No");
+            vertexData.push_back(meshColor_->r);
+            vertexData.push_back(meshColor_->g);
+            vertexData.push_back(meshColor_->b);
+            vertexData.push_back(meshColor_->a);
+        }
+        else {
+            vertexData.push_back(0.1f);
+            vertexData.push_back(0.1f);
+            vertexData.push_back(0.1f);
+            vertexData.push_back(1.0f);
+        }
         assembleIndices_.push_back(static_cast<unsigned int>(i));
     }
     return vertexData;

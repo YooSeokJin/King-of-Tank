@@ -1,5 +1,6 @@
 #version 330 core
 
+in vec4 Color;
 in vec3 Normal;
 in vec3 FragPos;
 
@@ -23,6 +24,6 @@ void main()
 	float diff = max(dot(norm, lightDir), 0.f);
 	vec3 diffuse = diff * lightColor.xyz;
 
-	vec3 result = (ambient.xyz + diffuse) * u_MeshColor.xyz;
+	vec3 result = (ambient.xyz + diffuse) * Color.xyz;
 	FragColor = vec4(result, 1.0f);
 }
