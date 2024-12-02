@@ -6,7 +6,6 @@ in vec3 FragPos;
 
 out vec4 FragColor;
 
-uniform vec4 u_MeshColor;
 uniform vec4 u_LightColor;
 uniform vec3 u_LightPos;
 uniform vec3 u_ViewPos;
@@ -33,6 +32,6 @@ void main()
 	float spec = pow(max(dot(viewDir, reflectDir), 0.f), 32); // Highlight's shininess : 32
 	vec3 specular = specularStrength * spec * lightColor.xyz;
 
-	vec3 result = (ambient.xyz + diffuse + specular) * u_MeshColor.xyz;
+	vec3 result = (ambient.xyz + diffuse + specular) * Color.xyz;
 	FragColor = vec4(result, 1.0f);
 }
