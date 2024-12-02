@@ -25,6 +25,9 @@ public:
 	const std::vector<std::shared_ptr<Object>>& getObjects() const;
 	const std::vector<std::shared_ptr<Static_Object>>& getStaticObjects() const;
 
+	//
+	Camera getCamera() const { return camera_; };
+
 	bool isShowMouse_;
 protected:
 	virtual void update(float frameTime);
@@ -41,6 +44,7 @@ protected:
 
 	void setupObject(std::shared_ptr<Object> obj);
 	void setupStaticObject(std::shared_ptr<Static_Object> obj);
+
 private:
 	
 protected:

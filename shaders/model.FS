@@ -9,6 +9,7 @@ out vec4 FragColor;
 uniform vec4 u_MeshColor;
 uniform vec4 u_LightColor;
 uniform vec3 u_LightPos;
+uniform vec3 u_ViewPos;
 
 void main()
 {
@@ -24,6 +25,6 @@ void main()
 	float diff = max(dot(norm, lightDir), 0.f);
 	vec3 diffuse = diff * lightColor.xyz;
 
-	vec3 result = (ambient.xyz + diffuse) * Color.xyz;
+	vec3 result = (ambient.xyz + diffuse) * u_MeshColor.xyz;
 	FragColor = vec4(result, 1.0f);
 }

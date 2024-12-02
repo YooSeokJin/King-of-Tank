@@ -20,6 +20,8 @@ public:
     void adjustFov(float deltaFov);
     float getYaw() const { return yaw_; }
     glm::vec3 getForwardVector() const { return front_; }
+    //
+    glm::vec3 getPosition() const { return position_; }
 private:
     glm::vec3 position_;
     glm::vec3 up_;

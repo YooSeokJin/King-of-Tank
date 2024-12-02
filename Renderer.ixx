@@ -11,7 +11,7 @@ namespace Renderer {
         bool M_isInitialized_ = false;
         Shader* M_collisionShader_ = nullptr;
         bool M_isDrawAabb = false;
-        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj);
+        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj, const Scene& scene);
         void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh);
         void M_clearColor(const glm::vec4& bg);
         void M_setupMesh(const std::shared_ptr<Mesh>& mesh);
@@ -29,7 +29,7 @@ namespace Renderer {
 }
 namespace Renderer {
     namespace {
-        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj) {
+        void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj, const Scene& scene) {
             if (!mesh) return;
 
             auto& shader = M_shaderManager_->getShader(mesh->getShaderName().c_str());
@@ -42,8 +42,10 @@ namespace Renderer {
 
             // [TODO] need to be modified....
             shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
-            const glm::vec3 lightPos = glm::vec3(1.0f, 5.0f, 1.0f);
+            const glm::vec3 lightPos = glm::vec3(0.f, 1.0f, 0.f);
             shader.setUniformVec3("u_LightPos", lightPos);
+
+            shader.setUniformVec3("u_ViewPos", scene.getCamera().getPosition());
             //===============================================================================
             size_t vertexCount = mesh->getIndices().size();
 
@@ -110,13 +112,13 @@ namespace Renderer {
 
         for (const auto& object : scene.getStaticObjects()) {
             for (const auto& mesh : object->getMeshes()) {
-                M_draw(mesh, view, proj);
+                M_draw(mesh, view, proj, scene);
             }
         }
         for (const auto& object : scene.getObjects()) {
             object->drawGrid(view, proj);
             for (const auto& mesh : object->getMeshes()) {
-                M_draw(mesh, view, proj);
+                M_draw(mesh, view, proj, scene);
                 if (M_isDrawAabb) {
                     mesh->drawAabb(view, proj, *M_collisionShader_);
                 }

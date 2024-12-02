@@ -1,11 +1,11 @@
 #version 330 core
 
-// ¾îÆ®¸®ºäÆ® ÀÎ
+// ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec3 a_Normal;
 layout(location = 2) in vec2 a_TexCoord;
 layout(location = 3) in vec4 a_Color;
-// À¯´ÏÆû °ª
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 uniform mat4 u_Model;
 uniform mat4 u_Viewing;
@@ -20,5 +20,5 @@ void main()
 	gl_Position = u_Projection * u_Viewing * u_Model * newPos;
 	FragPos = (u_Model * newPos).xyz;
 	Normal = a_Normal;
-	Color = a_Color;
+    Color = a_Color;
 }
