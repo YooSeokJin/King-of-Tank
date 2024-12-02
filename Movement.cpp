@@ -1,7 +1,7 @@
 #include "Movement.h"
 
 Movement::Movement()
-    : velocity_(5.f), direction_(0.f), deltaPosition_(0.f),
+    : velocity_(6.f, 6.f, 6.f), direction_(0.f), deltaPosition_(0.f),
     rotationVelocity_(30.f), rotationDirection_(0.f), deltaRotation_(0.f)
 {
 }

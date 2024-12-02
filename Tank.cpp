@@ -12,6 +12,7 @@ Tank::Tank()
 	for (auto& mesh : meshes_) {
 		mesh->localTransform_.rotateY(180.f);
 	}
+
 	yawTarget_ = targetPitch_ = 0.f;
 	turretSpeed_ = 0.01f;
 	// 0 - Base
@@ -28,13 +29,15 @@ Tank::Tank()
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
 
 	isBackward_ = isForward_ = false;
+
+	worldTransform_.moveLocationY(5.f);
 }
 
 void Tank::update(float frameTime)
 {
 	moveTank();
 	rotateTurret();
-	//checkState();
+	checkState();
 	Object::update(frameTime);
 }
 
@@ -105,11 +108,30 @@ void Tank::rotateTurret()
 
 void Tank::checkState()
 {
-	for (const auto& c : collisionStates_) {
-		printf("%c\n", c);
-		if (c == 'F') {
-			movement_.setDirection(0.0, -1.f, 0.f);
-		}
+	bool p = false;
+	for (char t : collisionStates_) {
+		printf("%c, ", t);
+		p = true;
+	}
+	if (p) printf("\n");
+	glm::vec3 dir = movement_.getDirection();
+	if (collisionStates_.contains('x')) {
+		if (dir.x < 0.f) movement_.setDirectionX(0.f);
+	}
+	if (collisionStates_.contains('X')) {
+		if (dir.x > 0.f) movement_.setDirectionX(0.f);
+	}
+	if (collisionStates_.contains('z')) {
+		if (dir.z < 0.f) movement_.setDirectionZ(0.f);
+	}
+	if (collisionStates_.contains('Z')) {
+		if (dir.z > 0.f) movement_.setDirectionZ(0.f);
+	}
+	if (collisionStates_.contains('F')) {
+		if (dir.y >= 0.f) movement_.setDirectionY(-0.1f);
+	}
+	if (collisionStates_.contains('O')) {
+		if (dir.y <= 0.f) movement_.setDirectionY(0.f);
 	}
 }
 

@@ -21,6 +21,7 @@ public:
 	void addScale(float x, float y, float z);
 	void addPosition(float x, float y, float z);
 	void addRotation(float x, float y, float z);
+
 protected:
 	std::vector<std::shared_ptr<Mesh>> meshes_;
 	ModelMatrix worldTransform_;
@@ -50,8 +51,10 @@ public:
 	void adjustRotateY(float delta);
 	void adjustRotateZ(float delta);
 
+	void setOrDeleteState(char type, bool DorS);
 	void setObjectState(char type);
 	void deleteObjectState(char type);
+	bool isOnGround();
 protected:
 	
 protected:

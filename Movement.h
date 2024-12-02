@@ -40,4 +40,6 @@ private:
     glm::vec3 rotationDirection_;
     glm::vec3 rotationVelocity_;
     glm::vec3 deltaRotation_;
+
+    float fallingSpeed = 9.8f;
 };

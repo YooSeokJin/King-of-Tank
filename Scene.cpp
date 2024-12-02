@@ -40,7 +40,8 @@ void Scene::update(float frameTime)
 	auto view = camera_.getViewMatrix();
 	for (auto& obj : objects_) {
 		for (auto& st : staticObjects_) {
-			CollisionChecker::M_checkCollide(obj, st);
+			CollisionChecker::M_checkFalling(obj, staticObjects_);
+			CollisionChecker::M_checkCollide(obj, staticObjects_);
 		}
 		
 		obj->update(frameTime);

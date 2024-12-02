@@ -89,14 +89,31 @@ void Object::adjustRotateZ(float delta)
 	movement_.setRtDirectionZ(delta);
 }
 
+void Object::setOrDeleteState(char type, bool isColliding)
+{
+	if (isColliding) {
+		setObjectState(type);
+	}
+	else {
+		deleteObjectState(type);
+	}
+}
+
 void Object::setObjectState(char type)
 {
+	if (collisionStates_.contains(type)) return;
 	collisionStates_.insert(type);
 }
 
 void Object::deleteObjectState(char type)
 {
+	if (!collisionStates_.contains(type)) return;
 	collisionStates_.erase(type);
+}
+
+bool Object::isOnGround()
+{
+	return collisionStates_.contains('O');
 }
 
 

@@ -1,54 +1,88 @@
 module;
 #include "Object.h"	
+#include "algorithm"
 
 export module CollisionChecker;
 namespace CollisionChecker {
-	namespace {
-		const float M_epsilon_ = 0.1f;
-		void M_checkPoint(std::shared_ptr<Object> obj, float target, float wall, char type);
-		void M_checkMesh(std::shared_ptr<Object> obj, const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<Mesh>& wall);
-		bool M_isFalling(std::shared_ptr<Object> obj, float target, float wall);
-	}
-	export void M_checkCollide(std::shared_ptr<Object> obj, std::shared_ptr<Static_Object> wall);
+    namespace {
+        const float M_epsilon_ = 0.1f;
+    }
+	export void M_checkCollide(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
+    export void M_checkFalling(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
 }
 
 namespace CollisionChecker {
 	namespace {
-		void M_checkPoint(std::shared_ptr<Object> obj, float target, float wall, char type)
-		{
-			if (std::abs(target - wall) <= M_epsilon_) {
-				obj->setObjectState(type);
-			}
-			obj->deleteObjectState(type);
-		}
-		void M_checkMesh(std::shared_ptr<Object> obj, const std::shared_ptr<Mesh>& mesh, const std::shared_ptr<Mesh>& wall) {
-			std::vector<float> aabb = mesh->getAabb();
-			std::vector<float> aabb_ = wall->getAabb();
-
-			// Falling 체크: 메시가 벽 위에 있는지 확인
-			if (aabb[2] >= aabb_[3]) { // y_min > wall의 y_max -> Falling 상태
-				obj->setObjectState('F'); // Falling 상태 설정
-				return; // 나머지 충돌 검사 생략
-			}
-
-			// Falling 상태가 아니면 다른 축(x, X, z, Z, Y) 충돌 검사
-			M_checkPoint(obj, aabb[0], aabb_[0], 'x'); // x_min
-			M_checkPoint(obj, aabb[1], aabb_[1], 'X'); // x_max
-			M_checkPoint(obj, aabb[4], aabb_[4], 'z'); // z_min
-			M_checkPoint(obj, aabb[5], aabb_[5], 'Z'); // z_max
-			M_checkPoint(obj, aabb[3], aabb_[2], 'Y'); // y_max와 y_min 비교
-		}
-
-		bool M_isFalling(std::shared_ptr<Object> obj, float target, float wall)
-		{
-		}
 
 	}
-	export void M_checkCollide(std::shared_ptr<Object> obj, std::shared_ptr<Static_Object> wall) {
-		for (auto& mesh : obj->getMeshes()) {
-			for (auto& staticMesh : wall->getMeshes()) {
-				M_checkMesh(obj, mesh, staticMesh);
-			}
-		}
-	}
+    export void M_checkCollide(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls) {
+        if (!obj->isOnGround()) return;
+        bool isColliding = false;
+        for (auto& mesh : obj->getMeshes()) {
+            std::vector<float> meshAabb = mesh->getAabb();
+            for (auto& wall : walls) {
+                for (auto& staticMesh : wall->getMeshes()) {
+                    std::vector<float> staticAabb = staticMesh->getAabb();
+                    bool yOverlap = !(staticAabb[3] < meshAabb[2] || meshAabb[3] < staticAabb[2]);
+                    if (!yOverlap) continue;
+                    bool xOverlap = !(staticAabb[1] < meshAabb[0] || meshAabb[1] < staticAabb[0]);
+                    if (!xOverlap) continue;
+                    bool zOverlap = !(staticAabb[5] < meshAabb[4] || meshAabb[5] < staticAabb[4]);
+   
+                    if (zOverlap) {
+                        isColliding = true;
+                        bool x = staticAabb[0] <= meshAabb[0] && meshAabb[0] <= staticAabb[1];
+                        bool X = staticAabb[0] <= meshAabb[1] && meshAabb[1] <= staticAabb[1];
+                        if (x)
+                            obj->setObjectState('x');
+                        if (X)
+                            obj->setObjectState('X');
+
+                        bool z = staticAabb[4] <= meshAabb[4] && meshAabb[4] <= staticAabb[5];
+                        bool Z = staticAabb[4] <= meshAabb[5] && meshAabb[5] <= staticAabb[5];
+                        if (z)
+                            obj->setObjectState('z');
+                        if (Z)
+                            obj->setObjectState('Z');
+                        return;
+                        }
+                    }
+                }
+            }
+        obj->deleteObjectState('x');
+        obj->deleteObjectState('X');
+        obj->deleteObjectState('z');
+        obj->deleteObjectState('Z');
+    }
+    export void M_checkFalling(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls) {
+        std::vector<float> minys;
+        for (auto& mesh : obj->getMeshes()) {
+            std::vector<float> aabb = mesh->getAabb();
+            minys.push_back(aabb[2]);
+        }
+        bool isOnGround = false;
+        std::sort(minys.begin(), minys.end());
+        glm::vec3 location = obj->getPosition();
+        for (auto& wall : walls) {
+            for (auto& mesh : wall->getMeshes()) {
+                std::vector<float> aabb_ = mesh->getAabb();
+                if (location.x < aabb_[0]) continue;
+                if (aabb_[1] < location.x) continue;
+                if (location.z < aabb_[4]) continue;
+                if (aabb_[5] < location.z) continue;
+
+                if (aabb_[2] + M_epsilon_ <= minys[0] && minys[0] <= aabb_[3] + M_epsilon_) {
+                    isOnGround = true;
+                }
+            }
+        }
+        if (isOnGround) {
+            obj->setObjectState('O');
+            obj->deleteObjectState('F');
+        }
+        else {
+            obj->setObjectState('F');
+            obj->deleteObjectState('O');
+        }
+    }
 }
