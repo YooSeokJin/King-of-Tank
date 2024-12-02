@@ -49,10 +49,10 @@ const glm::vec4 colorPaletteV4_[40] = {
     glm::vec4(0.82f, 0.41f, 0.12f, 1.0f), // 초콜릿 33
     glm::vec4(0.94f, 0.9f, 0.55f, 1.0f),  // 라이트 골든로드 34
     glm::vec4(0.98f, 0.92f, 0.84f, 1.0f), // 라이트 코랄 35
-    glm::vec4(0.1f, 0.74f, 0.61f, 1.0f),  // 카리브해 블루 36
+    glm::vec4(0.65f, 0.64f, 0.6f, 1.0f),  // 카리브해 블루 36
     glm::vec4(0.68f, 0.85f, 0.9f, 1.0f),  // 라이트 시안 37
     glm::vec4(0.56f, 0.73f, 0.56f, 1.0f), // 라이트 그린 38
-    glm::vec4(0.5f, 0.5f, 1.0f, 1.0f)     // 라이트 블루 39
+    glm::vec4(0.5f, 0.5f, 1.0f, 1.0f),     // 라이트 블루 39
 };
 const glm::vec4 blackColorV4_(0.0f, 0.0f, 0.0f, 1.0f);
 const glm::vec4 whiteColorV4_(1.0f, 1.0f, 1.0f, 1.0f);

@@ -45,10 +45,15 @@ namespace Renderer {
                     shader.setUniformVec4("u_MeshColor", colorPaletteV4_[8]);
                 }
             }
-            shader.setUniformVec4("u_LightColor", colorPaletteV4_[25]); // ±¤¿ø»öÀ» ¹Ù²ãº¸ÀÚ!
             shader.setUniformMatrix4fv("u_Model", mesh->getModelTransform());
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);
+
+            // [TODO] need to be modified....
+            shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
+            const glm::vec3 lightPos = glm::vec3(1.0f, 5.0f, 1.0f);
+            shader.setUniformVec3("u_LightPos", lightPos);
+            //===============================================================================
             size_t vertexCount = mesh->getIndices().size();
 
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexCount));

@@ -12,10 +12,12 @@ uniform mat4 u_Viewing;
 uniform mat4 u_Projection;
 
 out vec3 Normal;
+out vec3 FragPos;
 
 void main()
 {
 	vec4 newPos = vec4(a_Position, 1.0f);
-	Normal = a_Normal;
 	gl_Position = u_Projection * u_Viewing * u_Model * newPos;
+	FragPos = (u_Model * newPos).xyz;
+	Normal = a_Normal;
 }
