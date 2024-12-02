@@ -25,6 +25,14 @@ void main()
 	float diff = max(dot(norm, lightDir), 0.f);
 	vec3 diffuse = diff * lightColor.xyz;
 
-	vec3 result = (ambient.xyz + diffuse) * u_MeshColor.xyz;
+	// Specular
+	float specularStrength = 0.9f;
+	vec3 viewDir = normalize(u_ViewPos - FragPos);
+	vec3 reflectDir = reflect(-lightDir, norm);
+	
+	float spec = pow(max(dot(viewDir, reflectDir), 0.f), 32); // Highlight's shininess : 32
+	vec3 specular = specularStrength * spec * lightColor.xyz;
+
+	vec3 result = (ambient.xyz + diffuse + specular) * u_MeshColor.xyz;
 	FragColor = vec4(result, 1.0f);
 }
