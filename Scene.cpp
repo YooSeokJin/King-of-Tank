@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include "Bullet.h"
 #include "global.h"
 #include "Grid.h"
 
@@ -16,6 +16,7 @@ Scene::Scene()
 	Renderer::M_cullOnOff(isCull_);
 	Renderer::M_fillOnOff(isFill_);
 	mouseLastX_, mouseLastY_ = 0;
+	clearTime_ = 0.f;
 }
 
 Scene::~Scene()
@@ -36,18 +37,17 @@ void Scene::draw()
 
 void Scene::update(float frameTime)
 {
+	clearTime_ += frameTime;
+	checkGarbage();
 	playeController_->update(frameTime);
 	for (auto& obj : objects_) {
-		for (auto& st : staticObjects_) {
-			CollisionChecker::M_checkFalling(obj, staticObjects_);
-			CollisionChecker::M_checkCollide(obj, staticObjects_);
-		}
+		CollisionChecker::M_checkFalling(obj, staticObjects_);
+		CollisionChecker::M_checkCollide(obj, staticObjects_);
+		
 		obj->update(frameTime);
 	}
 	for (auto& bullet : bullets_) {
-		for (auto& st : staticObjects_) {
-			CollisionChecker::M_checkCollide(bullet, staticObjects_);
-		}
+		CollisionChecker::M_checkBullet(bullet, staticObjects_);
 		bullet->update(frameTime);
 	}
 	camera_.update(frameTime);
@@ -224,13 +224,32 @@ void Scene::setupStaticObject(std::shared_ptr<Static_Object> obj)
 
 void Scene::checkGarbage()
 {
-	for (auto& obj : objects_) {
-		if (obj->isDeleteTarget()) {
+	if (clearTime_ < 1.f) return;
+	printf("Check\n");
+	bullets_.erase(
+		std::remove_if(bullets_.begin(), bullets_.end(),
+			[](const std::shared_ptr<Object>& bullet) {
+				if (bullet->isDeleteTarget()) {
+					Renderer::M_deleteObj(bullet);
+					return true;
+				}
+				return false;
+			}),
+		bullets_.end()
+	);
 
-		}
-	}
-	for (auto& bullet : bullets_) {
+	objects_.erase(
+		std::remove_if(objects_.begin(), objects_.end(),
+			[](const std::shared_ptr<Object>& bullet) {
+				if (bullet->isDeleteTarget()) {
+					Renderer::M_deleteObj(bullet);
+					return true;
+				}
+				return false;
+			}),
+		objects_.end()
+	);
 
-	}
+	clearTime_ = 0.f;
 }
 

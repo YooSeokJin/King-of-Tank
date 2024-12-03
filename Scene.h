@@ -59,7 +59,7 @@ protected:
 	std::shared_ptr<PlayerController> playeController_;
 	glm::vec4 backgroundColor_;
 	Camera camera_;
-
-	std::vector<std::shared_ptr<Object>> garbageColletion_;
+	
+	float clearTime_;
 };
 

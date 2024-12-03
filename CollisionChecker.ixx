@@ -9,6 +9,7 @@ namespace CollisionChecker {
     }
 	export void M_checkCollide(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
     export void M_checkFalling(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
+    export void M_checkBullet(std::shared_ptr<Object> bullet, const std::vector<std::shared_ptr<Static_Object>>& walls);
 }
 
 namespace CollisionChecker {
@@ -83,6 +84,25 @@ namespace CollisionChecker {
         else {
             obj->setObjectState('F');
             obj->deleteObjectState('O');
+        }
+    }
+    void M_checkBullet(std::shared_ptr<Object> bullet, const std::vector<std::shared_ptr<Static_Object>>& walls)
+    {
+        glm::vec3 location = bullet->getPosition();
+
+        for (auto& wall : walls) {
+            for (auto& mesh : wall->getMeshes()) {
+                std::vector<float> aabb = mesh->getAabb();
+                if (aabb[0] > location.x) continue;
+                if (aabb[1] < location.x) continue;
+                if (aabb[2] > location.y) continue;
+                if (aabb[3] < location.y) continue;
+                if (aabb[4] > location.z) continue;
+                if (aabb[5] < location.z) continue;
+
+                bullet->setObjectState('O');
+                return;
+            }
         }
     }
 }

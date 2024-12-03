@@ -9,6 +9,7 @@ Object::Object()
 
 Object::~Object()
 {
+	printf("Del Object\n");
 	for (auto& mesh : meshes_) {
 		mesh->deleteParent();
 	}

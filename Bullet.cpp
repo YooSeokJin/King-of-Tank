@@ -4,7 +4,7 @@ import ObjectLoader;
 
 Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float yaw)
 {
-	movedist = 0.f;
+	travelTime_ = 0.f;
 	// 이동 관련
 	worldTransform_.setLocation(startPos + forwardVector);
 	movement_.setDirection(forwardVector);
@@ -23,20 +23,35 @@ Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float 
 	// 항상 부모 설정은 메시 설정이 끝나고
 	meshes_[0]->setParent(&worldTransform_);
 
-	isDel = false;
+	dontMove_ = false;
+}
+
+Bullet::~Bullet()
+{
+	printf("Del Bullet\n");
 }
 
 void Bullet::update(float frameTime)
 {
-	if (!collisionStates_.empty()) {
+	checkTravel(frameTime);
+	if (dontMove_) return;
+	checkState();
+	Object::update(frameTime);
+}
+
+void Bullet::checkState()
+{
+	if (collisionStates_.contains('O')) dontMove_ = true;
+
+	if (dontMove_) {
 		movement_.setDirection(0.f, 0.f, 0.f);
 	}
-	glm::vec3 move = movement_.getDeltaPosition();
-	movedist += glm::length(move);
-	Object::update(frameTime);
+}
 
-	if (movedist >= 100.f) {
-		isDel = true;
-	}
+void Bullet::checkTravel(float frameTime)
+{
+	travelTime_ += frameTime;
+
+	if (travelTime_ >= 3.f) isDel = true;
 }
 

@@ -20,6 +20,7 @@ namespace Renderer {
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_);
     export void M_end(const Scene& scene);
 
+    export void M_deleteObj(std::shared_ptr<Static_Object> obj);
     export void M_setupObject(const std::shared_ptr<Object>& obj);
     export void M_setupStaticObject(const std::shared_ptr<Static_Object>& obj);
     export void M_depthOnOff(bool& depth);
@@ -55,6 +56,7 @@ namespace Renderer {
             glUseProgram(0);
         }
         void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh) {
+            printf("Del Buffer\n");
             GLuint VAO = mesh->getVAO();
             GLuint EBO = mesh->getEBO();
             GLuint VBO = mesh->getVBO();
@@ -141,10 +143,26 @@ namespace Renderer {
                 M_deleteBuffer(mesh);
             }
         }
+        for (const auto& object : scene.getStaticObjects()) {
+            for (const auto& mesh : object->getMeshes()) {
+                M_deleteBuffer(mesh);
+            }
+        }
+        for (const auto& bullet : scene.getBullets()) {
+            for (const auto& mesh : bullet->getMeshes()) {
+                M_deleteBuffer(mesh);
+            }
+        }
         delete M_shaderManager_;
         M_shaderManager_ = nullptr;
     }
-    export void M_setupObject(const std::shared_ptr<Object>& obj) {
+    export void M_deleteObj(std::shared_ptr<Static_Object> obj)
+    {
+        for (auto& mesh : obj->getMeshes()) {
+            M_deleteBuffer(mesh);
+        }
+    }
+    void M_setupObject(const std::shared_ptr<Object>& obj) {
         for (auto& mesh : obj->getMeshes()) {
             M_setupMesh(mesh);
         }

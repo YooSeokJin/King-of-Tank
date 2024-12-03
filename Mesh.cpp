@@ -12,6 +12,7 @@ Mesh::Mesh() : VAO_(0), VBO_(0), EBO_(0)
 
 Mesh::~Mesh()
 {
+    printf("Del Mesh\n");
     delete movement_;
     delete meshColor_;
 }
