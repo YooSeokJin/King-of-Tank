@@ -38,7 +38,6 @@ void Bullet::update(float frameTime)
 	Object::update(frameTime);
 	meshes_[0]->localTransform_.rotate(glm::vec3(15.f, 15.f, 15.f));
 }
-
 void Bullet::checkState()
 {
 	if (collisionStates_.contains('O')) dontMove_ = true;
@@ -52,6 +51,6 @@ void Bullet::checkTravel(float frameTime)
 {
 	travelTime_ += frameTime;
 
-	if (travelTime_ >= 5.f) isDel = true;
+	if (travelTime_ >= 5.f) isDel_ = true;
 }
 

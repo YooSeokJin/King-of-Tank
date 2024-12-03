@@ -17,11 +17,13 @@ public:
 	void addMesh(const std::shared_ptr<Mesh>& mesh);
 	void setScale(float x, float y, float z);
 	void setPosition(float x, float y, float z);
+	void setPosition(const glm::vec3& position);
 	void setRotation(float x, float y, float z);
 	void addScale(float x, float y, float z);
 	void addPosition(float x, float y, float z);
 	void addRotation(float x, float y, float z);
 
+	char tag;
 protected:
 	std::vector<std::shared_ptr<Mesh>> meshes_;
 	ModelMatrix worldTransform_;
@@ -33,7 +35,6 @@ public:
 	Object();
 	~Object();
 	
-
 	void drawGrid(const glm::mat4& view, const glm::mat4& proj);
 	void addGrid();
 	virtual void update(float frameTime);
@@ -56,7 +57,7 @@ public:
 	void deleteObjectState(char type);
 	bool isOnGround();
 
-	bool isDeleteTarget() { return isDel; }
+	bool isDeleteTarget() { return isDel_; }
 protected:
 	
 protected:
@@ -64,5 +65,5 @@ protected:
 
 	Movement movement_;
 	std::unordered_set<char> collisionStates_;
-	bool isDel;
+	bool isDel_;
 };

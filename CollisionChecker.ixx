@@ -1,23 +1,32 @@
 module;
 #include "Object.h"	
 #include "algorithm"
-
+#include "Enermy.h"
 export module CollisionChecker;
 namespace CollisionChecker {
     namespace {
         const float M_epsilon_ = 0.1f;
         const float M_bulletEpsion = 0.3f;
     }
-	export void M_checkCollide(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
-    export void M_checkFalling(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls);
-    export void M_checkBullet(std::shared_ptr<Object> bullet, const std::vector<std::shared_ptr<Static_Object>>& walls);
+	export void M_checkCollide(std::shared_ptr<Object> obj, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls,
+        const std::vector<std::shared_ptr<Object>>& enermy);
+
+    export void M_checkFalling(std::shared_ptr<Object> obj, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls);
+
+    export void M_checkBullet(std::shared_ptr<Object> bullet, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls, 
+        const std::vector<std::shared_ptr<Object>>& enermy);
 }
 
 namespace CollisionChecker {
 	namespace {
 
 	}
-    export void M_checkCollide(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls) {
+    export void M_checkCollide(std::shared_ptr<Object> obj, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls,
+        const std::vector<std::shared_ptr<Object>>& enermy) {
         if (!obj->isOnGround()) return;
         bool isColliding = false;
         for (auto& mesh : obj->getMeshes()) {
@@ -30,7 +39,7 @@ namespace CollisionChecker {
                     bool xOverlap = !(staticAabb[1] < meshAabb[0] || meshAabb[1] < staticAabb[0]);
                     if (!xOverlap) continue;
                     bool zOverlap = !(staticAabb[5] < meshAabb[4] || meshAabb[5] < staticAabb[4]);
-   
+                    
                     if (zOverlap) {
                         isColliding = true;
                         bool x = staticAabb[0] <= meshAabb[0] && meshAabb[0] <= staticAabb[1];
@@ -87,10 +96,28 @@ namespace CollisionChecker {
             obj->deleteObjectState('O');
         }
     }
-    void M_checkBullet(std::shared_ptr<Object> bullet, const std::vector<std::shared_ptr<Static_Object>>& walls)
+    void M_checkBullet(std::shared_ptr<Object> bullet, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls,
+        const std::vector<std::shared_ptr<Object>>& enermy)
     {
         glm::vec3 location = bullet->getPosition();
+        std::vector<float> bulletAabb = bullet->getMeshes()[0]->getAabb();
+        for (auto& obj : enermy) {
+            bool overlap = false;
+            if (obj->tag == 'P') continue;
+            for (auto& mesh : obj->getMeshes()) {
+                std::vector<float> aabb = mesh->getAabb();
+                bool yOverlap = !(aabb[3] < bulletAabb[2] || bulletAabb[3] < aabb[2]);
+                if (!yOverlap) continue;
+                bool xOverlap = !(aabb[1] < bulletAabb[0] || bulletAabb[1] < aabb[0]);
+                if (!xOverlap) continue;
+                bool zOverlap = !(aabb[5] < bulletAabb[4] || bulletAabb[5] < aabb[4]);
+                if (!zOverlap) continue;
 
+                overlap = true;
+            }
+            if (overlap) obj->setObjectState('B');
+        }
         for (auto& wall : walls) {
             for (auto& mesh : wall->getMeshes()) {
                 std::vector<float> aabb = mesh->getAabb();

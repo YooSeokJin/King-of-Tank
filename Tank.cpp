@@ -7,6 +7,7 @@ import ObjectLoader;
 
 Tank::Tank()
 {
+	tag = 'P';
 	addGrid();
 	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
 	for (auto& mesh : meshes_) {

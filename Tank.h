@@ -19,8 +19,6 @@ public:
 	glm::vec3 getTurretForward();
 	float getTurretYaw() { return meshes_[2]->localTransform_.getYaw(); }
 	glm::vec3 getFirePosition();
-
-	
 private:
 	void moveTank();
 	void rotateTurret();

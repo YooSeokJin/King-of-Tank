@@ -3,7 +3,7 @@
 
 Object::Object()
 {
-	isDel = false;
+	isDel_ = false;
 	grid_ = nullptr;
 }
 
@@ -122,6 +122,7 @@ bool Object::isOnGround()
 // STATIC
 Static_Object::Static_Object()
 {
+	tag = 'W';
 }
 
 void Static_Object::update(float frameTime)
@@ -157,6 +158,11 @@ void Static_Object::setScale(float x, float y, float z)
 void Static_Object::setPosition(float x, float y, float z)
 {
 	worldTransform_.setLocation(glm::vec3(x, y, z));
+}
+
+void Static_Object::setPosition(const glm::vec3& position)
+{
+	worldTransform_.setLocation(position);
 }
 
 void Static_Object::setRotation(float x, float y, float z)

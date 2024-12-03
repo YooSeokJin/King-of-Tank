@@ -6,7 +6,6 @@ public:
 	Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float yaw);
 	~Bullet();
 	void update(float frameTime) override;
-
 	void checkState();
 	void checkTravel(float frameTime);
 	float travelTime_;

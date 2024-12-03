@@ -42,12 +42,12 @@ void Scene::update(float frameTime)
 	playeController_->update(frameTime);
 	for (auto& obj : objects_) {
 		CollisionChecker::M_checkFalling(obj, staticObjects_);
-		CollisionChecker::M_checkCollide(obj, staticObjects_);
+		CollisionChecker::M_checkCollide(obj, staticObjects_, objects_);
 		
 		obj->update(frameTime);
 	}
 	for (auto& bullet : bullets_) {
-		CollisionChecker::M_checkBullet(bullet, staticObjects_);
+		CollisionChecker::M_checkBullet(bullet, staticObjects_, objects_);
 		bullet->update(frameTime);
 	}
 	camera_.update(frameTime);

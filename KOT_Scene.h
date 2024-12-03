@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "BulletManager.h"
+#include "Enermy.h"
 
 class KOT_Scene: public Scene
 {
@@ -17,4 +18,5 @@ private:
 	void createBullet(std::shared_ptr<Bullet> bullet);
 private:
 	BulletManager bulletManager_;
+	EnermyZen enermyZen;
 };
