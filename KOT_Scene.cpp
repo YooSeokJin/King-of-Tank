@@ -12,7 +12,7 @@ KOT_Scene::KOT_Scene()
 
 	playeController_ = std::make_shared<KOT_PlayerController>();
 	
-	addCube(true); // ¹Ù´Ú
+	addCube(true); // ï¿½Ù´ï¿½
 	staticObjects_[0]->setScale(50.f, 0.1f, 50.f);
 	staticObjects_[0]->addPosition(0.f, -0.1f, 0.f);
 	for (auto& mesh : staticObjects_[0]->getMeshes()) {
@@ -46,7 +46,7 @@ KOT_Scene::KOT_Scene()
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 	} 
 
-	addLightCube(true); // ±¤¿ø »ý¼º
+	addLightCube(true); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	staticObjects_[5]->setScale(0.2f, 0.2f, 0.2f);
 	staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 0.f, 
 								objects_[0]->getPosition().y + 1.0f,

@@ -204,7 +204,7 @@ namespace Renderer {
     }
     void m_collsionOnOff(bool& coll)
     {
-        M_isDrawAabb = coll;
         coll = !coll;
+        M_isDrawAabb = coll;
     }
 }
