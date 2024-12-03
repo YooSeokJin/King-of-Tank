@@ -103,6 +103,7 @@ namespace CollisionChecker {
         glm::vec3 location = bullet->getPosition();
         std::vector<float> bulletAabb = bullet->getMeshes()[0]->getAabb();
         for (auto& obj : enermy) {
+            if (bullet->hasState('b')) break;
             bool overlap = false;
             int index = -1;
             if (obj->tag == 'P') continue;

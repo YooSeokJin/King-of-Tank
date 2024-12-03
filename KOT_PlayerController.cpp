@@ -27,19 +27,19 @@ void KOT_PlayerController::event(unsigned char key, int x, int y)
 void KOT_PlayerController::keyDown(unsigned char key, int x, int y)
 {
 	if (key == 'w' && !isW_) {
-		tank->moveForward();
+		tank_->moveForward();
 		isW_ = !isW_;
 	}
 	else if (key == 's' && !isS_) {
-		tank->moveBackward();
+		tank_->moveBackward();
 		isS_ = !isS_;
 	}
 	else if (key == 'a' && !isA_) {
-		tank->rotateY();
+		tank_->rotateY();
 		isA_ = !isA_;
 	}
 	else if (key == 'd' && !isD_) {
-		tank->rotateY_R();
+		tank_->rotateY_R();
 		isD_ = !isD_;
 	}
 }
@@ -47,19 +47,19 @@ void KOT_PlayerController::keyDown(unsigned char key, int x, int y)
 void KOT_PlayerController::keyUp(unsigned char key, int x, int y)
 {
 	if (key == 'w' && isW_) {
-		tank->moveForward();
+		tank_->moveForward();
 		isW_ = !isW_;
 	}
 	else if (key == 's' && isS_) {
-		tank->moveBackward();
+		tank_->moveBackward();
 		isS_ = !isS_;
 	}
 	else if (key == 'a' && isA_) {
-		tank->rotateY_R();
+		tank_->rotateY_R();
 		isA_ = !isA_;
 	}
 	else if (key == 'd' && isD_) {
-		tank->rotateY();
+		tank_->rotateY();
 		isD_ = !isD_;
 	}
 }
@@ -67,7 +67,7 @@ void KOT_PlayerController::keyUp(unsigned char key, int x, int y)
 void KOT_PlayerController::mouseMotion(int x, int y)
 {
 	camera_->rotate(x, y);
-	glm::vec3 fV = camera_->getForwardVector();
+	tank_->gunUpDown(y);
 }
 
 void KOT_PlayerController::mouseWheel(int button, int dir, int x, int y)
@@ -97,10 +97,10 @@ void KOT_PlayerController::attack()
 		return;
 	}
 	if (attackTime_ > 0.f) return;
-	const std::shared_ptr<Mesh> turret = tank->getTurret();
-	glm::vec3 sp = tank->getFirePosition();
-	glm::vec3 fv = turret->localTransform_.getForwardVector();
-	float yaw = turret->localTransform_.getYaw();
+	const std::shared_ptr<Mesh> gun = tank_->getGun();
+	glm::vec3 sp = tank_->getFirePosition();
+	glm::vec3 fv = gun->localTransform_.getForwardVector();
+	float yaw = gun->localTransform_.getYaw();
 
 	std::shared_ptr<Bullet> newBullet = 
 		std::make_shared<Bullet>(sp, fv, yaw);

@@ -16,9 +16,12 @@ public:
 	const Camera* camera_ = nullptr;
 
 	std::shared_ptr<Mesh>& getTurret() { return meshes_[2]; }
+	std::shared_ptr<Mesh>& getGun() { return meshes_[4]; }
 	glm::vec3 getTurretForward();
 	float getTurretYaw() { return meshes_[2]->localTransform_.getYaw(); }
 	glm::vec3 getFirePosition();
+	void gunUpDown(int deltaY);
+
 private:
 	void moveTank();
 	void rotateTurret();
@@ -27,12 +30,15 @@ private:
 	bool isForward_;
 	bool isBackward_;
 
-	// 터렛 회전에 사용
 	float yawTarget_;
 	float yawDiff_;
-	// 포탑 회전에 사용
-	float targetPitch_;
+
+	float pitchTarget_;
+	float pitchDiff_;
 
 	float turretSpeed_;
+	float gunSpeed_;
+
+
 };
 

@@ -60,7 +60,7 @@ KOT_Scene::KOT_Scene()
 	auto tpc = std::dynamic_pointer_cast<KOT_PlayerController>(playeController_);
 	tpc->setTankCamera();
 	tpc->bulletManager_ = &bulletManager_;
-	tpc->tank = std::dynamic_pointer_cast<Tank>(tank);
+	tpc->tank_ = std::dynamic_pointer_cast<Tank>(tank);
 }
 
 void KOT_Scene::timer(float delta)

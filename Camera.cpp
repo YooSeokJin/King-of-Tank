@@ -62,7 +62,7 @@ void Camera::rotate(int deltaX, int deltaY)
     yaw_ += deltaX * sensitivity_;
     pitch_ += deltaY * sensitivity_;
 
-    pitch_ = glm::clamp(pitch_, 10.0f, 89.0f);
+    pitch_ = glm::clamp(pitch_, 5.0f, 89.0f);
     if (yaw_ >= 360.0f) yaw_ -= 360.0f;
     if (yaw_ < 0.0f) yaw_ += 360.0f;
 }

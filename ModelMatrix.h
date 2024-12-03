@@ -40,6 +40,7 @@ public:
 	void rotateZ(float deltaAngle);
 
 	float getYaw() const;
+	float getPitch() const;
 	// ½ºÄÉÀÏ Set, Get
 	glm::vec3 getScale() const;
 	float getScaleX() const;

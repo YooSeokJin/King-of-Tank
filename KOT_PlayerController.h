@@ -19,7 +19,7 @@ public:
 	void setTankCamera();
 
 	BulletManager* bulletManager_;
-	std::shared_ptr<Tank> tank;
+	std::shared_ptr<Tank> tank_;
 private:
 	void attack();
 private:

@@ -113,6 +113,15 @@ float ModelMatrix::getYaw() const
     return glm::degrees(atan2(f.z, f.x));
 }
 
+float ModelMatrix::getPitch() const
+{
+    glm::vec3 f = getForwardVector();
+    if (glm::length(f) < 0.f) {
+        return 0.0f;
+    }
+    return glm::degrees(asin(f.y));
+}
+
 void ModelMatrix::rotateX(float deltaAngleX) {
     rotation_.x += deltaAngleX;
 

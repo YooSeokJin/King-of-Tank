@@ -56,7 +56,7 @@ public:
 	void setObjectState(char type);
 	void deleteObjectState(char type);
 	bool isOnGround();
-
+	bool hasState(char type) { return collisionStates_.contains(type); }
 	bool isDeleteTarget() { return isDel_; }
 protected:
 	
