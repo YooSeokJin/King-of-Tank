@@ -15,6 +15,7 @@ public:
     void addDirection(float dx, float dy, float dz);
     void addRtDirection(float dx, float dy, float dz);
 
+    void setDirection(const glm::vec3& dir);
     void setDirection(float dx, float dy, float dz);
     void setDirectionX(float delta);
     void setDirectionY(float delta);

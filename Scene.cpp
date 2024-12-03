@@ -36,15 +36,19 @@ void Scene::draw()
 
 void Scene::update(float frameTime)
 {
-	auto proj = camera_.getPerspectiveMatrix();
-	auto view = camera_.getViewMatrix();
+	playeController_->update(frameTime);
 	for (auto& obj : objects_) {
 		for (auto& st : staticObjects_) {
 			CollisionChecker::M_checkFalling(obj, staticObjects_);
 			CollisionChecker::M_checkCollide(obj, staticObjects_);
 		}
-		
 		obj->update(frameTime);
+	}
+	for (auto& bullet : bullets_) {
+		for (auto& st : staticObjects_) {
+			CollisionChecker::M_checkCollide(bullet, staticObjects_);
+		}
+		bullet->update(frameTime);
 	}
 	camera_.update(frameTime);
 }
@@ -103,6 +107,13 @@ void Scene::mouseWheel(int button, int dir, int x, int y)
 	playeController_->mouseWheel(button, dir, x, y);
 }
 
+void Scene::mouseInput(int button, int state, int x, int y)
+{
+	if (!playeController_) return;
+	playeController_->mouseInput(button, state, x, y);
+
+}
+
 const std::vector<std::shared_ptr<Object>>& Scene::getObjects() const
 {
 	return objects_;
@@ -111,6 +122,11 @@ const std::vector<std::shared_ptr<Object>>& Scene::getObjects() const
 const std::vector<std::shared_ptr<Static_Object>>& Scene::getStaticObjects() const
 {
 	return staticObjects_;
+}
+
+const std::vector<std::shared_ptr<Object>>& Scene::getBullets() const
+{
+	return bullets_;
 }
 
 void Scene::addObject(const std::string& fileName, const std::string& shaderName)
@@ -204,5 +220,17 @@ void Scene::setupObject(std::shared_ptr<Object> obj)
 void Scene::setupStaticObject(std::shared_ptr<Static_Object> obj)
 {
 	Renderer::M_setupStaticObject(obj);
+}
+
+void Scene::checkGarbage()
+{
+	for (auto& obj : objects_) {
+		if (obj->isDeleteTarget()) {
+
+		}
+	}
+	for (auto& bullet : bullets_) {
+
+	}
 }
 

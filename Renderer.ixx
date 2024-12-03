@@ -124,6 +124,14 @@ namespace Renderer {
                 }
             }
         }
+        for (const auto& bullet : scene.getBullets()) {
+            for (const auto& mesh : bullet->getMeshes()) {
+                M_draw(mesh, view, proj, scene);
+                if (M_isDrawAabb) {
+                    mesh->drawAabb(view, proj, *M_collisionShader_);
+                }
+            }
+        }
     }
     export void M_end(const Scene& scene) {
         if (!M_isInitialized_) return;

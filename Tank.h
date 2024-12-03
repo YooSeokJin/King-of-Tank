@@ -1,4 +1,5 @@
 #pragma once
+#include "BulletManager.h"
 #include "Object.h"
 #include "Camera.h"
 class Tank : public Object {
@@ -11,9 +12,15 @@ public:
 	void rotateY();
 	void rotateY_R();
 
-	void setAngle(const glm::vec3& dir);
 	void setCamera(const Camera* camera);
 	const Camera* camera_ = nullptr;
+
+	std::shared_ptr<Mesh>& getTurret() { return meshes_[2]; }
+	glm::vec3 getTurretForward();
+	float getTurretYaw() { return meshes_[2]->localTransform_.getYaw(); }
+	glm::vec3 getFirePosition();
+
+	
 private:
 	void moveTank();
 	void rotateTurret();

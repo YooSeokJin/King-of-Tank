@@ -104,7 +104,7 @@ void ModelMatrix::rotateZ(float deltaAngleZ) {
     if (rotation_.z < 0.0f) rotation_.z += 360.0f;
 }
 
-float ModelMatrix::getYaw()
+float ModelMatrix::getYaw() const
 {
     glm::vec3 f = getForwardVector();
     if (glm::length(f) < 0.f) {

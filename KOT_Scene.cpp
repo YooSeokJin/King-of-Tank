@@ -2,14 +2,16 @@
 #include "Tank.h"
 #include "global.h"
 #include "KOT_PlayerController.h"
+
+import Renderer;
 KOT_Scene::KOT_Scene()
 {
 	backgroundColor_ = colorPaletteV4_[39];
-	std::shared_ptr<Object> crane = std::make_shared<Tank>();
-	objects_.push_back(crane);
+	std::shared_ptr<Object> tank = std::make_shared<Tank>();
+	objects_.push_back(tank);
 
 	playeController_ = std::make_shared<KOT_PlayerController>();
-
+	
 	addCube(true); // ¹Ù´Ú
 	staticObjects_[0]->setScale(50.f, 0.1f, 50.f);
 	staticObjects_[0]->addPosition(0.f, -0.1f, 0.f);
@@ -54,6 +56,8 @@ KOT_Scene::KOT_Scene()
 	
 	auto tpc = std::dynamic_pointer_cast<KOT_PlayerController>(playeController_);
 	tpc->setTankCamera();
+	tpc->bulletManager_ = &bulletManager_;
+	tpc->tank = std::dynamic_pointer_cast<Tank>(tank);
 }
 
 void KOT_Scene::timer(float delta)
@@ -72,4 +76,23 @@ void KOT_Scene::mouseMotion(int x, int y)
 	int deltaY = y - windowCenterY_;
 	if (deltaX != 0 || deltaY != 0)
 		playeController_->mouseMotion(deltaX, deltaY);
+}
+
+void KOT_Scene::update(float frameTime)
+{
+	checkBullet();
+	Scene::update(frameTime);
+}
+
+void KOT_Scene::checkBullet()
+{
+	if (!bulletManager_.newBullets_) return;
+	createBullet(bulletManager_.newBullets_);
+	bulletManager_.newBullets_.reset();
+}
+
+void KOT_Scene::createBullet(std::shared_ptr<Bullet> bullet)
+{
+	Renderer::M_setupObject(bullet);
+	bullets_.push_back(bullet);
 }

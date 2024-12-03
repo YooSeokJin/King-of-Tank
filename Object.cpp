@@ -3,6 +3,7 @@
 
 Object::Object()
 {
+	isDel = false;
 	grid_ = nullptr;
 }
 

@@ -39,7 +39,7 @@ public:
 	void rotateY(float deltaAngle);
 	void rotateZ(float deltaAngle);
 
-	float getYaw();
+	float getYaw() const;
 	// ½ºÄÉÀÏ Set, Get
 	glm::vec3 getScale() const;
 	float getScaleX() const;

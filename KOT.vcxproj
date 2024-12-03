@@ -129,11 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionChecker.ixx" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="KOT_PlayerController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -152,10 +154,12 @@
     <ClCompile Include="Viewing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="KOT_PlayerController.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModelMatrix.h" />
@@ -180,6 +184,11 @@
     <None Include="shaders\lightSource.VS" />
     <None Include="shaders\model.FS" />
     <None Include="shaders\model.VS" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="아쉬운점Or좋았던점Or배운점.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

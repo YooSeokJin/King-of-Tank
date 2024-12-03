@@ -9,11 +9,13 @@ public:
 	PlayerController(std::shared_ptr<Object> target);
 	~PlayerController();
 
+	virtual void update(float frameTime);
 	virtual void event(unsigned char key, int x, int y);
 	virtual void keyDown(unsigned char key, int x, int y);
 	virtual void keyUp(unsigned char key, int x, int y);
 	virtual void mouseMotion(int x, int y);
 	virtual void mouseWheel(int button, int dir, int x, int y);
+	virtual void mouseInput(int button, int state, int x, int y);
 	void setTarget(std::shared_ptr<Object> target);
 	void setCamera(Camera* camera);
 	glm::vec3 getCameraOffset() const { return cameraOffset_; }

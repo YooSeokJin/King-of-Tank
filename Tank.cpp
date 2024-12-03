@@ -68,16 +68,28 @@ void Tank::rotateY_R()
 	}
 }
 
-void Tank::setAngle(const glm::vec3& dir)
-{
-
-}
-
 void Tank::setCamera(const Camera* camera)
 {
 	camera_ = camera;
 }
 
+glm::vec3 Tank::getTurretForward()
+{
+	return meshes_[2]->localTransform_.getForwardVector();
+}
+
+glm::vec3 Tank::getFirePosition()
+{
+	if (!meshes_[3]) return glm::vec3(0);
+	auto& gun = meshes_[3];
+
+	std::vector<float> aabb = gun->getAabb();
+	float x = (aabb[0] + aabb[1]) / 2;
+	float y = (aabb[2] + aabb[3]) / 2;
+	float z = (aabb[4] + aabb[5]) / 2;
+
+	return glm::vec3(x, y, z);
+}
 void Tank::moveTank()
 {
 	glm::vec3 FVector(0.f);
@@ -109,12 +121,6 @@ void Tank::rotateTurret()
 
 void Tank::checkState()
 {
-	bool p = false;
-	for (char t : collisionStates_) {
-		printf("%c, ", t);
-		p = true;
-	}
-	if (p) printf("\n");
 	glm::vec3 dir = movement_.getDirection();
 	if (collisionStates_.contains('x')) {
 		if (dir.x < 0.f) movement_.setDirectionX(0.f);

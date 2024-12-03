@@ -55,6 +55,8 @@ public:
 	void setObjectState(char type);
 	void deleteObjectState(char type);
 	bool isOnGround();
+
+	bool isDeleteTarget() { return isDel; }
 protected:
 	
 protected:
@@ -62,4 +64,5 @@ protected:
 
 	Movement movement_;
 	std::unordered_set<char> collisionStates_;
+	bool isDel;
 };

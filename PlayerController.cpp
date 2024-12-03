@@ -18,6 +18,10 @@ PlayerController::~PlayerController()
 	camera_ = nullptr;
 }
 
+void PlayerController::update(float frameTime)
+{
+}
+
 void PlayerController::event(unsigned char key, int x, int y)
 {
 }
@@ -35,6 +39,10 @@ void PlayerController::mouseMotion(int x, int y)
 }
 
 void PlayerController::mouseWheel(int button, int dir, int x, int y)
+{
+}
+
+void PlayerController::mouseInput(int button, int state, int x, int y)
 {
 }
 

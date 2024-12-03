@@ -141,7 +141,6 @@ std::vector<float> Mesh::assembleVertexData()
         }
         // Color
         if (meshColor_) {
-            printf("No");
             vertexData.push_back(meshColor_->r);
             vertexData.push_back(meshColor_->g);
             vertexData.push_back(meshColor_->b);

@@ -20,10 +20,12 @@ public:
 	virtual void keyDown(unsigned char key, int x, int y);
 	virtual void mouseMotion(int x, int y);
 	virtual void mouseWheel(int button, int dir, int x, int y);
+	virtual void mouseInput(int button, int state, int x, int y);
 
 	const glm::vec4& getBackgroundColor() const { return backgroundColor_; }
 	const std::vector<std::shared_ptr<Object>>& getObjects() const;
 	const std::vector<std::shared_ptr<Static_Object>>& getStaticObjects() const;
+	const std::vector<std::shared_ptr<Object>>& getBullets() const;
 
 	//
 	Camera getCamera() const { return camera_; };
@@ -45,6 +47,7 @@ protected:
 	void setupObject(std::shared_ptr<Object> obj);
 	void setupStaticObject(std::shared_ptr<Static_Object> obj);
 
+	void checkGarbage();
 private:
 	
 protected:
@@ -52,8 +55,11 @@ protected:
 	int mouseLastX_, mouseLastY_;
 	std::vector<std::shared_ptr<Object>> objects_;
 	std::vector<std::shared_ptr<Static_Object>> staticObjects_;
+	std::vector<std::shared_ptr<Object>> bullets_;
 	std::shared_ptr<PlayerController> playeController_;
 	glm::vec4 backgroundColor_;
 	Camera camera_;
+
+	std::vector<std::shared_ptr<Object>> garbageColletion_;
 };
 

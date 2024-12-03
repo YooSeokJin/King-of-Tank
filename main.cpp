@@ -106,16 +106,8 @@ GLvoid idle()
 GLvoid mouseInput(int button, int state, int x, int y)
 {
 	if (!scene_) return;
-	if (button == GLUT_LEFT_BUTTON) {
-		glm::vec3 center(0.0f, 0.0f, 0.0f);
-		changeOpenGL(x, y, 0, center);
-		if (state == GLUT_DOWN) {
+	scene_->mouseInput(button, state, x, y);
 
-		}
-		else if (state == GLUT_UP) {
-
-		}
-	}	
 	glutPostRedisplay();
 }
 GLvoid mouseMotion(int x, int y)

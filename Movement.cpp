@@ -1,7 +1,7 @@
 #include "Movement.h"
 
 Movement::Movement()
-    : velocity_(6.f, 6.f, 6.f), direction_(0.f), deltaPosition_(0.f),
+    : velocity_(6.f, 30.f, 6.f), direction_(0.f), deltaPosition_(0.f),
     rotationVelocity_(30.f), rotationDirection_(0.f), deltaRotation_(0.f)
 {
 }
@@ -31,6 +31,11 @@ void Movement::addRtDirection(float dx, float dy, float dz)
 {
     glm::vec3 rd(dx, dy, dz);
     rotationDirection_ += rd;
+}
+
+void Movement::setDirection(const glm::vec3& dir)
+{
+    direction_ = dir;
 }
 
 void Movement::setDirection(float dx, float dy, float dz)
