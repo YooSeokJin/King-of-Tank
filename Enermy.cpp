@@ -21,7 +21,9 @@ void EnermyZen::SpawnEnermy()
 
 Enermy::Enermy()
 {
+	for (auto& b : meshIndex_) b = false;
 	tag = 'E';
+
 	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
 	for (auto& mesh : meshes_) {
 		mesh->applyMovement();
@@ -39,4 +41,8 @@ Enermy::Enermy()
 void Enermy::update(float frameTime)
 {
 	if (collisionStates_.contains('B')); //printf("boom!\n");
+
+	for (int i = 0; i < 6; ++i) {
+		if (meshIndex_[i]) printf("Collision %d\n", i);
+	}
 }

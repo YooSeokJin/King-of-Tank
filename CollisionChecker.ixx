@@ -104,19 +104,26 @@ namespace CollisionChecker {
         std::vector<float> bulletAabb = bullet->getMeshes()[0]->getAabb();
         for (auto& obj : enermy) {
             bool overlap = false;
+            int index = -1;
             if (obj->tag == 'P') continue;
             for (auto& mesh : obj->getMeshes()) {
+                ++index;
                 std::vector<float> aabb = mesh->getAabb();
-                bool yOverlap = !(aabb[3] < bulletAabb[2] || bulletAabb[3] < aabb[2]);
-                if (!yOverlap) continue;
-                bool xOverlap = !(aabb[1] < bulletAabb[0] || bulletAabb[1] < aabb[0]);
-                if (!xOverlap) continue;
-                bool zOverlap = !(aabb[5] < bulletAabb[4] || bulletAabb[5] < aabb[4]);
-                if (!zOverlap) continue;
+
+                if (aabb[3] < bulletAabb[2] || bulletAabb[3] < aabb[2]) continue;
+                if (aabb[1] < bulletAabb[0] || bulletAabb[1] < aabb[0]) continue;
+                if (aabb[5] < bulletAabb[4] || bulletAabb[5] < aabb[4]) continue;
 
                 overlap = true;
+                break;
             }
-            if (overlap) obj->setObjectState('B');
+            if (overlap) {
+                auto enermy = std::dynamic_pointer_cast<Enermy>(obj);
+                obj->setObjectState('B');
+                bullet->setObjectState('b');
+                enermy->meshIndex_[index] = true;
+                break;
+            }
         }
         for (auto& wall : walls) {
             for (auto& mesh : wall->getMeshes()) {

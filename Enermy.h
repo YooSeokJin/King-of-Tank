@@ -16,5 +16,10 @@ class Enermy : public Object
 public:
 	Enermy();
 	void update(float frameTime) override;
+
+	bool meshIndex_[6];
 };
 
+// 에너미
+// 베이스가 충돌되면 모두 해제
+// 하나씩 분리하는 재미를 주는건 어떨까.

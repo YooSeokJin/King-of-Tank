@@ -8,7 +8,7 @@ Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float 
 	// Movement
 	worldTransform_.setLocation(startPos + forwardVector);
 	movement_.setDirection(forwardVector);
-	movement_.setVelocity(30.f, 1.f, 30.f);
+	movement_.setVelocity(30.f, 5.f, 30.f);
 
 	// MeshInfo
 	meshes_ = ObjectLoader::M_loadMesh("./objs/rocket.obj", "Model");
@@ -44,6 +44,9 @@ void Bullet::checkState()
 
 	if (dontMove_) {
 		movement_.setDirection(0.f, 0.f, 0.f);
+	}
+	if (collisionStates_.contains('b')) {
+		movement_.setDirection(0.f, -1.f, 0.f);
 	}
 }
 
