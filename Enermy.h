@@ -16,7 +16,7 @@ class Enermy : public Object
 public:
 	Enermy();
 	void update(float frameTime) override;
-
+	void checkState();
 	bool meshIndex_[6];
 };
 

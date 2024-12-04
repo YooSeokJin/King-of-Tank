@@ -36,7 +36,7 @@ void Bullet::update(float frameTime)
 	if (dontMove_) return;
 	checkState();
 	Object::update(frameTime);
-	meshes_[0]->localTransform_.rotate(glm::vec3(15.f, 15.f, 15.f));
+	meshes_[0]->localTransform_.rotate(glm::vec3(0.f, 0.f, 15.f));
 }
 void Bullet::checkState()
 {

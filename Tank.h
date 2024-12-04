@@ -38,7 +38,5 @@ private:
 
 	float turretSpeed_;
 	float gunSpeed_;
-
-
 };
 

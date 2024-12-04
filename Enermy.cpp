@@ -29,20 +29,32 @@ Enermy::Enermy()
 		mesh->applyMovement();
 		mesh->addCollision();
 		mesh->addMovement();
+		mesh->setParent(&worldTransform_);
 	}
-	meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[27]);
+	meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[1]->meshColor_ = new glm::vec4(blackColorV4_);
-	meshes_[2]->meshColor_ = new glm::vec4(colorPaletteV4_[19]);
-	meshes_[3]->meshColor_ = new glm::vec4(colorPaletteV4_[11]);
-	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[38]);
+	meshes_[2]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
+	meshes_[3]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
+	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
+
+	movement_.setVelocity(15.f, 10.f, 15.f);
 }
 
 void Enermy::update(float frameTime)
 {
-	if (collisionStates_.contains('B')); //printf("boom!\n");
+	checkState();
+	Object::update(frameTime);
+}
 
-	for (int i = 0; i < 6; ++i) {
-		if (meshIndex_[i]) printf("Collision %d\n", i);
+void Enermy::checkState()
+{
+	glm::vec3 dir = movement_.getDirection();
+	if (collisionStates_.contains('B')); //printf("boom!\n");
+	if (collisionStates_.contains('F')) {
+		if (dir.y >= 0.f) movement_.setDirectionY(-1.f);
+	}
+	if (collisionStates_.contains('O')) {
+		if (dir.y <= 0.f) movement_.setDirectionY(0.f);
 	}
 }
