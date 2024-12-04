@@ -20,6 +20,7 @@ void Collision::drawAabb(const glm::mat4& view, const glm::mat4& proj, const glm
 {
     glLineWidth(2.0f);
     cShader.useShader();
+
     cShader.setUniformMatrix4fv("u_Model", model);
     cShader.setUniformMatrix4fv("u_Viewing", view);
     cShader.setUniformMatrix4fv("u_Projection", proj);
