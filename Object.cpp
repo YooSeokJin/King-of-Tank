@@ -122,7 +122,7 @@ bool Object::isOnGround()
 // STATIC
 Static_Object::Static_Object()
 {
-	tag = 'W';
+	tag_ = 'W';
 }
 
 void Static_Object::update(float frameTime)

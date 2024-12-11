@@ -194,13 +194,13 @@ glm::mat4 ModelMatrix::getTransformMatrix() const
     transform = glm::translate(transform, location_);
 
     if (pivotPoint_) {
-        transform = glm::translate(transform, *pivotPoint_);
+        transform = glm::translate(transform, location_);
 
         transform = glm::rotate(transform, glm::radians(rotation_.x), glm::vec3(1.0f, 0.0f, 0.0f));
         transform = glm::rotate(transform, glm::radians(rotation_.y), glm::vec3(0.0f, 1.0f, 0.0f));
         transform = glm::rotate(transform, glm::radians(rotation_.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        transform = glm::translate(transform, -*pivotPoint_);
+        transform = glm::translate(transform, -location_);
     }
 
     else {

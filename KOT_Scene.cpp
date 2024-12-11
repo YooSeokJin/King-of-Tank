@@ -10,7 +10,7 @@ KOT_Scene::KOT_Scene()
 	backgroundColor_ = colorPaletteV4_[39];
 	std::shared_ptr<Object> tank = std::make_shared<Tank>();
 	objects_.push_back(tank);
-
+	enemyZen.setTarget(tank);
 	playeController_ = std::make_shared<KOT_PlayerController>();
 	
 	addCube(true);
@@ -69,7 +69,7 @@ KOT_Scene::KOT_Scene()
 void KOT_Scene::timer(float delta)
 {
 	update(delta);
-	enemyZen.SpawnEnermy();
+	enemyZen.SpawnEnermy(delta);
 }
 
 void KOT_Scene::event(unsigned char key, int x, int y)

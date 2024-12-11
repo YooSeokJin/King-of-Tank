@@ -106,7 +106,7 @@ namespace CollisionChecker {
             if (bullet->hasState('b')) break;
             bool overlap = false;
             int index = -1;
-            if (obj->tag == 'P') continue;
+            if (obj->tag_ != 'E') continue;
             for (auto& mesh : obj->getMeshes()) {
                 ++index;
                 std::vector<float> aabb = mesh->getAabb();

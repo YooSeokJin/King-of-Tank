@@ -23,7 +23,9 @@ public:
 	void addPosition(float x, float y, float z);
 	void addRotation(float x, float y, float z);
 
-	char tag;
+	glm::vec3 getForwardvector() const { return worldTransform_.getForwardVector(); }
+
+	char tag_;
 protected:
 	std::vector<std::shared_ptr<Mesh>> meshes_;
 	ModelMatrix worldTransform_;
