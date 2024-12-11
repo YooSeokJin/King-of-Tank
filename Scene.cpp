@@ -43,7 +43,6 @@ void Scene::update(float frameTime)
 	for (auto& obj : objects_) {
 		CollisionChecker::M_checkFalling(obj, staticObjects_);
 		CollisionChecker::M_checkCollide(obj, staticObjects_, objects_);
-		
 		obj->update(frameTime);
 	}
 	for (auto& bullet : bullets_) {
@@ -225,7 +224,6 @@ void Scene::setupStaticObject(std::shared_ptr<Static_Object> obj)
 void Scene::checkGarbage()
 {
 	if (clearTime_ < 1.f) return;
-	printf("Check\n");
 	bullets_.erase(
 		std::remove_if(bullets_.begin(), bullets_.end(),
 			[](const std::shared_ptr<Object>& bullet) {

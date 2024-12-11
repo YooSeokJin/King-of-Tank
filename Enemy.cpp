@@ -40,7 +40,7 @@ void EnemyZen::setTarget(std::shared_ptr<Object>& target)
 }
 
 Enemy::Enemy()
-	:toTarget_(0.f)
+	: targetDiff_(0.f)
 {
 	tag_ = 'E';
 	behavior_ = 'N';
@@ -51,8 +51,11 @@ Enemy::Enemy()
 		mesh->addCollision();
 		mesh->addMovement();
 		mesh->setParent(&worldTransform_);
-		mesh->movement_->setVelocity(6.f, 10.f, 6.f);
-		mesh->movement_->setRtVelocity(180.f, 0.f, 180.f);
+		float dx = uid_(mt_) % 10 + 1;
+		float dy = uid_(mt_) % 15 + 5;
+		float dz = uid_(mt_) % 10 + 1;
+		mesh->movement_->setVelocity(dx, dy, dz);
+		mesh->movement_->setRtVelocity(90.f, 0.f, 90.f);
 	}
 	meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[1]->meshColor_ = new glm::vec4(blackColorV4_);
@@ -61,10 +64,12 @@ Enemy::Enemy()
 	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
 
-	movement_.setVelocity(15.f, 10.f, 15.f);
-
+	movement_.setVelocity(3.f, 10.f, 3.f);
+	movement_.setRtVelocity(15.f, 20.f, 15.f);
 	fallingSpeed_ = 1.f;
 	deadTime_ = 3.f;
+	angle_ = 0.f;
+	dist_ = 0.f;
 }
 
 void Enemy::update(float frameTime)
@@ -73,10 +78,13 @@ void Enemy::update(float frameTime)
 	else if (tag_ == 'H') explode(frameTime);
 	else if (tag_ == 'M') arrangeMeshes(frameTime);
 	else if (tag_ == 'D') dead(frameTime);
-	else if (tag_ == 'E') {
-		checkState();
+	else {
+
+		checkBehavior();
 		doAction();
+		checkState();
 	}
+
 	Object::update(frameTime);
 }
 
@@ -85,26 +93,25 @@ void Enemy::checkState()
 	if (tag_ == 'N') return;
 	glm::vec3 dir = movement_.getDirection();
 	if (collisionStates_.contains('B')) {
+		movement_.setDirection(0, 0, 0);
+		movement_.setRtDirection(0, 0, 0);
 		tag_ = 'H';
 		rotateMeshes();
 	}
 	if (collisionStates_.contains('F')) 
-		if (dir.y >= 0.f)
-			movement_.setDirectionY(-1.f);
+		if (dir.y >= 0.f) movement_.setDirectionY(-1.f);
 	
 	if (collisionStates_.contains('O')) 
-		if (dir.y <= 0.f) {
+		if (dir.y < -0.01f) {
 			movement_.setDirectionY(0.f);
 		}
 
-	glm::vec3 toTarget = target_->getPosition() - getForwardvector();
 }
 
 void Enemy::explode(float frameTime)
 {
 	movement_.setDirectionY(fallingSpeed_);
 	fallingSpeed_ -= frameTime;
-	tag_ = 'H';
 
 	checkMeshes();
 }
@@ -192,45 +199,53 @@ void Enemy::dead(float frameTime)
 void Enemy::doAction()
 {
 	if (behavior_ == 'N') return;
-
-	if (behavior_ == 'R') {
-		rotateToTarget();
-
-	}
-
-	else if (behavior_ == 'M') {
-		bool mv = moveToTarget();
-		if (mv) attackToTarget();
-	}
-
-	else if (behavior_ == 'A') {
-		attackToTarget();
-	}
+	if (behavior_ == 'R') rotateToTarget();
+	else if (behavior_ == 'M') moveToTarget();
+	else if (behavior_ == 'A') attackToTarget();
 }
 
-bool Enemy::rotateToTarget()
+void Enemy::checkBehavior()
 {
-	float angle = atan2(toTarget_.z, toTarget_.x);
-	float epsilon = 0.5f;
-	if (angle < -epsilon) {
-		movement_.setRtDirectionY(-1.f);
+	if (!collisionStates_.contains('O')) return;
+	
+	glm::vec3 norm = glm::normalize(target_->getPosition() - getPosition());
+	glm::vec3 forward = -getForwardvector();
+	glm::vec3 diff = norm - forward;
+
+	float dotProduct = glm::dot(forward, norm);
+	angle_ = glm::degrees(acos(glm::clamp(dotProduct, -1.0f, 1.0f)));
+
+	glm::vec3 crossProduct = glm::cross(forward, norm);
+	if (crossProduct.y < 0) {
+		angle_ = -angle_;
 	}
-	else if (angle > epsilon) {
-		movement_.setRtDirectionY(1.f);
+
+	if (!(-1.f <= angle_ && angle_ <= 1.f)) {
+		movement_.setDirection(0, 0, 0);
+		behavior_ = 'R';
 	}
 	else {
 		movement_.setRtDirectionY(0.f);
-		return true;
+		targetDiff_ = target_->getPosition() - getPosition();
+		dist_ = glm::length(targetDiff_);
+		if (dist_ > 30.f) behavior_ = 'M';
+		else behavior_ = 'A';
 	}
-	return false;
 }
 
-bool Enemy::moveToTarget()
+void Enemy::rotateToTarget()
 {
-	return false;
+	if (angle_ < 0) movement_.setRtDirectionY(-1.f);
+	else movement_.setRtDirectionY(1.f);
 }
 
-bool Enemy::attackToTarget()
+void Enemy::moveToTarget()
 {
-	return false;
+	movement_.setDirection(-getForwardvector());
+}
+
+void Enemy::attackToTarget()
+{
+	if (dist_ < 50.f) movement_.setDirection(getForwardvector());
+	else movement_.setDirection(0, 0, 0);
 }

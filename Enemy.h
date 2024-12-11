@@ -42,12 +42,14 @@ private:
 	float fallingSpeed_;
 	float deadTime_;
 
-	bool rotateToTarget();
-	bool moveToTarget();
-	bool attackToTarget();
+	void checkBehavior();
+	void rotateToTarget();
+	void moveToTarget();
+	void attackToTarget();
 
 	std::shared_ptr<Object> target_;
 	char behavior_;
-
-	glm::vec3 toTarget_;
+	float angle_;
+	glm::vec3 targetDiff_;
+	float dist_;
 };
