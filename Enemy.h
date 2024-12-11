@@ -1,9 +1,9 @@
 #pragma once
 #include "Object.h"
-class EnermyZen {
+class EnemyZen {
 public:
-	EnermyZen() = delete;
-	EnermyZen(std::vector<std::shared_ptr<Object>>& objs);
+	EnemyZen() = delete;
+	EnemyZen(std::vector<std::shared_ptr<Object>>& objs);
 
 	void SpawnEnermy();
 private:
@@ -11,13 +11,13 @@ private:
 	glm::vec3 spawnPoint_;
 };
 
-class Enermy : public Object
+class Enemy : public Object
 {
 public:
-	Enermy();
+	Enemy();
 	void update(float frameTime) override;
 	void checkState();
-	bool meshIndex_[6];
+	void exploded();
 };
 
 // ¿¡³Ê¹Ì

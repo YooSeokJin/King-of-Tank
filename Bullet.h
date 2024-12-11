@@ -10,4 +10,5 @@ public:
 	void checkTravel(float frameTime);
 	float travelTime_;
 	bool dontMove_;
+	glm::vec3 dir_;
 };

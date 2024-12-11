@@ -9,7 +9,7 @@ Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float 
 	worldTransform_.setLocation(startPos + forwardVector);
 	movement_.setDirection(forwardVector);
 	movement_.setVelocity(30.f, 5.f, 30.f);
-
+	dir_ = forwardVector; dir_ *= 10;
 	// MeshInfo
 	meshes_ = ObjectLoader::M_loadMesh("./objs/rocket.obj", "Model");
 
@@ -21,7 +21,7 @@ Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float 
 
 	// Always setParent Last
 	meshes_[0]->setParent(&worldTransform_);
-
+	
 	dontMove_ = false;
 }
 
@@ -36,7 +36,7 @@ void Bullet::update(float frameTime)
 	if (dontMove_) return;
 	checkState();
 	Object::update(frameTime);
-	meshes_[0]->localTransform_.rotate(glm::vec3(0.f, 0.f, 15.f));
+	meshes_[0]->localTransform_.rotate(dir_);
 }
 void Bullet::checkState()
 {

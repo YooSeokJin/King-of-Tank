@@ -21,6 +21,7 @@ public:
     void setDirectionY(float delta);
     void setDirectionZ(float delta);
 
+    void setRtDirection(const glm::vec3& dir);
     void setRtDirection(float dx, float dy, float dz);
     void setRtDirectionX(float delta);
     void setRtDirectionY(float delta);
@@ -38,8 +39,8 @@ private:
     glm::vec3 deltaPosition_;
 
     // È¸Àü
-    glm::vec3 rotationDirection_;
-    glm::vec3 rotationVelocity_;
+    glm::vec3 rotateDirection_;
+    glm::vec3 rotateVelocity_;
     glm::vec3 deltaRotation_;
 
     float fallingSpeed = 9.8f;

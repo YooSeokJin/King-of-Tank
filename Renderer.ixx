@@ -43,7 +43,7 @@ namespace Renderer {
 
             // [TODO] need to be modified....
             shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
-            const glm::vec3 lightPos = glm::vec3(0.f, 1.0f, 0.f);
+            const glm::vec3 lightPos = glm::vec3(0.f, 10.0f, 0.f);
             shader.setUniformVec3("u_LightPos", lightPos);
 
             shader.setUniformVec3("u_ViewPos", scene.getCamera().getPosition());
@@ -104,6 +104,7 @@ namespace Renderer {
             if (!scene.isShowMouse_) {
                 glutSetCursor(GLUT_CURSOR_NONE);
             }
+            glEnable(GL_BLEND);
             M_collisionShader_ = &M_shaderManager_->getShader("Collision");
         }
     }

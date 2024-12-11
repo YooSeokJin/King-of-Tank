@@ -1,27 +1,26 @@
-#include "Enermy.h"
+#include "Enemy.h"
 #include "global.h"
 import ObjectLoader;
 import Renderer;
-EnermyZen::EnermyZen(std::vector<std::shared_ptr<Object>>& objs)
+EnemyZen::EnemyZen(std::vector<std::shared_ptr<Object>>& objs)
 	:objects_(objs)
 {
 	spawnPoint_ = glm::vec3(20.f, 20.f, 20.f);
 }
 
-void EnermyZen::SpawnEnermy()
+void EnemyZen::SpawnEnermy()
 {
 	size_t objCount = objects_.size();
 	if (objCount > 1) return;
-	std::shared_ptr<Object> newEnermy = std::make_shared<Enermy>();
+	std::shared_ptr<Object> newEnermy = std::make_shared<Enemy>();
 	newEnermy->setPosition(spawnPoint_);
 	Renderer::M_setupObject(newEnermy);
 	objects_.push_back(newEnermy);
 	printf("ZenEnermy\n");
 }
 
-Enermy::Enermy()
+Enemy::Enemy()
 {
-	for (auto& b : meshIndex_) b = false;
 	tag = 'E';
 
 	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
@@ -41,16 +40,16 @@ Enermy::Enermy()
 	movement_.setVelocity(15.f, 10.f, 15.f);
 }
 
-void Enermy::update(float frameTime)
+void Enemy::update(float frameTime)
 {
 	checkState();
 	Object::update(frameTime);
 }
 
-void Enermy::checkState()
+void Enemy::checkState()
 {
 	glm::vec3 dir = movement_.getDirection();
-	if (collisionStates_.contains('B')); //printf("boom!\n");
+	if (collisionStates_.contains('B')) printf("boom!\n");
 	if (collisionStates_.contains('F')) {
 		if (dir.y >= 0.f) movement_.setDirectionY(-1.f);
 	}

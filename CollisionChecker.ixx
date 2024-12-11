@@ -1,7 +1,7 @@
 module;
 #include "Object.h"	
 #include "algorithm"
-#include "Enermy.h"
+#include "Enemy.h"
 export module CollisionChecker;
 namespace CollisionChecker {
     namespace {
@@ -119,10 +119,9 @@ namespace CollisionChecker {
                 break;
             }
             if (overlap) {
-                auto enermy = std::dynamic_pointer_cast<Enermy>(obj);
+                auto enemy = std::dynamic_pointer_cast<Enemy>(obj);
                 obj->setObjectState('B');
                 bullet->setObjectState('b');
-                enermy->meshIndex_[index] = true;
                 break;
             }
         }

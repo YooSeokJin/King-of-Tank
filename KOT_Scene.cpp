@@ -5,7 +5,7 @@
 
 import Renderer;
 KOT_Scene::KOT_Scene()
-	:enermyZen (objects_)
+	:enemyZen (objects_)
 {
 	backgroundColor_ = colorPaletteV4_[39];
 	std::shared_ptr<Object> tank = std::make_shared<Tank>();
@@ -52,7 +52,10 @@ KOT_Scene::KOT_Scene()
 	staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 0.f, 
 								objects_[0]->getPosition().y + 1.0f,
 								objects_[0]->getPosition().z + 0.f);
-
+	for (auto& mesh : staticObjects_[5]->getMeshes()) {
+		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+		mesh->meshColor_->w = 0.f;
+	}
 	backgroundColor_ = colorPaletteV4_[39];
 
 	Init();
@@ -66,7 +69,7 @@ KOT_Scene::KOT_Scene()
 void KOT_Scene::timer(float delta)
 {
 	update(delta);
-	enermyZen.SpawnEnermy();
+	enemyZen.SpawnEnermy();
 }
 
 void KOT_Scene::event(unsigned char key, int x, int y)
