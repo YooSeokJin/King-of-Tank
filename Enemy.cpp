@@ -51,16 +51,16 @@ Enemy::Enemy()
 		mesh->addCollision();
 		mesh->addMovement();
 		mesh->setParent(&worldTransform_);
-		float dx = uid_(mt_) % 10 + 1;
-		float dy = uid_(mt_) % 15 + 5;
-		float dz = uid_(mt_) % 10 + 1;
+		float dx = float(uid_(mt_) % 10 + 1);
+		float dy = float(uid_(mt_) % 15 + 5);
+		float dz = float(uid_(mt_) % 10 + 1);
 		mesh->movement_->setVelocity(dx, dy, dz);
 		mesh->movement_->setRtVelocity(90.f, 0.f, 90.f);
 	}
 	meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[1]->meshColor_ = new glm::vec4(blackColorV4_);
 	meshes_[2]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
-	meshes_[3]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
+	meshes_[3]->meshColor_ = new glm::vec4(blackColorV4_);
 	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
 
@@ -79,7 +79,6 @@ void Enemy::update(float frameTime)
 	else if (tag_ == 'M') arrangeMeshes(frameTime);
 	else if (tag_ == 'D') dead(frameTime);
 	else {
-
 		checkBehavior();
 		doAction();
 		checkState();

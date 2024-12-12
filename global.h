@@ -8,6 +8,8 @@ extern int width_;
 extern int height_;
 extern int windowCenterX_;
 extern int windowCenterY_;
+extern int miniMapWidth_;
+extern int miniMapHeight_;
 
 extern std::random_device randomEngine_;
 extern std::mt19937 mt_;

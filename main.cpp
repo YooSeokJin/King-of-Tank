@@ -83,7 +83,7 @@ void initProgram()
 GLvoid renderScene()
 {
 	if (!scene_) return;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	scene_->draw();
 	glutSwapBuffers();
 }

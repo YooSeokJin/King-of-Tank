@@ -4,7 +4,7 @@
 
 Projection::Projection(float fov, float aspect, float nearPlane, float farPlane)
     : fov_(fov), aspect_(aspect), nearPlane_(nearPlane), farPlane_(farPlane),
-    orthoLeft_(-1.0f), orthoRight_(1.0f), orthoBottom_(-1.0f), orthoTop_(1.0f) 
+    orthoLeft_(-50.0f), orthoRight_(50.0f), orthoBottom_(-50.0f), orthoTop_(50.0f) 
 {
 
 }
@@ -16,7 +16,7 @@ glm::mat4 Projection::getPerspectiveMatrix() const {
 }
 
 glm::mat4 Projection::getOrthographicMatrix() const {
-    return glm::ortho(orthoLeft_, orthoRight_, orthoBottom_, orthoTop_, nearPlane_, farPlane_);
+    return glm::ortho(-50.f, 50.f, -50.f, 50.f, 1.f, 100.f);
 }
 
 void Projection::setPerspective(float fov, float aspect, float nearPlane, float farPlane) {

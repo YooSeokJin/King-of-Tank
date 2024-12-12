@@ -21,6 +21,7 @@ Camera::~Camera() {
 
 void Camera::update(float frameTime)
 {
+    if (!targetObject_) return;
     glm::vec3 targetPos = targetObject_->getPosition();
     float radius = glm::length(cameraOffset_->x);
 
@@ -45,12 +46,17 @@ glm::mat4 Camera::getViewMatrix() const {
         return viewModel_.getViewMatrix(position_, targetObject_->getPosition(), up_);
     }
     else {
-        return viewModel_.getViewMatrix(position_, glm::vec3(0.f), up_);
+        return viewModel_.getViewMatrix(position_, glm::vec3(0.f, -1.f, 0.f), up_);
     }
 }
 
 glm::mat4 Camera::getPerspectiveMatrix() const {
     return projModel_.getPerspectiveMatrix();
+}
+
+glm::mat4 Camera::getOrthographicMatrix() const
+{
+    return projModel_.getOrthographicMatrix();
 }
 
 void Camera::setPerspective(float fov, float aspect, float nearPlane, float farPlane) {

@@ -8,7 +8,6 @@ import ObjectLoader;
 Tank::Tank()
 {
 	tag_ = 'P';
-	addGrid();
 	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
 	for (auto& mesh : meshes_) {
 		mesh->localTransform_.rotateY(180.f);

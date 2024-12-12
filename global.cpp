@@ -6,6 +6,10 @@ int width_ = 1024;
 int height_ = 1024;
 int windowCenterX_ = width_ / 2;
 int windowCenterY_ = height_ / 2;
+
+int miniMapWidth_ = 300;
+int miniMapHeight_ = 300;
+
 std::random_device randomEngine_{ };
 std::mt19937 mt_(randomEngine_());
 std::uniform_real_distribution<float> ufd_{ };

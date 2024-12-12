@@ -17,6 +17,9 @@ Scene::Scene()
 	Renderer::M_fillOnOff(isFill_);
 	mouseLastX_, mouseLastY_ = 0;
 	clearTime_ = 0.f;
+	showMiniMap_ = false;
+
+	miniMap_.setPosition(1, 50, 0);
 }
 
 Scene::~Scene()
@@ -26,13 +29,18 @@ Scene::~Scene()
 
 void Scene::draw()
 {
+	Renderer::M_clear(backgroundColor_);
+
 	auto proj = camera_.getPerspectiveMatrix();
 	auto view = camera_.getViewMatrix();
+	Renderer::M_glViewport(0, 0, width_, height_);
 	Renderer::M_renderScene(*this, proj, view);
 
-	for (auto& obj : objects_) {
-		obj->drawGrid(view, proj);
-	}
+	if (!showMiniMap_) return;
+	Renderer::M_glViewport(width_ - miniMapWidth_ - 10, 10, miniMapWidth_, miniMapHeight_);
+	auto proj2 = miniMap_.getOrthographicMatrix();
+	auto view2 = miniMap_.getViewMatrix();
+	Renderer::M_renderScene(*this, proj2, view2);
 }
 
 void Scene::update(float frameTime)
@@ -88,6 +96,8 @@ void Scene::keyUp(unsigned char key, int x, int y)
 {
 	if (!playeController_) return;
 	playeController_->keyUp(key, x, y);
+
+	if (key == 'm' || key == 'M') showMiniMap_ = !showMiniMap_;
 }
 
 void Scene::keyDown(unsigned char key, int x, int y)

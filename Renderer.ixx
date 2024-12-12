@@ -19,6 +19,8 @@ namespace Renderer {
     export void M_initRenderer(const Scene& scene);
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_);
     export void M_end(const Scene& scene);
+    export void M_glViewport(int x, int y, int width, int height);
+    export void M_clear(const glm::vec4& bgColor);
 
     export void M_deleteObj(std::shared_ptr<Static_Object> obj);
     export void M_setupObject(const std::shared_ptr<Object>& obj);
@@ -41,6 +43,7 @@ namespace Renderer {
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);
 
+            // 미니맵 라이트 효과를 제거할 방법을 ..
             // [TODO] need to be modified....
             shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
             const glm::vec3 lightPos = glm::vec3(0.f, 10.0f, 0.f);
@@ -109,7 +112,7 @@ namespace Renderer {
         }
     }
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
-        M_clearColor(scene.getBackgroundColor());
+        
         glm::mat4 proj = proj_;
         glm::mat4 view = view_;
 
@@ -119,7 +122,6 @@ namespace Renderer {
             }
         }
         for (const auto& object : scene.getObjects()) {
-            object->drawGrid(view, proj);
             for (const auto& mesh : object->getMeshes()) {
                 M_draw(mesh, view, proj, scene);
                 if (M_isDrawAabb) {
@@ -156,6 +158,15 @@ namespace Renderer {
         }
         delete M_shaderManager_;
         M_shaderManager_ = nullptr;
+    }
+    void M_glViewport(int x, int y, int width, int height)
+    {
+        glViewport(x, y, width, height);
+    }
+    void M_clear(const glm::vec4& bgColor)
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        M_clearColor(bgColor);
     }
     export void M_deleteObj(std::shared_ptr<Static_Object> obj)
     {

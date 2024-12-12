@@ -13,6 +13,7 @@ public:
 
     glm::mat4 getViewMatrix() const;
     glm::mat4 getPerspectiveMatrix() const;
+    glm::mat4 getOrthographicMatrix() const;
 
     void setPerspective(float fov, float aspect, float nearPlane, float farPlane);
 
@@ -22,6 +23,7 @@ public:
     glm::vec3 getForwardVector() const { return front_; }
     //
     glm::vec3 getPosition() const { return position_; }
+    void setPosition(float x, float y, float z) { position_ = glm::vec3(x, y, z); }
 private:
     glm::vec3 position_;
     glm::vec3 up_;

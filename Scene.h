@@ -31,6 +31,7 @@ public:
 	Camera getCamera() const { return camera_; };
 
 	bool isShowMouse_;
+	bool showMiniMap_;
 protected:
 	virtual void update(float frameTime);
 	void addObject(const std::string& fileName, const std::string& shaderName);
@@ -59,7 +60,8 @@ protected:
 	std::shared_ptr<PlayerController> playeController_;
 	glm::vec4 backgroundColor_;
 	Camera camera_;
-	
+	Camera miniMap_;
+
 	float clearTime_;
 };
 
