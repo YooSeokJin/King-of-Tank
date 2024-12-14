@@ -5,12 +5,12 @@
 
 import Renderer;
 KOT_Scene::KOT_Scene()
-	:enemyZen (objects_)
+	:enemyZen_ (objects_)
 {
 	backgroundColor_ = colorPaletteV4_[39];
 	std::shared_ptr<Object> tank = std::make_shared<Tank>();
 	objects_.push_back(tank);
-	enemyZen.setTarget(tank);
+	enemyZen_.setTarget(tank);
 	playeController_ = std::make_shared<KOT_PlayerController>();
 	
 	addCube(true);
@@ -64,12 +64,18 @@ KOT_Scene::KOT_Scene()
 	tpc->setTankCamera();
 	tpc->bulletManager_ = &bulletManager_;
 	tpc->tank_ = std::dynamic_pointer_cast<Tank>(tank);
+
+	aim_ = std::make_shared<Aim>();
+
+	aim_->setTarget(std::dynamic_pointer_cast<Tank>(tank));
+	aim_->setUp();
+	lines_.push_back(aim_);
 }
 
 void KOT_Scene::timer(float delta)
 {
 	update(delta);
-	enemyZen.SpawnEnermy(delta);
+	enemyZen_.SpawnEnermy(delta);
 }
 
 void KOT_Scene::event(unsigned char key, int x, int y)

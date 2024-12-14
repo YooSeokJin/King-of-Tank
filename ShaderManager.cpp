@@ -7,6 +7,7 @@ ShaderManager::ShaderManager()
 	loadShader("Model", "./shaders/model.VS", "./shaders/model.FS");
 	loadShader("LightSource", "./shaders/lightSource.VS", "./shaders/lightSource.FS");
 	loadShader("Collision", "./shaders/collision.VS", "./shaders/collision.FS");
+	loadShader("Line", "./shaders/Line.VS", "./shaders/Line.FS");
 }
 ShaderManager::~ShaderManager()
 {

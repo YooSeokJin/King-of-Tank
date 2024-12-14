@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "global.h"
+#include "Bullet.h"
 import ObjectLoader;
 import Renderer;
 EnemyZen::EnemyZen(std::vector<std::shared_ptr<Object>>& objs)
@@ -245,6 +246,5 @@ void Enemy::moveToTarget()
 
 void Enemy::attackToTarget()
 {
-	if (dist_ < 50.f) movement_.setDirection(getForwardvector());
-	else movement_.setDirection(0, 0, 0);
+	movement_.setDirection(0, 0, 0);
 }

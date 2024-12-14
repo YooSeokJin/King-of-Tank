@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aim.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="KOT_PlayerController.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModelMatrix.cpp" />
@@ -157,6 +159,7 @@
     <ClCompile Include="Viewing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aim.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="KOT_PlayerController.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModelMatrix.h" />
     <ClInclude Include="Movement.h" />
@@ -186,6 +190,8 @@
     <None Include="shaders\grid.VS" />
     <None Include="shaders\lightSource.FS" />
     <None Include="shaders\lightSource.VS" />
+    <None Include="shaders\Line.FS" />
+    <None Include="shaders\Line.VS" />
     <None Include="shaders\model.FS" />
     <None Include="shaders\model.VS" />
   </ItemGroup>

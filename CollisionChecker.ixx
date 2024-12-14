@@ -1,7 +1,9 @@
 module;
-#include "Object.h"	
 #include "algorithm"
+#include "Object.h"	
 #include "Enemy.h"
+#include "Line.h"
+#include "Aim.h"
 export module CollisionChecker;
 namespace CollisionChecker {
     namespace {
@@ -17,6 +19,10 @@ namespace CollisionChecker {
 
     export void M_checkBullet(std::shared_ptr<Object> bullet, 
         const std::vector<std::shared_ptr<Static_Object>>& walls, 
+        const std::vector<std::shared_ptr<Object>>& enermy);
+
+    export void M_checkLine(std::shared_ptr<Line> line,
+        const std::vector<std::shared_ptr<Static_Object>>& walls,
         const std::vector<std::shared_ptr<Object>>& enermy);
 }
 
@@ -138,6 +144,17 @@ namespace CollisionChecker {
                 bullet->setObjectState('O');
                 return;
             }
+        }
+    }
+    void M_checkLine(std::shared_ptr<Line> line, 
+        const std::vector<std::shared_ptr<Static_Object>>& walls, 
+        const std::vector<std::shared_ptr<Object>>& enemy)
+    {
+        // 개판이네;
+        auto aim = std::dynamic_pointer_cast<Aim>(line);
+        if (!aim) return;
+        for (auto& e : enemy) {
+            
         }
     }
 }

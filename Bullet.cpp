@@ -8,7 +8,7 @@ Bullet::Bullet(const glm::vec3& startPos, const glm::vec3& forwardVector, float 
 	// Movement
 	worldTransform_.setLocation(startPos + forwardVector);
 	movement_.setDirection(forwardVector);
-	movement_.setVelocity(30.f, 5.f, 30.f);
+	movement_.setVelocity(30.f, 30.f, 30.f);
 	dir_ = forwardVector; dir_ *= 10;
 	// MeshInfo
 	meshes_ = ObjectLoader::M_loadMesh("./objs/rocket.obj", "Model");

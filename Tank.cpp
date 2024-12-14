@@ -15,7 +15,7 @@ Tank::Tank()
 
 	yawTarget_ = pitchTarget_ = 0.f;
 	turretSpeed_ = 1.f;
-	gunSpeed_ = 0.1f;
+	gunSpeed_ = 0.05f;
 	pitchDiff_ = yawDiff_ = 0.0f;
 	// 0 - Base
 	// 1 - Right Track
@@ -74,12 +74,12 @@ void Tank::setCamera(const Camera* camera)
 	camera_ = camera;
 }
 
-glm::vec3 Tank::getTurretForward()
+glm::vec3 Tank::getTurretForward() const
 {
-	return meshes_[2]->localTransform_.getForwardVector();
+	return meshes_[3]->localTransform_.getForwardVector();
 }
 
-glm::vec3 Tank::getFirePosition()
+glm::vec3 Tank::getFirePosition() const
 {
 	if (!meshes_[3]) return glm::vec3(0);
 	auto& gun = meshes_[3];

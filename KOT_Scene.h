@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "BulletManager.h"
 #include "Enemy.h"
+#include "Aim.h"
 
 class KOT_Scene: public Scene
 {
@@ -18,5 +19,6 @@ private:
 	void createBullet(std::shared_ptr<Bullet> bullet);
 private:
 	BulletManager bulletManager_;
-	EnemyZen enemyZen;
+	EnemyZen enemyZen_;
+	std::shared_ptr<Aim> aim_;
 };
