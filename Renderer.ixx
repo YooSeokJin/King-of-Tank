@@ -63,10 +63,14 @@ namespace Renderer {
             shader.setUniformVec4("u_Light.specular", glm::vec4(1.f, 1.f, 1.f, 1.f));
 
             shader.setUniformVec3("u_ViewPos", scene.getCamera().getPosition());
+
             //===============================================================================
             size_t vertexCount = mesh->getIndices().size();
 
             if (mesh->textureType_ >= 0) {
+                shader.setUniformInt("u_ResolX", mesh->resolX_);
+                shader.setUniformInt("u_ResolY", mesh->resolY_);
+
                 shader.setUniformInt("u_Material.diffuse", mesh->textureType_);
                 shader.setUniformInt("u_Material.specular", mesh->textureType_);
                 glActiveTexture(GL_TEXTURE0 + mesh->textureType_);

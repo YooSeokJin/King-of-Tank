@@ -19,6 +19,8 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[0]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(colorPaletteV4_[24]);
 		mesh->textureType_ = 1;
+		mesh->resolX_ = 64;
+		mesh->resolY_ = 64;
 	}
 	addCube(true);
 	staticObjects_[1]->setScale(0.1f, 5.f, 50.f);
@@ -26,6 +28,8 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[1]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
+		mesh->resolX_ = 8;
+		mesh->resolY_ = 40;
 	}
 
 	addCube(true);
@@ -34,6 +38,8 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[2]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
+		mesh->resolX_ = 8;
+		mesh->resolY_ = 40;
 	}
 
 	addCube(true);
@@ -42,6 +48,8 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[3]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
+		mesh->resolX_ = 8;
+		mesh->resolY_ = 40;
 	}
 
 	addCube(true);
@@ -50,6 +58,8 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[4]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
+		mesh->resolX_ = 8;
+		mesh->resolY_ = 40;
 	} 
 
 	//addLightCube(true);

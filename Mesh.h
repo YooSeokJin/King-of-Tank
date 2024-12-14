@@ -48,6 +48,8 @@ public:
 
 	glm::vec4* meshColor_;
 	int textureType_ = -1;
+	int resolX_ = 1;
+	int resolY_ = 1;
 
 	Movement* movement_ = nullptr;
 	ModelMatrix localTransform_;

@@ -27,20 +27,26 @@ out vec4 FragColor;
 uniform vec4 u_LightColor;
 uniform vec3 u_LightPos;
 uniform vec3 u_ViewPos;
+uniform int u_ResolX;
+uniform int u_ResolY;
 
 void main()
 {
 	// Ambient
 	// float ambientIntensity = 1.2f; // Change Light Intensity
+	float tx = fract(TexCoords.x * u_ResolX);
+    float ty = fract(TexCoords.y * u_ResolY);
+    vec2 newTexCoords = vec2(tx, ty);
+
 	vec4 lightColor = u_LightColor;
-	vec3 ambient = u_Light.ambient.xyz * vec3(texture(u_Material.diffuse, TexCoords));
+	vec3 ambient = u_Light.ambient.xyz * vec3(texture(u_Material.diffuse, newTexCoords));
 	
 	// Diffuse
 	vec3 norm = normalize(Normal);
 	// vec3 lightDir = normalize(u_Light.position - FragPos);
 	vec3 lightDir = normalize(-u_Light.direction);
 	float diff = max(dot(norm, lightDir), 0.f);
-	vec3 diffuse = u_Light.diffuse.xyz * diff * vec3(texture(u_Material.diffuse, TexCoords));
+	vec3 diffuse = u_Light.diffuse.xyz * diff * vec3(texture(u_Material.diffuse, newTexCoords));
 
 	// Specular
 	float specularStrength = 0.9f;
@@ -48,7 +54,7 @@ void main()
 	vec3 reflectDir = reflect(-lightDir, norm);
 	
 	float spec = pow(max(dot(viewDir, reflectDir), 0.f), u_Material.shininess); // Highlight's shininess : 32
-	vec3 specular = u_Light.specular.xyz * spec * vec3(texture(u_Material.specular, TexCoords));
+	vec3 specular = u_Light.specular.xyz * spec * vec3(texture(u_Material.specular, newTexCoords));
 
 	vec3 result = ambient.xyz + diffuse + specular;
 	FragColor = vec4(result, 1.0f);
