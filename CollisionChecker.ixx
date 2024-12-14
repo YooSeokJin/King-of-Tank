@@ -1,7 +1,8 @@
 module;
-#include "Object.h"	
 #include "algorithm"
+#include "Object.h"	
 #include "Enemy.h"
+#include "Aim.h"
 export module CollisionChecker;
 namespace CollisionChecker {
     namespace {
@@ -18,6 +19,7 @@ namespace CollisionChecker {
     export void M_checkBullet(std::shared_ptr<Object> bullet, 
         const std::vector<std::shared_ptr<Static_Object>>& walls, 
         const std::vector<std::shared_ptr<Object>>& enermy);
+
 }
 
 namespace CollisionChecker {
@@ -100,13 +102,16 @@ namespace CollisionChecker {
         const std::vector<std::shared_ptr<Static_Object>>& walls,
         const std::vector<std::shared_ptr<Object>>& enermy)
     {
+        if (bullet->hasState('O')) return;
         glm::vec3 location = bullet->getPosition();
         std::vector<float> bulletAabb = bullet->getMeshes()[0]->getAabb();
         for (auto& obj : enermy) {
             if (bullet->hasState('b')) break;
+            if (bullet->hasState('I')) break;
             bool overlap = false;
             int index = -1;
-            if (obj->tag_ != 'E') continue;
+            if (bullet->tag_ == 'E' && obj->tag_ == 'E') continue;
+            if (bullet->tag_ == 'P' && obj->tag_ == 'P') continue;
             for (auto& mesh : obj->getMeshes()) {
                 ++index;
                 std::vector<float> aabb = mesh->getAabb();
@@ -118,11 +123,14 @@ namespace CollisionChecker {
                 overlap = true;
                 break;
             }
-            if (overlap) {
+            if (overlap && obj->tag_ == 'E') {
                 auto enemy = std::dynamic_pointer_cast<Enemy>(obj);
                 obj->setObjectState('B');
                 bullet->setObjectState('b');
                 break;
+            }
+            else if (overlap && obj->tag_ == 'P') {
+                bullet->setObjectState('I');
             }
         }
         for (auto& wall : walls) {

@@ -18,6 +18,7 @@ std::vector<float> Collision::getAabb() const
 
 void Collision::drawAabb(const glm::mat4& view, const glm::mat4& proj, const glm::mat4& model, Shader& cShader)
 {
+    glUseProgram(0);
     glLineWidth(2.0f);
     cShader.useShader();
 

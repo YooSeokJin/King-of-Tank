@@ -59,6 +59,7 @@ Grid::~Grid()
 
 void Grid::draw(const glm::mat4& viewing, const glm::mat4& proj, const glm::mat4& model)
 {
+	glUseProgram(0);
 	glLineWidth(2.0f);
 	gridShader_->useShader();
 	gridShader_->setUniformMatrix4fv("u_Model", model);

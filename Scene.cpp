@@ -57,6 +57,9 @@ void Scene::update(float frameTime)
 		CollisionChecker::M_checkBullet(bullet, staticObjects_, objects_);
 		bullet->update(frameTime);
 	}
+	for (auto& line : lines_) {
+		line->update();
+	}
 	camera_.update(frameTime);
 }
 
@@ -89,7 +92,7 @@ void Scene::specialEvent(int key, int x, int y)
 	if (key == 1) Renderer::M_depthOnOff(isDepth_);
 	else if (key == 2) Renderer::M_fillOnOff(isFill_);
 	else if (key == 3) Renderer::M_cullOnOff(isCull_);
-	else if (key == 4) Renderer::m_collsionOnOff(isColl_);
+	else if (key == 4) Renderer::M_collisionOnOff(isColl_);
 }
 
 void Scene::keyUp(unsigned char key, int x, int y)
@@ -136,6 +139,11 @@ const std::vector<std::shared_ptr<Static_Object>>& Scene::getStaticObjects() con
 const std::vector<std::shared_ptr<Object>>& Scene::getBullets() const
 {
 	return bullets_;
+}
+
+const std::vector<std::shared_ptr<Line>>& Scene::getLines() const
+{
+	return lines_;
 }
 
 void Scene::addObject(const std::string& fileName, const std::string& shaderName)

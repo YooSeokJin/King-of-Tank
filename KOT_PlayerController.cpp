@@ -99,12 +99,12 @@ void KOT_PlayerController::attack()
 	if (attackTime_ > 0.f) return;
 	const std::shared_ptr<Mesh> gun = tank_->getGun();
 	glm::vec3 sp = tank_->getFirePosition();
-	glm::vec3 fv = gun->localTransform_.getForwardVector();
+	glm::vec3 fv = tank_->getTurretForward();
 	float yaw = gun->localTransform_.getYaw();
 
 	std::shared_ptr<Bullet> newBullet = 
 		std::make_shared<Bullet>(sp, fv, yaw);
-
+	newBullet->tag_ = 'P';
 	bulletManager_->newBullets_ = newBullet;
 	attackTime_ = 1.f;
 	printf("Attack\n");

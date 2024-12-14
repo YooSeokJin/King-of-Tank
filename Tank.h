@@ -17,9 +17,9 @@ public:
 
 	std::shared_ptr<Mesh>& getTurret() { return meshes_[2]; }
 	std::shared_ptr<Mesh>& getGun() { return meshes_[4]; }
-	glm::vec3 getTurretForward();
+	glm::vec3 getTurretForward() const;
 	float getTurretYaw() { return meshes_[2]->localTransform_.getYaw(); }
-	glm::vec3 getFirePosition();
+	glm::vec3 getFirePosition() const;
 	void gunUpDown(int deltaY);
 
 private:

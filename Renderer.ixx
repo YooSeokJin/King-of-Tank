@@ -16,6 +16,7 @@ namespace Renderer {
         std::vector<GLuint> M_textures;
         void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj, const Scene& scene);
         void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh);
+
         void M_clearColor(const glm::vec4& bg);
         void M_setupMesh(const std::shared_ptr<Mesh>& mesh);
         void M_initTextures();
@@ -32,12 +33,13 @@ namespace Renderer {
     export void M_depthOnOff(bool& depth);
     export void M_fillOnOff(bool& fill);
     export void M_cullOnOff(bool& cull);
-    export void m_collsionOnOff(bool& coll);
+    export void M_collisionOnOff(bool& coll);
 }
 namespace Renderer {
     namespace {
         void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj, const Scene& scene) {
-            if (!mesh) return;
+            glUseProgram(0);
+            //if (!mesh) return;
 
             auto& shader = M_shaderManager_->getShader(mesh->getShaderName().c_str());
             glUseProgram(shader.getProgramID());
@@ -154,7 +156,7 @@ namespace Renderer {
         }
     }
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
-
+        if (!M_isInitialized_) return;
         glm::mat4 proj = proj_;
         glm::mat4 view = view_;
 
@@ -178,6 +180,9 @@ namespace Renderer {
                     mesh->drawAabb(view, proj, *M_collisionShader_);
                 }
             }
+        }
+        for (const auto& line : scene.getLines()) {
+            line->draw(view, proj);
         }
     }
     export void M_end(const Scene& scene) {
@@ -256,9 +261,10 @@ namespace Renderer {
         }
         cull = !cull;
     }
-    void m_collsionOnOff(bool& coll)
+    void M_collisionOnOff(bool& coll)
     {
         coll = !coll;
         M_isDrawAabb = coll;
     }
+
 }

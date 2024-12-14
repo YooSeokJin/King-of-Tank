@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Object.h"
+#include "Line.h"
 #include "PlayerController.h"
 
 class Scene {
@@ -26,7 +27,7 @@ public:
 	const std::vector<std::shared_ptr<Object>>& getObjects() const;
 	const std::vector<std::shared_ptr<Static_Object>>& getStaticObjects() const;
 	const std::vector<std::shared_ptr<Object>>& getBullets() const;
-
+	const std::vector<std::shared_ptr<Line>>& getLines() const;
 	//
 	Camera getCamera() const { return camera_; };
 
@@ -57,6 +58,8 @@ protected:
 	std::vector<std::shared_ptr<Object>> objects_;
 	std::vector<std::shared_ptr<Static_Object>> staticObjects_;
 	std::vector<std::shared_ptr<Object>> bullets_;
+	std::vector<std::shared_ptr<Line>> lines_;
+
 	std::shared_ptr<PlayerController> playeController_;
 	glm::vec4 backgroundColor_;
 	Camera camera_;
