@@ -104,7 +104,7 @@ void KOT_PlayerController::attack()
 
 	std::shared_ptr<Bullet> newBullet = 
 		std::make_shared<Bullet>(sp, fv, yaw);
-
+	newBullet->tag_ = 'P';
 	bulletManager_->newBullets_ = newBullet;
 	attackTime_ = 1.f;
 	printf("Attack\n");

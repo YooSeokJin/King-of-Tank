@@ -67,6 +67,7 @@ KOT_Scene::KOT_Scene()
 
 	aim_ = std::make_shared<Aim>();
 
+	enemyZen_.bulletManager = &bulletManager_;
 	aim_->setTarget(std::dynamic_pointer_cast<Tank>(tank));
 	aim_->setUp();
 	lines_.push_back(aim_);
@@ -106,6 +107,7 @@ void KOT_Scene::checkBullet()
 
 void KOT_Scene::createBullet(std::shared_ptr<Bullet> bullet)
 {
+	bullet->setColor();
 	Renderer::M_setupObject(bullet);
 	bullets_.push_back(bullet);
 }

@@ -8,7 +8,10 @@ public:
 	void update(float frameTime) override;
 	void checkState();
 	void checkTravel(float frameTime);
+	void changeDir();
+	void setColor();
 	float travelTime_;
 	bool dontMove_;
 	glm::vec3 dir_;
+	bool changed_;
 };

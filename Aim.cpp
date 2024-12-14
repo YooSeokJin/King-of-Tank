@@ -12,7 +12,7 @@ void Aim::update()
 {
 	startPosition_ = target_->getFirePosition() + target_->getTurretForward();
 	endPosition_ = target_->getTurretForward();
-	endPosition_ *= 5000;
+	endPosition_ *= 3000;
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_);
 
 	float vertices[6] = {

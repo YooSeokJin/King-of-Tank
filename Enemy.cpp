@@ -12,6 +12,7 @@ EnemyZen::EnemyZen(std::vector<std::shared_ptr<Object>>& objs)
 	spawnPoint4_ = glm::vec3(0.f, 20.f, 40.f);
 	spawnTime_ = 5.f;
 	where_ = 0;
+	bulletManager = nullptr;
 }
 
 void EnemyZen::SpawnEnermy(float frameTime)
@@ -20,12 +21,13 @@ void EnemyZen::SpawnEnermy(float frameTime)
 	spawnTime_ -= frameTime;
 	if (spawnTime_ >= 0.f) return;
 
-	std::shared_ptr<Object> newEnemy = std::make_shared<Enemy>();
+	std::shared_ptr<Enemy> newEnemy = std::make_shared<Enemy>();
 	if (where_ == 0) newEnemy->setPosition(spawnPoint1_);
 	else if (where_ == 1) newEnemy->setPosition(spawnPoint2_);
 	else if (where_ == 2) newEnemy->setPosition(spawnPoint3_);
 	else newEnemy->setPosition(spawnPoint4_);
 	
+	newEnemy->setBulletManager(bulletManager);
 	auto e = std::dynamic_pointer_cast<Enemy>(newEnemy);
 	e->setTarget(target_);
 	Renderer::M_setupObject(newEnemy);
@@ -43,6 +45,7 @@ void EnemyZen::setTarget(std::shared_ptr<Object>& target)
 Enemy::Enemy()
 	: targetDiff_(0.f)
 {
+	attackTime_ = 5.f;
 	tag_ = 'E';
 	behavior_ = 'N';
 
@@ -64,7 +67,7 @@ Enemy::Enemy()
 	meshes_[3]->meshColor_ = new glm::vec4(blackColorV4_);
 	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
-
+	meshes_[3]->localTransform_.setRotationZ(2.f);
 	movement_.setVelocity(3.f, 10.f, 3.f);
 	movement_.setRtVelocity(15.f, 20.f, 15.f);
 	fallingSpeed_ = 1.f;
@@ -73,8 +76,14 @@ Enemy::Enemy()
 	dist_ = 0.f;
 }
 
+Enemy::~Enemy()
+{
+	bulletManager_ = nullptr;
+}
+
 void Enemy::update(float frameTime)
 {
+	if (attackTime_ >= 0.f) attackTime_ -= frameTime;
 	if (tag_ == 'L') return;
 	else if (tag_ == 'H') explode(frameTime);
 	else if (tag_ == 'M') arrangeMeshes(frameTime);
@@ -98,6 +107,7 @@ void Enemy::checkState()
 		tag_ = 'H';
 		rotateMeshes();
 	}
+
 	if (collisionStates_.contains('F')) 
 		if (dir.y >= 0.f) movement_.setDirectionY(-1.f);
 	
@@ -246,5 +256,30 @@ void Enemy::moveToTarget()
 
 void Enemy::attackToTarget()
 {
+	if (attackTime_ >= 0.f) return;
 	movement_.setDirection(0, 0, 0);
+	if (!bulletManager_)return;
+	std::shared_ptr<Bullet> newBullet
+		= std::make_shared<Bullet>(getFirePosition(), getFireDirection(), 45.f);
+	newBullet->tag_ = 'E';
+	bulletManager_->newBullet(newBullet);
+	attackTime_ = 5.f;
+}
+
+glm::vec3 Enemy::getFirePosition()
+{
+	if (!meshes_[3]) return glm::vec3(0);
+	auto& gun = meshes_[3];
+
+	std::vector<float> aabb = gun->getAabb();
+	float x = (aabb[0] + aabb[1]) / 2;
+	float y = (aabb[2] + aabb[3]) / 2;
+	float z = (aabb[4] + aabb[5]) / 2;
+
+	return glm::vec3(x, y, z);
+}
+
+glm::vec3 Enemy::getFireDirection()
+{
+	return -meshes_[3]->localTransform_.getForwardVector();
 }
