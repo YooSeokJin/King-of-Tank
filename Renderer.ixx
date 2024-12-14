@@ -171,6 +171,9 @@ namespace Renderer {
         for (const auto& object : scene.getStaticObjects()) {
             for (const auto& mesh : object->getMeshes()) {
                 M_draw(mesh, view, proj, scene);
+                if (M_isDrawAabb) {
+                    mesh->drawAabb(view, proj, *M_collisionShader_);
+                }
             }
         }
         for (const auto& object : scene.getObjects()) {

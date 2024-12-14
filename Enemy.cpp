@@ -82,6 +82,19 @@ Enemy::Enemy()
 	deadTime_ = 3.f;
 	angle_ = 0.f;
 	dist_ = 0.f;
+
+	for (auto& mesh : ObjectLoader::M_loadMesh("objs/EFlag.obj", "Model")) {
+		mesh->applyMovement();
+		mesh->addCollision();
+		mesh->addMovement();
+		mesh->setParent(&worldTransform_);
+
+		mesh->localTransform_.setScale(glm::vec3(0.25f));
+		mesh->localTransform_.moveLocationY(3.f);
+		mesh->localTransform_.setRotationY(90.f);
+		mesh->meshColor_ = new glm::vec4(1.f, 0.f, 0.f, 1.f);
+		meshes_.push_back(mesh);
+	}
 }
 
 Enemy::~Enemy()

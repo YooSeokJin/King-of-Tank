@@ -229,6 +229,11 @@ void Scene::addMonkey(bool Static)
 	}
 }
 
+void Scene::addTree()
+{
+	addStaticObject("./objs/Tree.obj", "Model");
+}
+
 void Scene::setupObject(std::shared_ptr<Object> obj)
 {
 	Renderer::M_setupObject(obj);

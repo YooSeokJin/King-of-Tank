@@ -68,6 +68,7 @@ namespace CollisionChecker {
         obj->deleteObjectState('Z');
     }
     export void M_checkFalling(std::shared_ptr<Object> obj, const std::vector<std::shared_ptr<Static_Object>>& walls) {
+        if (obj->hasState('O')) return;
         std::vector<float> minys;
         for (auto& mesh : obj->getMeshes()) {
             std::vector<float> aabb = mesh->getAabb();

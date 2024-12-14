@@ -45,6 +45,7 @@ protected:
 	void addPyramid(bool Static);
 	void addRectPyramid(bool Static);
 	void addMonkey(bool Static);
+	void addTree();
 
 	void setupObject(std::shared_ptr<Object> obj);
 	void setupStaticObject(std::shared_ptr<Static_Object> obj);

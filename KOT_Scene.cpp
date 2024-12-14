@@ -63,6 +63,60 @@ KOT_Scene::KOT_Scene()
 	//}
 	//backgroundColor_ = colorPaletteV4_[39];
 
+	addTree();
+	staticObjects_[5]->setScale(0.1f, 0.1f, 0.1f);
+	staticObjects_[5]->setRotation(0, uid_(mt_) % 90, 0);
+	staticObjects_[5]->addPosition(0.f, 0.f, 20.f + uid_(mt_) % 10);
+	int index = 0;
+	for (auto& mesh : staticObjects_[5]->getMeshes()) {
+		if (index == 0)
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[3]);
+		else {
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[13]);
+		}
+		++index;
+	}
+	addTree();
+	staticObjects_[6]->setScale(0.1f, 0.1f, 0.1f);
+	staticObjects_[6]->setRotation(0, uid_(mt_) % 90, 0);
+	staticObjects_[6]->addPosition(0.f, 0.f, -20.f - uid_(mt_) % 10);
+	index = 0;
+	for (auto& mesh : staticObjects_[6]->getMeshes()) {
+		if (index == 0)
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[3]);
+		else {
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[13]);
+		}
+		++index;
+	}
+	addTree();
+	staticObjects_[7]->setScale(0.1f, 0.1f, 0.1f);
+	staticObjects_[7]->setRotation(0, uid_(mt_) % 90, 0);
+	staticObjects_[7]->addPosition(20.f + uid_(mt_) % 10, 0.f, 0.f);
+	index = 0;
+	for (auto& mesh : staticObjects_[7]->getMeshes()) {
+		if (index == 0)
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[3]);
+		else {
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[13]);
+		}
+		++index;
+	}
+
+	addTree();
+	staticObjects_[8]->setScale(0.1f, 0.1f, 0.1f);
+	staticObjects_[8]->setRotation(0, uid_(mt_) % 90, 0);
+	staticObjects_[8]->addPosition(-20.f - uid_(mt_) % 10, 0.f, 0.f);
+	index = 0;
+	for (auto& mesh : staticObjects_[8]->getMeshes()) {
+		if (index == 0)
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[3]);
+		else {
+			mesh->meshColor_ = new glm::vec4(colorPaletteV4_[13]);
+		}
+		++index;
+	}
+
 	Init();
 	
 	auto tpc = std::dynamic_pointer_cast<KOT_PlayerController>(playeController_);

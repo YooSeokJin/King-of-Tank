@@ -1,7 +1,7 @@
 #include "Line.h"
 #include "gl/glew.h"
 Line::Line()
-	: startPosition_(0), endPosition_(10.f, 10.f, 10.f), VBO_(0), VAO_(0), lineColor_(1.f, 0.f, 0.f)
+	: startPosition_(0), endPosition_(10.f, 10.f, 10.f), VBO_(0), VAO_(0), lineColor_(0.f, 1.f, 0.f)
 {
 	isDirty_ = false;
     lineShader_ = new Shader("./shaders/Line.VS", "./shaders/Line.FS");
