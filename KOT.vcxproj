@@ -152,6 +152,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="KOT_Scene.cpp" />
     <ClCompile Include="Viewing.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="KOT_Scene.h" />
     <ClInclude Include="Viewing.h" />

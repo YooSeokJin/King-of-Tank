@@ -1,6 +1,15 @@
 ﻿#pragma once
+
 #include <random>
 #include "glm/glm.hpp"
+#include "stb_image.h"
+
+struct BMPImage {
+    unsigned char* data;
+    unsigned int width;
+    unsigned int height;
+    ~BMPImage() { if (data) delete[] data; }
+};
 
 extern bool showCollision;
 

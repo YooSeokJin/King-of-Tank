@@ -12,6 +12,7 @@ uniform mat4 u_Projection;
 out vec3 Normal;
 out vec3 FragPos;
 out vec4 Color;
+out vec2 TexCoords;
 void main()
 {
 	vec4 newPos = vec4(a_Position, 1.0f);
@@ -19,4 +20,5 @@ void main()
 	FragPos = (u_Model * newPos).xyz;
 	Normal = a_Normal;
     Color = a_Color;
+	TexCoords = a_TexCoord;
 }

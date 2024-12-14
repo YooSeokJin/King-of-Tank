@@ -2,7 +2,6 @@
 #include "gl/glew.h"
 #include "gl/freeglut.h"
 #include "glm/glm.hpp"
-
 #include "global.h"
 #include "KOT_Scene.h"
 

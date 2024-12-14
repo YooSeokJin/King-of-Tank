@@ -1,6 +1,8 @@
 module;
 #include "gl/glew.h"
 #include "gl/freeglut.h"
+#include <fstream>
+#include <iostream>
 #include "Scene.h"
 #include "ShaderManager.h"
 
@@ -11,10 +13,12 @@ namespace Renderer {
         bool M_isInitialized_ = false;
         Shader* M_collisionShader_ = nullptr;
         bool M_isDrawAabb = false;
+        std::vector<GLuint> M_textures;
         void M_draw(const std::shared_ptr<Mesh>& mesh, const glm::mat4& view, const glm::mat4& proj, const Scene& scene);
         void M_deleteBuffer(const std::shared_ptr<Mesh>& mesh);
         void M_clearColor(const glm::vec4& bg);
         void M_setupMesh(const std::shared_ptr<Mesh>& mesh);
+        void M_initTextures();
     }
     export void M_initRenderer(const Scene& scene);
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_);
@@ -43,16 +47,27 @@ namespace Renderer {
             shader.setUniformMatrix4fv("u_Viewing", view);
             shader.setUniformMatrix4fv("u_Projection", proj);
 
+            shader.setUniformVec4("u_Material.ambient", glm::vec4(0.25f, 0.25f, 0.25f, 1.0f));
+            shader.setUniformVec4("u_Material.diffuse", glm::vec4(0.4f, 0.4f, 0.4f, 1.0f));
+            shader.setUniformVec4("u_Material.specular", glm::vec4(0.774597f, 0.774597f, 0.774597f, 1.0f));;
+            shader.setUniformFloat("u_Material.shininess", 1.0f);
+
             // 미니맵 라이트 효과를 제거할 방법을 ..
             // [TODO] need to be modified....
-            shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
-            const glm::vec3 lightPos = glm::vec3(0.f, 10.0f, 0.f);
-            shader.setUniformVec3("u_LightPos", lightPos);
+            //shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
+            //const glm::vec3 lightPos = glm::vec3(0.f, 30.0f, 0.f);
+            //shader.setUniformVec3("u_LightPos", lightPos);
+            shader.setUniformVec3("u_Light.position", glm::vec3(0.f, 30.0f, 0.f));
+            shader.setUniformVec4("u_Light.ambient", colorPaletteV4_[36]);
+            shader.setUniformInt("u_Light.diffuse", 0);
+            shader.setUniformVec4("u_Light.specular", glm::vec4(1.f, 1.f, 1.f, 1.f));
 
             shader.setUniformVec3("u_ViewPos", scene.getCamera().getPosition());
             //===============================================================================
             size_t vertexCount = mesh->getIndices().size();
 
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, M_textures[0]);
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexCount));
 
             glBindVertexArray(0);
@@ -99,6 +114,32 @@ namespace Renderer {
 
             glBindVertexArray(0);
         }
+        void M_initTextures() {
+            unsigned int tex;
+            int width, height, nrChannels;
+            BITMAP* bmp;
+            BITMAPINFO* bmp_info;
+
+            glGenTextures(1, &tex);
+            glBindTexture(GL_TEXTURE_2D, tex);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            unsigned char* data = stbi_load("./test.png", &width, &height, &nrChannels, 0);
+            if (data) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+                glGenerateMipmap(GL_TEXTURE_2D);
+            }
+            else
+            {
+                std::cout << "Failed to load texture" << std::endl;
+            }
+            stbi_image_free(data);
+
+            M_textures.push_back(tex);
+        }
     }
     export void M_initRenderer(const Scene& scene) {
         if (!M_shaderManager_) {
@@ -108,11 +149,12 @@ namespace Renderer {
                 glutSetCursor(GLUT_CURSOR_NONE);
             }
             glEnable(GL_BLEND);
+            M_initTextures();
             M_collisionShader_ = &M_shaderManager_->getShader("Collision");
         }
     }
     export void M_renderScene(const Scene& scene, const glm::mat4& proj_, const glm::mat4& view_) {
-        
+
         glm::mat4 proj = proj_;
         glm::mat4 view = view_;
 
