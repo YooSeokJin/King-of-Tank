@@ -28,7 +28,7 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[1]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
-		mesh->resolX_ = 8;
+		mesh->resolX_ = 4;
 		mesh->resolY_ = 40;
 	}
 
@@ -38,7 +38,7 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[2]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
-		mesh->resolX_ = 8;
+		mesh->resolX_ = 4;
 		mesh->resolY_ = 40;
 	}
 
@@ -48,7 +48,7 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[3]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
-		mesh->resolX_ = 8;
+		mesh->resolX_ = 4;
 		mesh->resolY_ = 40;
 	}
 
@@ -58,7 +58,7 @@ KOT_Scene::KOT_Scene()
 	for (auto& mesh : staticObjects_[4]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
 		mesh->textureType_ = 2;
-		mesh->resolX_ = 8;
+		mesh->resolX_ = 4;
 		mesh->resolY_ = 40;
 	} 
 

@@ -124,7 +124,7 @@ namespace Renderer {
             glBindVertexArray(0);
         }
         void M_initTextures() {
-            const char* textureFiles[] = { "./textures/camo.jpg", "./textures/ground.jpg", "./textures/wall.jpg" }; // 텍스처 파일 경로 배열
+            const char* textureFiles[] = { "./textures/camo.jpg", "./textures/ground.jpg", "./textures/brick2.jpg" }; // 텍스처 파일 경로 배열
             const int textureCount = sizeof(textureFiles) / sizeof(textureFiles[0]); // 텍스처 개수
 
             unsigned int tex[textureCount];
