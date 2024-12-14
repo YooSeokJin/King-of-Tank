@@ -47,6 +47,7 @@ public:
 	unsigned int& getEBO() { return EBO_; }
 
 	glm::vec4* meshColor_;
+	int textureType_ = -1;
 
 	Movement* movement_ = nullptr;
 	ModelMatrix localTransform_;

@@ -56,20 +56,21 @@ namespace Renderer {
 
             // 미니맵 라이트 효과를 제거할 방법을 ..
             // [TODO] need to be modified....
-            //shader.setUniformVec4("u_LightColor", colorPaletteV4_[36]); // Change Light Color!
-            //const glm::vec3 lightPos = glm::vec3(0.f, 30.0f, 0.f);
-            //shader.setUniformVec3("u_LightPos", lightPos);
             shader.setUniformVec3("u_Light.position", glm::vec3(0.f, 30.0f, 0.f));
             shader.setUniformVec4("u_Light.ambient", colorPaletteV4_[36]);
-            shader.setUniformInt("u_Light.diffuse", 0);
+            shader.setUniformVec4("u_Light.diffuse", glm::vec4(0.4f, 0.4f, 0.4f, 1.f));
             shader.setUniformVec4("u_Light.specular", glm::vec4(1.f, 1.f, 1.f, 1.f));
 
             shader.setUniformVec3("u_ViewPos", scene.getCamera().getPosition());
             //===============================================================================
             size_t vertexCount = mesh->getIndices().size();
 
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, M_textures[0]);
+            if (mesh->textureType_ >= 0) {
+                shader.setUniformInt("u_Material.diffuse", mesh->textureType_);
+                glActiveTexture(GL_TEXTURE0 + mesh->textureType_);
+                glBindTexture(GL_TEXTURE_2D, M_textures[mesh->textureType_]);
+            }
+
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexCount));
 
             glBindVertexArray(0);
@@ -117,30 +118,36 @@ namespace Renderer {
             glBindVertexArray(0);
         }
         void M_initTextures() {
-            unsigned int tex;
+            const char* textureFiles[] = { "./textures/camo.jpg", "./textures/ground.jpg", "./textures/wall.jpg" }; // 텍스처 파일 경로 배열
+            const int textureCount = sizeof(textureFiles) / sizeof(textureFiles[0]); // 텍스처 개수
+
+            unsigned int tex[textureCount];
             int width, height, nrChannels;
-            BITMAP* bmp;
-            BITMAPINFO* bmp_info;
 
-            glGenTextures(1, &tex);
-            glBindTexture(GL_TEXTURE_2D, tex);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glGenTextures(textureCount, tex);
 
-            unsigned char* data = stbi_load("./test.png", &width, &height, &nrChannels, 0);
-            if (data) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-                glGenerateMipmap(GL_TEXTURE_2D);
+            for (int i = 0; i < textureCount; ++i) {
+                glBindTexture(GL_TEXTURE_2D, tex[i]);
+
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+                unsigned char* data = stbi_load(textureFiles[i], &width, &height, &nrChannels, 0);
+                if (data) {
+                    GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
+                    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+                    glGenerateMipmap(GL_TEXTURE_2D);
+                }
+                else {
+                    std::cout << "Failed to load texture: " << textureFiles[i] << std::endl;
+                }
+
+                stbi_image_free(data);
+
+                M_textures.push_back(tex[i]);
             }
-            else
-            {
-                std::cout << "Failed to load texture" << std::endl;
-            }
-            stbi_image_free(data);
-
-            M_textures.push_back(tex);
         }
     }
     export void M_initRenderer(const Scene& scene) {

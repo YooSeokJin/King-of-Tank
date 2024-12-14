@@ -8,7 +8,7 @@ import ObjectLoader;
 Tank::Tank()
 {
 	tag_ = 'P';
-	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
+	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Texture");
 	for (auto& mesh : meshes_) {
 		mesh->localTransform_.rotateY(180.f);
 	}
@@ -30,7 +30,15 @@ Tank::Tank()
 	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[38]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
 
+	meshes_[0]->textureType_ = 0;
+	meshes_[2]->textureType_ = 0;
+	meshes_[4]->textureType_ = 0;
+
+	meshes_[1]->setShaderName("Model");
+	meshes_[5]->setShaderName("Model");
+
 	isBackward_ = isForward_ = false;
+	
 
 	worldTransform_.moveLocationY(5.f);
 }

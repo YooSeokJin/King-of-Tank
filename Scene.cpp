@@ -172,10 +172,10 @@ void Scene::addLightCube(bool Static)
 void Scene::addCube(bool Static)
 {
 	if (Static) {
-		addStaticObject("./objs/cube.obj", "Model");
+		addStaticObject("./objs/cube.obj", "Texture");
 	}
 	else {
-		addObject("./objs/cube.obj", "Model");
+		addObject("./objs/cube.obj", "Texture");
 	}
 }
 

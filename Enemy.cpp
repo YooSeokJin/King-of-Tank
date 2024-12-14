@@ -49,7 +49,7 @@ Enemy::Enemy()
 	tag_ = 'E';
 	behavior_ = 'N';
 
-	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Model");
+	meshes_ = ObjectLoader::M_loadMesh("objs/tank.obj", "Texture");
 	for (auto& mesh : meshes_) {
 		mesh->applyMovement();
 		mesh->addCollision();
@@ -67,6 +67,14 @@ Enemy::Enemy()
 	meshes_[3]->meshColor_ = new glm::vec4(blackColorV4_);
 	meshes_[4]->meshColor_ = new glm::vec4(colorPaletteV4_[0]);
 	meshes_[5]->meshColor_ = new glm::vec4(blackColorV4_);
+
+	meshes_[0]->textureType_ = 0;
+	meshes_[2]->textureType_ = 0;
+	meshes_[4]->textureType_ = 0;
+
+	meshes_[1]->setShaderName("Model");
+	meshes_[5]->setShaderName("Model");
+
 	meshes_[3]->localTransform_.setRotationZ(2.f);
 	movement_.setVelocity(3.f, 10.f, 3.f);
 	movement_.setRtVelocity(15.f, 20.f, 15.f);

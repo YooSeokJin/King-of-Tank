@@ -18,12 +18,14 @@ KOT_Scene::KOT_Scene()
 	staticObjects_[0]->addPosition(0.f, -0.1f, 0.f);
 	for (auto& mesh : staticObjects_[0]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(colorPaletteV4_[24]);
+		mesh->textureType_ = 1;
 	}
 	addCube(true);
 	staticObjects_[1]->setScale(0.1f, 5.f, 50.f);
 	staticObjects_[1]->addPosition(50.f, 5.f, 0.f);
 	for (auto& mesh : staticObjects_[1]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+		mesh->textureType_ = 2;
 	}
 
 	addCube(true);
@@ -31,6 +33,7 @@ KOT_Scene::KOT_Scene()
 	staticObjects_[2]->addPosition(-50.f, 5.f, 0.f);
 	for (auto& mesh : staticObjects_[2]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+		mesh->textureType_ = 2;
 	}
 
 	addCube(true);
@@ -38,6 +41,7 @@ KOT_Scene::KOT_Scene()
 	staticObjects_[3]->addPosition(0.f, 5.f, 50.f);
 	for (auto& mesh : staticObjects_[3]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+		mesh->textureType_ = 2;
 	}
 
 	addCube(true);
@@ -45,18 +49,19 @@ KOT_Scene::KOT_Scene()
 	staticObjects_[4]->addPosition(0.f, 5.f, -50.f);
 	for (auto& mesh : staticObjects_[4]->getMeshes()) {
 		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+		mesh->textureType_ = 2;
 	} 
 
-	addLightCube(true);
-	staticObjects_[5]->setScale(0.2f, 0.2f, 0.2f);
-	staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 0.f, 
-								objects_[0]->getPosition().y + 1.0f,
-								objects_[0]->getPosition().z + 0.f);
-	for (auto& mesh : staticObjects_[5]->getMeshes()) {
-		mesh->meshColor_ = new glm::vec4(whiteColorV4_);
-		mesh->meshColor_->w = 0.f;
-	}
-	backgroundColor_ = colorPaletteV4_[39];
+	//addLightCube(true);
+	//staticObjects_[5]->setScale(0.2f, 0.2f, 0.2f);
+	//staticObjects_[5]->addPosition(objects_[0]->getPosition().x + 0.f, 
+	//							objects_[0]->getPosition().y + 1.0f,
+	//							objects_[0]->getPosition().z + 0.f);
+	//for (auto& mesh : staticObjects_[5]->getMeshes()) {
+	//	mesh->meshColor_ = new glm::vec4(whiteColorV4_);
+	//	mesh->meshColor_->w = 0.f;
+	//}
+	//backgroundColor_ = colorPaletteV4_[39];
 
 	Init();
 	

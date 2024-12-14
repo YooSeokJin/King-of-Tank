@@ -196,6 +196,8 @@
     <None Include="shaders\Line.VS" />
     <None Include="shaders\model.FS" />
     <None Include="shaders\model.VS" />
+    <None Include="shaders\texture.FS" />
+    <None Include="shaders\texture.VS" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="아쉬운점Or좋았던점Or배운점.txt">
