@@ -67,6 +67,7 @@ namespace Renderer {
 
             if (mesh->textureType_ >= 0) {
                 shader.setUniformInt("u_Material.diffuse", mesh->textureType_);
+                shader.setUniformInt("u_Material.specular", mesh->textureType_);
                 glActiveTexture(GL_TEXTURE0 + mesh->textureType_);
                 glBindTexture(GL_TEXTURE_2D, M_textures[mesh->textureType_]);
             }
