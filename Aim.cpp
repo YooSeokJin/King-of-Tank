@@ -3,7 +3,6 @@
 Aim::Aim()
 {
 	target_ = nullptr;
-	isRed_ = true;
 	isDirty_ = false;
 	tag_ = 'A';
 }
@@ -12,7 +11,7 @@ void Aim::update()
 {
 	startPosition_ = target_->getFirePosition() + target_->getTurretForward();
 	endPosition_ = target_->getTurretForward();
-	endPosition_ *= 3000;
+	endPosition_ *= 2500;
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_);
 
 	float vertices[6] = {
@@ -33,15 +32,4 @@ void Aim::setTarget(std::shared_ptr<Tank> target)
 glm::vec3 Aim::getDirection() const
 {
 	return target_->getTurretForward();
-}
-
-void Aim::calculateEndPoint(const std::vector<std::shared_ptr<Object>>& enemy, 
-	const std::vector<std::shared_ptr<Static_Object>>& walls)
-{
-	glm::vec3 dir = getDirection();
-	for (const auto& e : enemy) {
-		for (const auto& mesh : e->getMeshes()) {
-			std::vector<float> aabb = mesh->getAabb();
-		}
-	}
 }

@@ -13,6 +13,7 @@ public:
 	void draw(const glm::mat4& view, const glm::mat4& proj);
 
 	void setStartPoint(const glm::vec3& point);
+	glm::vec3 getStartPoint() const { return startPosition_; }
 	void setEndPoint(const glm::vec3& point);
 	void setColor(const glm::vec3& color);
 

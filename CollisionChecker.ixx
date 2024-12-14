@@ -2,7 +2,6 @@ module;
 #include "algorithm"
 #include "Object.h"	
 #include "Enemy.h"
-#include "Line.h"
 #include "Aim.h"
 export module CollisionChecker;
 namespace CollisionChecker {
@@ -21,9 +20,6 @@ namespace CollisionChecker {
         const std::vector<std::shared_ptr<Static_Object>>& walls, 
         const std::vector<std::shared_ptr<Object>>& enermy);
 
-    export void M_checkLine(std::shared_ptr<Line> line,
-        const std::vector<std::shared_ptr<Static_Object>>& walls,
-        const std::vector<std::shared_ptr<Object>>& enermy);
 }
 
 namespace CollisionChecker {
@@ -151,11 +147,5 @@ namespace CollisionChecker {
                 return;
             }
         }
-    }
-    void M_checkLine(std::shared_ptr<Line> line, 
-        const std::vector<std::shared_ptr<Static_Object>>& walls, 
-        const std::vector<std::shared_ptr<Object>>& enemy)
-    {
-
     }
 }

@@ -73,6 +73,6 @@ void Bullet::changeDir()
 void Bullet::setColor()
 {
 	if (tag_ == 'P') meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[3]);
-	else meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[10]);
+	else meshes_[0]->meshColor_ = new glm::vec4(colorPaletteV4_[uid_(mt_) % 40]);
 }
 

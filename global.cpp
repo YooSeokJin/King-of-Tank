@@ -89,7 +89,6 @@ glm::vec3 screenToWorld(float ndcX, float ndcY, const glm::mat4& view, const glm
 
 float Change_X(int x)
 {
-
     return (static_cast<float>(x) / width_) * 2.0f - 1.0f;
 }
 

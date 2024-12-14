@@ -25,3 +25,5 @@ const extern glm::vec4 whiteColorV4_;
 extern void changeOpenGL(int x, int y, int z, glm::vec3& center);
 extern void changeOpenGL(const glm::vec3& windowPoints, glm::vec3& myPoints);
 extern glm::vec3 screenToWorld(float ndcX, float ndcY, const glm::mat4& view, const glm::mat4& proj);
+extern float Change_X(int x);
+extern float Change_Y(int y);
