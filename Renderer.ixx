@@ -56,7 +56,8 @@ namespace Renderer {
 
             // 미니맵 라이트 효과를 제거할 방법을 ..
             // [TODO] need to be modified....
-            shader.setUniformVec3("u_Light.position", glm::vec3(0.f, 30.0f, 0.f));
+            // shader.setUniformVec3("u_Light.position", glm::vec3(0.f, 30.0f, 0.f));
+            shader.setUniformVec3("u_Light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
             shader.setUniformVec4("u_Light.ambient", colorPaletteV4_[36]);
             shader.setUniformVec4("u_Light.diffuse", glm::vec4(0.4f, 0.4f, 0.4f, 1.f));
             shader.setUniformVec4("u_Light.specular", glm::vec4(1.f, 1.f, 1.f, 1.f));
